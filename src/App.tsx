@@ -1,7 +1,7 @@
-import { AppBar, Container, CssBaseline, ThemeProvider } from "@mui/material";
+import { ThemeProvider, CssBaseline } from "@mui/material";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import theme from "./styles/theme";
-import MainToolbar from "./components/Toolbar/Toolbar";
+import PublicLayout from "./components/PublicLayout/PublicLayout";
 import HomePage from "./pages/Home";
 import HistoryPage from "./pages/History";
 import DocumentsPage from "./pages/Documents";
@@ -13,35 +13,135 @@ import "./App.css";
 import { useState } from "react";
 import i18n from "./i18n";
 
+// Admin components
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import AdminLayout from "./components/AdminLayout/AdminLayout";
+import { AdminLogin, AdminDashboard, NewsList, NewsForm } from "./pages/admin";
+
 function App() {
   const [language, setLanguage] = useState("cs");
   return (
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AppBar position="static" color="primary">
-          <MainToolbar
-            language={language}
-            setLanguage={(lang: string) => {
-              setLanguage(lang);
-              i18n.changeLanguage(lang);
-            }}
-          />
-        </AppBar>
-
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/historie" element={<HistoryPage />} />
-            <Route path="/dokumenty" element={<DocumentsPage />} />
-            <Route path="/akce" element={<EventsPage />} />
-            <Route path="/galerie" element={<GalleryPage />} />
-            <Route path="/sponzori" element={<SponsorsPage />} />
-            <Route path="/kontakt" element={<ContactPage />} />
+            {/* Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<ProtectedRoute />}>
+              <Route element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="news" element={<NewsList />} />
+                <Route path="news/add" element={<NewsForm />} />
+                <Route path="news/edit/:id" element={<NewsForm />} />
+                {/* Other admin routes will be added here */}
+              </Route>
+            </Route>
+
+            {/* Public Routes */}
+            <Route
+              path="/"
+              element={
+                <PublicLayout
+                  language={language}
+                  setLanguage={(lang: string) => {
+                    setLanguage(lang);
+                    i18n.changeLanguage(lang);
+                  }}
+                >
+                  <HomePage />
+                </PublicLayout>
+              }
+            />
+            <Route
+              path="/historie"
+              element={
+                <PublicLayout
+                  language={language}
+                  setLanguage={(lang: string) => {
+                    setLanguage(lang);
+                    i18n.changeLanguage(lang);
+                  }}
+                >
+                  <HistoryPage />
+                </PublicLayout>
+              }
+            />
+            <Route
+              path="/dokumenty"
+              element={
+                <PublicLayout
+                  language={language}
+                  setLanguage={(lang: string) => {
+                    setLanguage(lang);
+                    i18n.changeLanguage(lang);
+                  }}
+                >
+                  <DocumentsPage />
+                </PublicLayout>
+              }
+            />
+            <Route
+              path="/akce"
+              element={
+                <PublicLayout
+                  language={language}
+                  setLanguage={(lang: string) => {
+                    setLanguage(lang);
+                    i18n.changeLanguage(lang);
+                  }}
+                >
+                  <EventsPage />
+                </PublicLayout>
+              }
+            />
+            <Route
+              path="/galerie"
+              element={
+                <PublicLayout
+                  language={language}
+                  setLanguage={(lang: string) => {
+                    setLanguage(lang);
+                    i18n.changeLanguage(lang);
+                  }}
+                >
+                  <GalleryPage />
+                </PublicLayout>
+              }
+            />
+            <Route
+              path="/sponzori"
+              element={
+                <PublicLayout
+                  language={language}
+                  setLanguage={(lang: string) => {
+                    setLanguage(lang);
+                    i18n.changeLanguage(lang);
+                  }}
+                >
+                  <SponsorsPage />
+                </PublicLayout>
+              }
+            />
+            <Route
+              path="/kontakt"
+              element={
+                <PublicLayout
+                  language={language}
+                  setLanguage={(lang: string) => {
+                    setLanguage(lang);
+                    i18n.changeLanguage(lang);
+                  }}
+                >
+                  <ContactPage />
+                </PublicLayout>
+              }
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-        </Container>
-      </ThemeProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

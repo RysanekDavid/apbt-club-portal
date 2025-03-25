@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Menu, MenuItem, IconButton, Typography } from "@mui/material";
 import TranslateIcon from "@mui/icons-material/Translate";
-import { Gb, Cz } from "material-ui-flags";
+import { GbFlag, CzFlag } from "../../../components/flags";
 import i18n from "../../../i18n";
 import {
   Container,
@@ -38,12 +38,12 @@ const LanguageSelector = ({ language, setLanguage }: LanguageSelectorProps) => {
     {
       code: "en",
       label: t("language.english"),
-      flag: <Gb />,
+      flag: <GbFlag />,
     },
     {
       code: "cs",
       label: t("language.czech"),
-      flag: <Cz />,
+      flag: <CzFlag />,
     },
   ];
 
