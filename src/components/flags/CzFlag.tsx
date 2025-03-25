@@ -1,4 +1,4 @@
-import React from "react";
+// No import needed
 import { SvgIcon, SvgIconProps } from "@mui/material";
 
 const CzFlag = (props: SvgIconProps) => {
