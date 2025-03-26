@@ -24,6 +24,7 @@ import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import DescriptionIcon from "@mui/icons-material/Description";
 import HomeIcon from "@mui/icons-material/Home";
+import AdminAvatar from "../AdminAvatar/AdminAvatar";
 
 const drawerWidth = 240;
 
@@ -115,14 +116,7 @@ const AdminLayout = () => {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             Administrace KLUB APBT
           </Typography>
-          {currentUser && (
-            <Typography variant="body2" sx={{ mr: 2 }}>
-              {currentUser.email}
-            </Typography>
-          )}
-          <Button color="inherit" onClick={handleLogout}>
-            Odhlásit
-          </Button>
+          <AdminAvatar />
         </Toolbar>
       </AppBar>
       <Box
