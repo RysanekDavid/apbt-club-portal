@@ -14,7 +14,6 @@ import {
   ListItemText,
   Toolbar,
   Typography,
-  Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -30,7 +29,7 @@ const drawerWidth = 240;
 
 const AdminLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { currentUser, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
