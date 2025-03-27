@@ -174,6 +174,7 @@ export const getUpcomingEvents = async (): Promise<Event[]> => {
   } catch (error) {
     console.error("Error in getUpcomingEvents:", error);
     if (error instanceof Error) {
+      console.error("Original Firestore Error (Upcoming):", error.message); // Log original error
       console.error("Error details:", error.message);
 
       // Check if this is a missing index error
@@ -217,6 +218,7 @@ export const getPastEvents = async (limitCount?: number): Promise<Event[]> => {
   } catch (error) {
     console.error("Error in getPastEvents:", error);
     if (error instanceof Error) {
+      console.error("Original Firestore Error (Past):", error.message); // Log original error
       console.error("Error details:", error.message);
 
       // Check if this is a missing index error
