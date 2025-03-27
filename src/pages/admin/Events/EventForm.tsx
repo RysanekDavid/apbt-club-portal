@@ -5,36 +5,42 @@ import {
   Box,
   Button,
   TextField,
-  FormControlLabel,
-  Switch,
   Grid,
   Paper,
   Typography,
   CircularProgress,
   Alert,
   Divider,
+  FormControlLabel,
+  Switch,
 } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { cs } from "date-fns/locale";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
-import RichTextEditor from "../../../components/Editor/RichTextEditor";
 import CloudinaryUpload from "../../../components/CloudinaryUpload/CloudinaryUpload";
-import { News } from "../../../types/models";
+import RichTextEditor from "../../../components/Editor/RichTextEditor";
 import {
   getDocumentById,
   addDocument,
   updateDocument,
 } from "../../../services/firestore";
+import { Event } from "../../../types/models";
 import { slugify, generateUniqueSlug } from "../../../utils/slugify";
 
-interface NewsFormData {
+interface EventFormData {
   title: string;
-  content: string;
+  description: string;
+  date: Date | null;
+  location: string;
+  imageUrl: string;
+  imageName: string;
   published: boolean;
-  imageUrl?: string;
-  imageName?: string;
 }
 
-const NewsForm = () => {
+const EventForm = () => {
   const { id } = useParams<{ id: string }>();
   const isEditMode = Boolean(id);
   const navigate = useNavigate();
@@ -50,84 +56,92 @@ const NewsForm = () => {
     reset,
     setValue,
     watch,
-  } = useForm<NewsFormData>({
+  } = useForm<EventFormData>({
     defaultValues: {
       title: "",
-      content: "",
-      published: false,
+      description: "",
+      date: new Date(),
+      location: "",
       imageUrl: "",
       imageName: "",
+      published: false,
     },
   });
 
-  // We'll use this later for slug generation
-  // const watchTitle = watch("title");
-
   useEffect(() => {
     if (isEditMode && id) {
-      fetchNewsItem(id);
+      fetchEvent(id);
     }
-    // Fetch existing slugs for unique slug generation
-    // This would be implemented in a real application
   }, [id, isEditMode]);
 
-  const fetchNewsItem = async (newsId: string) => {
+  const fetchEvent = async (eventId: string) => {
     try {
       setLoading(true);
-      const newsData = await getDocumentById<News>("news", newsId);
+      const eventData = await getDocumentById<Event>("events", eventId);
 
       reset({
-        title: newsData.title,
-        content: newsData.content,
-        published: newsData.published,
-        imageUrl: newsData.imageUrl,
-        imageName: newsData.imageName,
+        title: eventData.title,
+        description: eventData.description,
+        date: eventData.date,
+        location: eventData.location,
+        imageUrl: eventData.imageUrl || "",
+        imageName: eventData.imageName || "",
+        published: eventData.published,
       });
 
       setError("");
     } catch (err) {
-      console.error("Error fetching news item:", err);
-      setError("Nepodařilo se načíst novinku. Zkuste to prosím znovu.");
+      console.error("Error fetching event:", err);
+      setError("Nepodařilo se načíst akci. Zkuste to prosím znovu.");
     } finally {
       setLoading(false);
     }
   };
 
-  const onSubmit = async (data: NewsFormData) => {
+  const onSubmit = async (data: EventFormData) => {
     try {
       setSubmitting(true);
       setError("");
 
+      if (!data.date) {
+        setError("Datum je povinné");
+        setSubmitting(false);
+        return;
+      }
+
       if (isEditMode && id) {
-        // Update existing news
-        await updateDocument<News>("news", id, {
+        // Update existing event
+        await updateDocument<Event>("events", id, {
           title: data.title,
-          content: data.content,
-          published: data.published,
+          description: data.description,
+          date: data.date,
+          location: data.location,
           imageUrl: data.imageUrl,
           imageName: data.imageName,
-          ...(data.published && { publishedAt: new Date() }),
+          published: data.published,
         });
       } else {
-        // Create new news
+        // Create new event
         const baseSlug = slugify(data.title);
         const uniqueSlug = generateUniqueSlug(baseSlug, existingSlugs);
 
-        await addDocument<News>("news", {
+        await addDocument<Event>("events", {
           title: data.title,
-          content: data.content,
-          published: data.published,
+          description: data.description,
+          date: data.date,
+          location: data.location,
           imageUrl: data.imageUrl,
           imageName: data.imageName,
+          published: data.published,
           slug: uniqueSlug,
-          ...(data.published && { publishedAt: new Date() }),
+          isPast: data.date < new Date(),
         });
       }
 
-      navigate("/admin/news");
+      navigate("/admin/events");
     } catch (err) {
-      console.error("Error saving news:", err);
-      setError("Nepodařilo se uložit novinku. Zkuste to prosím znovu.");
+      console.error("Error saving event:", err);
+      setError("Nepodařilo se uložit akci. Zkuste to prosím znovu.");
       setSubmitting(false);
     }
   };
@@ -138,7 +152,7 @@ const NewsForm = () => {
   };
 
   const handleCancel = () => {
-    navigate("/admin/news");
+    navigate("/admin/events");
   };
 
   if (loading) {
@@ -160,7 +174,7 @@ const NewsForm = () => {
         }}
       >
         <Typography variant="h4">
-          {isEditMode ? "Upravit novinku" : "Přidat novinku"}
+          {isEditMode ? "Upravit akci" : "Přidat akci"}
         </Typography>
         <Button
           variant="outlined"
@@ -198,17 +212,65 @@ const NewsForm = () => {
               />
             </Grid>
 
+            <Grid item xs={12} md={6}>
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                adapterLocale={cs}
+              >
+                <Controller
+                  name="date"
+                  control={control}
+                  rules={{ required: "Datum je povinné" }}
+                  render={({ field }) => (
+                    <DatePicker
+                      label="Datum"
+                      value={field.value}
+                      onChange={(newValue: Date | null) =>
+                        field.onChange(newValue)
+                      }
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          error: !!errors.date,
+                          helperText: errors.date?.message,
+                        },
+                      }}
+                      disabled={submitting}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <Controller
+                name="location"
+                control={control}
+                rules={{ required: "Místo je povinné" }}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Místo"
+                    fullWidth
+                    error={!!errors.location}
+                    helperText={errors.location?.message}
+                    disabled={submitting}
+                  />
+                )}
+              />
+            </Grid>
+
             <Grid item xs={12}>
               <Controller
-                name="content"
+                name="description"
                 control={control}
-                rules={{ required: "Obsah je povinný" }}
+                rules={{ required: "Popis je povinný" }}
                 render={({ field }) => (
                   <RichTextEditor
-                    label="Obsah"
+                    label="Popis"
                     value={field.value}
                     onChange={field.onChange}
-                    error={errors.content?.message}
+                    error={errors.description?.message}
                   />
                 )}
               />
@@ -223,10 +285,10 @@ const NewsForm = () => {
                 control={control}
                 render={({ field }) => (
                   <CloudinaryUpload
-                    folder="news"
+                    folder="events"
                     onUploadComplete={handleImageUpload}
                     acceptedFileTypes="image/*"
-                    label="Obrázek novinky"
+                    label="Obrázek akce"
                     existingUrl={field.value}
                     existingFileName={watch("imageName")}
                   />
@@ -285,4 +347,4 @@ const NewsForm = () => {
   );
 };
 
-export default NewsForm;
+export default EventForm;

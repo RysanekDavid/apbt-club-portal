@@ -1,6 +1,40 @@
-import { Container, Typography, Box } from "@mui/material";
+import { useState, useEffect } from "react";
+import {
+  Container,
+  Typography,
+  Box,
+  CircularProgress,
+  Card,
+  CardContent,
+  CardMedia,
+  Button,
+} from "@mui/material";
+import { getPublishedNews } from "../services/firestore";
+import { News } from "../types/models";
+import { getTransformedUrl } from "../services/cloudinary";
 
 export default function HomePage() {
+  const [news, setNews] = useState<News[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setLoading(true);
+        const newsData = await getPublishedNews(3); // Get latest 3 news items
+        setNews(newsData);
+      } catch (err) {
+        console.error("Error fetching news:", err);
+        setError("Nepodařilo se načíst aktuality.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ my: 4 }}>
@@ -18,29 +52,80 @@ export default function HomePage() {
           Nejnovější aktuality
         </Typography>
 
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "1fr",
-              sm: "repeat(2, 1fr)",
-              md: "repeat(3, 1fr)",
-            },
-            gap: 3,
-            mb: 4,
-          }}
-        >
-          {/* Placeholder for news items */}
-          <Box sx={{ p: 2, border: "1px solid #ddd", borderRadius: 1 }}>
-            <Typography variant="h6">Připravovaný výcvikový seminář</Typography>
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              15. dubna 2025
-            </Typography>
-            <Typography variant="body1" sx={{ mt: 1 }}>
-              Základy poslušnosti a socializace...
-            </Typography>
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+            <CircularProgress />
           </Box>
-        </Box>
+        ) : error ? (
+          <Typography color="error">{error}</Typography>
+        ) : news.length === 0 ? (
+          <Typography>Žádné aktuality k zobrazení.</Typography>
+        ) : (
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(2, 1fr)",
+                md: "repeat(3, 1fr)",
+              },
+              gap: 3,
+              mb: 4,
+            }}
+          >
+            {news.map((item) => (
+              <Card
+                key={item.id}
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {item.imageUrl && (
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={getTransformedUrl(item.imageUrl, {
+                      width: 400,
+                      height: 200,
+                      crop: "fill",
+                    })}
+                    alt={item.title}
+                  />
+                )}
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography variant="h6" gutterBottom>
+                    {item.title}
+                  </Typography>
+                  {item.publishedAt && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 1 }}
+                    >
+                      {new Date(item.publishedAt).toLocaleDateString("cs-CZ")}
+                    </Typography>
+                  )}
+                  <Typography variant="body2" sx={{ mb: 2 }}>
+                    {item.content.length > 150
+                      ? `${item.content
+                          .replace(/<[^>]*>/g, "")
+                          .substring(0, 150)}...`
+                      : item.content.replace(/<[^>]*>/g, "")}
+                  </Typography>
+                  <Button
+                    size="small"
+                    color="primary"
+                    href={`/novinky/${item.slug}`}
+                  >
+                    Číst více
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </Box>
+        )}
       </Box>
     </Container>
   );

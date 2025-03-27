@@ -112,66 +112,123 @@ export const deleteDocument = async (
 export const getPublishedNews = async (
   limitCount?: number
 ): Promise<News[]> => {
-  let q = query(
-    collection(db, "news"),
-    where("published", "==", true),
-    orderBy("publishedAt", "desc")
-  );
+  try {
+    console.log("Fetching published news...");
+    let q = query(
+      collection(db, "news"),
+      where("published", "==", true),
+      orderBy("publishedAt", "desc")
+    );
 
-  if (limitCount) {
-    q = query(q, limit(limitCount));
+    if (limitCount) {
+      q = query(q, limit(limitCount));
+    }
+
+    const querySnapshot = await getDocs(q);
+    console.log(`Retrieved ${querySnapshot.docs.length} news items`);
+
+    return querySnapshot.docs.map((doc) => {
+      const data = convertTimestampToDate(doc.data());
+      return { id: doc.id, ...data } as News;
+    });
+  } catch (error) {
+    console.error("Error in getPublishedNews:", error);
+    if (error instanceof Error) {
+      console.error("Error details:", error.message);
+
+      // Check if this is a missing index error
+      if (error.message.includes("requires an index")) {
+        console.error(
+          "Missing index error. Please create the required index in Firebase console."
+        );
+        throw new Error("Chybí index v databázi. Kontaktujte správce webu.");
+      }
+    }
+    throw error; // Re-throw to be handled by the component
   }
-
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => {
-    const data = convertTimestampToDate(doc.data());
-    return { id: doc.id, ...data } as News;
-  });
 };
 
 // Events specific functions
 export const getUpcomingEvents = async (): Promise<Event[]> => {
-  const now = new Date();
-  const q = query(
-    collection(db, "events"),
-    where("published", "==", true),
-    where("date", ">=", now),
-    orderBy("date", "asc")
-  );
+  try {
+    console.log("Fetching upcoming events...");
+    const now = new Date();
+    const q = query(
+      collection(db, "events"),
+      where("published", "==", true),
+      where("date", ">=", now),
+      orderBy("date", "asc")
+    );
 
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => {
-    const data = convertTimestampToDate(doc.data());
-    return {
-      id: doc.id,
-      ...data,
-      isPast: false,
-    } as Event;
-  });
+    const querySnapshot = await getDocs(q);
+    console.log(`Retrieved ${querySnapshot.docs.length} upcoming events`);
+
+    return querySnapshot.docs.map((doc) => {
+      const data = convertTimestampToDate(doc.data());
+      return {
+        id: doc.id,
+        ...data,
+        isPast: false,
+      } as Event;
+    });
+  } catch (error) {
+    console.error("Error in getUpcomingEvents:", error);
+    if (error instanceof Error) {
+      console.error("Error details:", error.message);
+
+      // Check if this is a missing index error
+      if (error.message.includes("requires an index")) {
+        console.error(
+          "Missing index error. Please create the required index in Firebase console."
+        );
+        throw new Error("Chybí index v databázi. Kontaktujte správce webu.");
+      }
+    }
+    throw error; // Re-throw to be handled by the component
+  }
 };
 
 export const getPastEvents = async (limitCount?: number): Promise<Event[]> => {
-  const now = new Date();
-  let q = query(
-    collection(db, "events"),
-    where("published", "==", true),
-    where("date", "<", now),
-    orderBy("date", "desc")
-  );
+  try {
+    console.log("Fetching past events...");
+    const now = new Date();
+    let q = query(
+      collection(db, "events"),
+      where("published", "==", true),
+      where("date", "<", now),
+      orderBy("date", "desc")
+    );
 
-  if (limitCount) {
-    q = query(q, limit(limitCount));
+    if (limitCount) {
+      q = query(q, limit(limitCount));
+    }
+
+    const querySnapshot = await getDocs(q);
+    console.log(`Retrieved ${querySnapshot.docs.length} past events`);
+
+    return querySnapshot.docs.map((doc) => {
+      const data = convertTimestampToDate(doc.data());
+      return {
+        id: doc.id,
+        ...data,
+        isPast: true,
+      } as Event;
+    });
+  } catch (error) {
+    console.error("Error in getPastEvents:", error);
+    if (error instanceof Error) {
+      console.error("Error details:", error.message);
+
+      // Check if this is a missing index error
+      if (error.message.includes("requires an index")) {
+        console.error(
+          "Missing index error. Please create the required index in Firebase console."
+        );
+        throw new Error("Chybí index v databázi. Kontaktujte správce webu.");
+      }
+    }
+    throw error; // Re-throw to be handled by the component
   }
-
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => {
-    const data = convertTimestampToDate(doc.data());
-    return {
-      id: doc.id,
-      ...data,
-      isPast: true,
-    } as Event;
-  });
 };
 
 // Gallery specific functions

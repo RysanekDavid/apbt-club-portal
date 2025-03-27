@@ -12,6 +12,8 @@ import {
   signInWithPopup,
   signOut,
   onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
 import { auth } from "../firebase/config";
 
@@ -40,6 +42,13 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Set persistence to LOCAL (survives browser restarts)
+  useEffect(() => {
+    setPersistence(auth, browserLocalPersistence).catch((error) => {
+      console.error("Error setting auth persistence:", error);
+    });
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

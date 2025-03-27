@@ -6,6 +6,8 @@ import HomePage from "./pages/Home";
 import HistoryPage from "./pages/History";
 import DocumentsPage from "./pages/Documents";
 import EventsPage from "./pages/Events";
+import NewsPage from "./pages/News";
+import NewsDetailPage from "./pages/NewsDetail";
 import GalleryPage from "./pages/Gallery";
 import SponsorsPage from "./pages/Sponsors";
 import ContactPage from "./pages/Contact";
@@ -17,7 +19,16 @@ import i18n from "./i18n";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import AdminLayout from "./components/AdminLayout/AdminLayout";
-import { AdminLogin, AdminDashboard, NewsList, NewsForm } from "./pages/admin";
+import {
+  AdminLogin,
+  AdminDashboard,
+  NewsList,
+  NewsForm,
+  EventsList,
+  EventForm,
+  SponsorsList,
+  SponsorForm,
+} from "./pages/admin";
 
 function App() {
   const [language, setLanguage] = useState("cs");
@@ -35,7 +46,28 @@ function App() {
                 <Route path="news" element={<NewsList />} />
                 <Route path="news/add" element={<NewsForm />} />
                 <Route path="news/edit/:id" element={<NewsForm />} />
-                {/* Other admin routes will be added here */}
+
+                {/* Events routes */}
+                <Route path="events" element={<EventsList />} />
+                <Route path="events/add" element={<EventForm />} />
+                <Route path="events/edit/:id" element={<EventForm />} />
+
+                {/* Gallery routes */}
+                <Route
+                  path="gallery"
+                  element={<Navigate to="/admin" replace />}
+                />
+
+                {/* Sponsors routes */}
+                <Route path="sponsors" element={<SponsorsList />} />
+                <Route path="sponsors/add" element={<SponsorForm />} />
+                <Route path="sponsors/edit/:id" element={<SponsorForm />} />
+
+                {/* Documents routes */}
+                <Route
+                  path="documents"
+                  element={<Navigate to="/admin" replace />}
+                />
               </Route>
             </Route>
 
@@ -93,6 +125,34 @@ function App() {
                   }}
                 >
                   <EventsPage />
+                </PublicLayout>
+              }
+            />
+            <Route
+              path="/novinky"
+              element={
+                <PublicLayout
+                  language={language}
+                  setLanguage={(lang: string) => {
+                    setLanguage(lang);
+                    i18n.changeLanguage(lang);
+                  }}
+                >
+                  <NewsPage />
+                </PublicLayout>
+              }
+            />
+            <Route
+              path="/novinky/:slug"
+              element={
+                <PublicLayout
+                  language={language}
+                  setLanguage={(lang: string) => {
+                    setLanguage(lang);
+                    i18n.changeLanguage(lang);
+                  }}
+                >
+                  <NewsDetailPage />
                 </PublicLayout>
               }
             />

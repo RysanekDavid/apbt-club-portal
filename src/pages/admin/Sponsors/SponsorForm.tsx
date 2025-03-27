@@ -5,8 +5,6 @@ import {
   Box,
   Button,
   TextField,
-  FormControlLabel,
-  Switch,
   Grid,
   Paper,
   Typography,
@@ -16,32 +14,30 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
-import RichTextEditor from "../../../components/Editor/RichTextEditor";
 import CloudinaryUpload from "../../../components/CloudinaryUpload/CloudinaryUpload";
-import { News } from "../../../types/models";
 import {
   getDocumentById,
   addDocument,
   updateDocument,
 } from "../../../services/firestore";
-import { slugify, generateUniqueSlug } from "../../../utils/slugify";
 
-interface NewsFormData {
-  title: string;
-  content: string;
-  published: boolean;
-  imageUrl?: string;
-  imageName?: string;
+import { Sponsor } from "../../../types/models";
+
+interface SponsorFormData {
+  name: string;
+  logoUrl: string;
+  logoName: string;
+  websiteUrl: string;
+  description: string;
 }
 
-const NewsForm = () => {
+const SponsorForm = () => {
   const { id } = useParams<{ id: string }>();
   const isEditMode = Boolean(id);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(isEditMode);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [existingSlugs] = useState<string[]>([]);
 
   const {
     control,
@@ -50,95 +46,86 @@ const NewsForm = () => {
     reset,
     setValue,
     watch,
-  } = useForm<NewsFormData>({
+  } = useForm<SponsorFormData>({
     defaultValues: {
-      title: "",
-      content: "",
-      published: false,
-      imageUrl: "",
-      imageName: "",
+      name: "",
+      logoUrl: "",
+      logoName: "",
+      websiteUrl: "",
+      description: "",
     },
   });
 
-  // We'll use this later for slug generation
-  // const watchTitle = watch("title");
-
   useEffect(() => {
     if (isEditMode && id) {
-      fetchNewsItem(id);
+      fetchSponsor(id);
     }
-    // Fetch existing slugs for unique slug generation
-    // This would be implemented in a real application
   }, [id, isEditMode]);
 
-  const fetchNewsItem = async (newsId: string) => {
+  const fetchSponsor = async (sponsorId: string) => {
     try {
       setLoading(true);
-      const newsData = await getDocumentById<News>("news", newsId);
+      const sponsorData = await getDocumentById<Sponsor>("sponsors", sponsorId);
 
       reset({
-        title: newsData.title,
-        content: newsData.content,
-        published: newsData.published,
-        imageUrl: newsData.imageUrl,
-        imageName: newsData.imageName,
+        name: sponsorData.name,
+        logoUrl: sponsorData.logoUrl,
+        logoName: sponsorData.logoName || "",
+        websiteUrl: sponsorData.websiteUrl || "",
+        description: sponsorData.description,
       });
 
       setError("");
     } catch (err) {
-      console.error("Error fetching news item:", err);
-      setError("Nepodařilo se načíst novinku. Zkuste to prosím znovu.");
+      console.error("Error fetching sponsor:", err);
+      setError("Nepodařilo se načíst sponzora. Zkuste to prosím znovu.");
     } finally {
       setLoading(false);
     }
   };
 
-  const onSubmit = async (data: NewsFormData) => {
+  const onSubmit = async (data: SponsorFormData) => {
     try {
       setSubmitting(true);
       setError("");
 
       if (isEditMode && id) {
-        // Update existing news
-        await updateDocument<News>("news", id, {
-          title: data.title,
-          content: data.content,
-          published: data.published,
-          imageUrl: data.imageUrl,
-          imageName: data.imageName,
-          ...(data.published && { publishedAt: new Date() }),
+        // Update existing sponsor
+        await updateDocument<Sponsor>("sponsors", id, {
+          name: data.name,
+          logoUrl: data.logoUrl,
+          logoName: data.logoName,
+          websiteUrl: data.websiteUrl,
+          description: data.description,
         });
       } else {
-        // Create new news
-        const baseSlug = slugify(data.title);
-        const uniqueSlug = generateUniqueSlug(baseSlug, existingSlugs);
-
-        await addDocument<News>("news", {
-          title: data.title,
-          content: data.content,
-          published: data.published,
-          imageUrl: data.imageUrl,
-          imageName: data.imageName,
-          slug: uniqueSlug,
-          ...(data.published && { publishedAt: new Date() }),
+        // Create new sponsor
+        await addDocument<Sponsor>("sponsors", {
+          name: data.name,
+          logoUrl: data.logoUrl,
+          logoName: data.logoName,
+          websiteUrl: data.websiteUrl,
+          description: data.description,
+          active: true,
+          order: 999, // Default order, can be changed later
         });
       }
 
-      navigate("/admin/news");
+      navigate("/admin/sponsors");
     } catch (err) {
-      console.error("Error saving news:", err);
-      setError("Nepodařilo se uložit novinku. Zkuste to prosím znovu.");
+      console.error("Error saving sponsor:", err);
+      setError("Nepodařilo se uložit sponzora. Zkuste to prosím znovu.");
       setSubmitting(false);
     }
   };
 
-  const handleImageUpload = (url: string, fileName: string) => {
-    setValue("imageUrl", url);
-    setValue("imageName", fileName);
+  const handleLogoUpload = (url: string, fileName: string) => {
+    setValue("logoUrl", url);
+    setValue("logoName", fileName);
   };
 
   const handleCancel = () => {
-    navigate("/admin/news");
+    navigate("/admin/sponsors");
   };
 
   if (loading) {
@@ -160,7 +147,7 @@ const NewsForm = () => {
         }}
       >
         <Typography variant="h4">
-          {isEditMode ? "Upravit novinku" : "Přidat novinku"}
+          {isEditMode ? "Upravit sponzora" : "Přidat sponzora"}
         </Typography>
         <Button
           variant="outlined"
@@ -182,7 +169,7 @@ const NewsForm = () => {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <Controller
-                name="title"
+                name="name"
                 control={control}
                 rules={{ required: "Název je povinný" }}
                 render={({ field }) => (
@@ -190,8 +177,8 @@ const NewsForm = () => {
                     {...field}
                     label="Název"
                     fullWidth
-                    error={!!errors.title}
-                    helperText={errors.title?.message}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
                     disabled={submitting}
                   />
                 )}
@@ -200,15 +187,36 @@ const NewsForm = () => {
 
             <Grid item xs={12}>
               <Controller
-                name="content"
+                name="websiteUrl"
                 control={control}
-                rules={{ required: "Obsah je povinný" }}
                 render={({ field }) => (
-                  <RichTextEditor
-                    label="Obsah"
-                    value={field.value}
-                    onChange={field.onChange}
-                    error={errors.content?.message}
+                  <TextField
+                    {...field}
+                    label="Odkaz na web"
+                    fullWidth
+                    placeholder="https://www.example.com"
+                    error={!!errors.websiteUrl}
+                    helperText={errors.websiteUrl?.message}
+                    disabled={submitting}
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Controller
+                name="description"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Popis"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    error={!!errors.description}
+                    helperText={errors.description?.message}
+                    disabled={submitting}
                   />
                 )}
               />
@@ -216,19 +224,19 @@ const NewsForm = () => {
 
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Obrázek
+                Logo
               </Typography>
               <Controller
-                name="imageUrl"
+                name="logoUrl"
                 control={control}
                 render={({ field }) => (
                   <CloudinaryUpload
-                    folder="news"
-                    onUploadComplete={handleImageUpload}
+                    folder="sponsors"
+                    onUploadComplete={handleLogoUpload}
                     acceptedFileTypes="image/*"
-                    label="Obrázek novinky"
+                    label="Logo sponzora"
                     existingUrl={field.value}
-                    existingFileName={watch("imageName")}
+                    existingFileName={watch("logoName")}
                   />
                 )}
               />
@@ -236,22 +244,6 @@ const NewsForm = () => {
 
             <Grid item xs={12}>
               <Divider sx={{ my: 2 }} />
-              <Controller
-                name="published"
-                control={control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={field.value}
-                        onChange={(e) => field.onChange(e.target.checked)}
-                        disabled={submitting}
-                      />
-                    }
-                    label="Publikovat"
-                  />
-                )}
-              />
             </Grid>
 
             <Grid
@@ -285,4 +277,4 @@ const NewsForm = () => {
   );
 };
 
-export default NewsForm;
+export default SponsorForm;
