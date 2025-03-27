@@ -7,7 +7,6 @@ import {
   CardContent,
   CardMedia,
   Box,
-  Divider,
   CircularProgress,
   Alert,
   Button,
