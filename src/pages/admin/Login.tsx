@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Import useEffect
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import {
@@ -19,8 +19,15 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { loginWithEmail, loginWithGoogle } = useAuth();
+  const { loginWithEmail, loginWithGoogle, currentUser } = useAuth(); // Get currentUser
   const navigate = useNavigate();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/admin"); // Redirect to admin root if logged in
+    }
+  }, [currentUser, navigate]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,6 +36,7 @@ const AdminLogin = () => {
       setError("");
       setLoading(true);
       await loginWithEmail(email, password);
+      // Navigate to admin root after successful login
       navigate("/admin");
     } catch (err) {
       setError("Nesprávné přihlašovací údaje. Zkuste to znovu.");
@@ -43,6 +51,7 @@ const AdminLogin = () => {
       setError("");
       setLoading(true);
       await loginWithGoogle();
+      // Navigate to admin root after successful login
       navigate("/admin");
     } catch (err) {
       setError("Přihlášení pomocí Google selhalo. Zkuste to znovu.");

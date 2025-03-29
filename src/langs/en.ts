@@ -13,4 +13,8 @@ export default {
   // Languages
   "language.english": "English",
   "language.czech": "Čeština",
+
+  // Footer
+  "footer.copyright": "Copyright © {{year}}",
+  "footer.teamName": "Klub amerických pit bull teriérů team",
 };

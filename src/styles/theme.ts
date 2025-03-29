@@ -42,24 +42,28 @@ const themeConfig: ThemeConfig = {
     },
   },
   colors: {
-    // Updated color palette with more vibrant primary colors
-    primary: ["#1a237e", "#303f9f", "#3f51b5", "#7986cb", "#c5cae9"],
-    secondary: ["#880e4f", "#ad1457", "#d81b60", "#ec407a", "#f8bbd0"],
+    // Black & White Theme Palette
+    primary: ["#000000", "#212121", "#424242", "#616161", "#757575"], // Shades of black/dark grey
+    secondary: ["#ffffff", "#fafafa", "#f5f5f5", "#eeeeee", "#e0e0e0"], // Shades of white/light grey
     neutral: [
-      "#ffffff",
-      "#f5f5f5",
-      "#eeeeee",
-      "#e0e0e0",
-      "#9e9e9e",
-      "#616161",
-      "#424242",
-      "#212121",
-      "#000000",
+      "#ffffff", // White
+      "#fafafa", // Off-white
+      "#f5f5f5", // Light grey 1
+      "#eeeeee", // Light grey 2
+      "#e0e0e0", // Light grey 3
+      "#bdbdbd", // Medium grey 1
+      "#9e9e9e", // Medium grey 2
+      "#757575", // Dark grey 1
+      "#616161", // Dark grey 2
+      "#424242", // Dark grey 3
+      "#212121", // Very dark grey
+      "#000000", // Black
     ],
-    error: "#d32f2f",
-    warning: "#ed6c02",
-    info: "#0288d1",
-    success: "#2e7d32",
+    // Keep functional colors, maybe adjust saturation/brightness if needed
+    error: "#d32f2f", // Standard red
+    warning: "#ffa000", // Amber
+    info: "#1976d2", // Blue
+    success: "#388e3c", // Green
   },
   typographyScale: {
     h1: { fontSize: "2.5rem", lineHeight: 1.2, fontWeight: 700 },
@@ -94,46 +98,52 @@ const themeConfig: ThemeConfig = {
 const theme = createTheme({
   breakpoints: themeConfig.breakpoints,
   palette: {
+    mode: "light", // Set the mode explicitly (can be 'dark' too)
     primary: {
-      main: themeConfig.colors.primary[2],
-      light: themeConfig.colors.primary[3],
-      dark: themeConfig.colors.primary[1],
-      contrastText: themeConfig.colors.neutral[0],
+      // Reverted to black/dark grey as primary
+      main: themeConfig.colors.primary[1], // #212121 (Very dark grey)
+      light: themeConfig.colors.primary[2], // #424242
+      dark: themeConfig.colors.primary[0], // #000000 (Black)
+      contrastText: themeConfig.colors.neutral[0], // White text on dark primary
     },
     secondary: {
-      main: themeConfig.colors.secondary[2],
-      light: themeConfig.colors.secondary[3],
-      dark: themeConfig.colors.secondary[1],
-      contrastText: themeConfig.colors.neutral[0],
+      // Reverted to medium grey as secondary
+      main: themeConfig.colors.neutral[7], // #616161 (Dark Grey 2)
+      light: themeConfig.colors.neutral[6], // #757575
+      dark: themeConfig.colors.neutral[8], // #424242
+      contrastText: themeConfig.colors.neutral[0], // White text on grey secondary
     },
     error: {
-      main: themeConfig.colors.error,
+      main: themeConfig.colors.error, // Keep error color
     },
     warning: {
-      main: themeConfig.colors.warning,
+      main: themeConfig.colors.warning, // Keep warning color
     },
     info: {
-      main: themeConfig.colors.info,
+      main: themeConfig.colors.info, // Keep info color
     },
     success: {
-      main: themeConfig.colors.success,
+      main: themeConfig.colors.success, // Keep success color
     },
     text: {
-      primary: themeConfig.colors.neutral[7],
-      secondary: themeConfig.colors.neutral[6],
-      disabled: themeConfig.colors.neutral[4],
+      // Dark text on light background
+      primary: themeConfig.colors.neutral[10], // #212121
+      secondary: themeConfig.colors.neutral[8], // #616161
+      disabled: themeConfig.colors.neutral[6], // #9e9e9e
     },
     background: {
-      default: themeConfig.colors.neutral[0],
-      paper: themeConfig.colors.neutral[0],
+      // Reverted to light background
+      default: themeConfig.colors.neutral[0], // #ffffff (White)
+      paper: themeConfig.colors.neutral[0], // #ffffff (White for components like Card, Menu)
     },
-    divider: themeConfig.colors.neutral[2],
+    divider: themeConfig.colors.neutral[4], // #e0e0e0 (Light grey divider)
     action: {
-      active: "rgba(0, 0, 0, 0.54)",
-      hover: "rgba(0, 0, 0, 0.04)",
-      selected: "rgba(0, 0, 0, 0.08)",
-      disabled: "rgba(0, 0, 0, 0.26)",
-      disabledBackground: "rgba(0, 0, 0, 0.12)",
+      // Adjust action colors for light theme if needed
+      active: "rgba(0, 0, 0, 0.54)", // Default MUI light
+      hover: "rgba(0, 0, 0, 0.04)", // Default MUI light
+      selected: "rgba(0, 0, 0, 0.08)", // Default MUI light
+      disabled: "rgba(0, 0, 0, 0.26)", // Default MUI light
+      disabledBackground: "rgba(0, 0, 0, 0.12)", // Default MUI light
     },
   },
   typography: {

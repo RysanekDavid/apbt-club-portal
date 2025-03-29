@@ -25,7 +25,7 @@ interface Sponsor {
   id: string;
   name: string;
   logoUrl: string;
-  link: string;
+  websiteUrl: string;
   description: string;
 }
 
@@ -157,13 +157,13 @@ const SponsorsList = () => {
                   </TableCell>
                   <TableCell>{sponsor.name}</TableCell>
                   <TableCell>
-                    {sponsor.link ? (
+                    {sponsor.websiteUrl ? (
                       <a
-                        href={sponsor.link}
+                        href={sponsor.websiteUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {sponsor.link}
+                        {sponsor.websiteUrl}
                       </a>
                     ) : (
                       "Bez odkazu"

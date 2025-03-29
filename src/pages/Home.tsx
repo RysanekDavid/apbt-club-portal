@@ -37,6 +37,7 @@ export default function HomePage() {
 
   return (
     <Container maxWidth="lg">
+      {/* Removed background image styling from this Box */}
       <Box sx={{ my: 4 }}>
         <Typography variant="h3" component="h1" gutterBottom>
           Vítejte v APBT Klubu
@@ -47,6 +48,20 @@ export default function HomePage() {
           psů, organizace vzdělávacích akcí a budování komunity nadšených
           majitelů.
         </Typography>
+
+        {/* Add illustrations section */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 3,
+            my: 4,
+            flexWrap: "wrap",
+          }}
+        >
+          {/* Illustration 1 removed */}
+          {/* Illustration 2 removed from here and used as background */}
+        </Box>
 
         <Typography variant="h5" component="h2" sx={{ mt: 4, mb: 2 }}>
           Nejnovější aktuality
@@ -63,6 +78,7 @@ export default function HomePage() {
         ) : (
           <Box
             sx={{
+              // Reverted background color, padding, and border radius
               display: "grid",
               gridTemplateColumns: {
                 xs: "1fr",
@@ -76,6 +92,7 @@ export default function HomePage() {
             {news.map((item) => (
               <Card
                 key={item.id}
+                // Reverted variant="outlined"
                 sx={{
                   height: "100%",
                   display: "flex",

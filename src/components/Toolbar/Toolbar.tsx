@@ -1,118 +1,102 @@
-import { Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import styles from "../../styles/navigationStyles.module.css";
+import MenuIcon from "@mui/icons-material/Menu";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings"; // Import Admin icon
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Root, LogoLink } from "./Toolbar.styles";
+import { Link as RouterLink } from "react-router-dom"; // Import RouterLink for IconButton
+import { IconButton } from "@mui/material"; // Import IconButton
+import logoSvg from "../../assets/logo.svg";
+import { useAuth } from "../../contexts/AuthContext"; // Import useAuth
+import {
+  Root,
+  LogoContainer,
+  LogoLink,
+  // LogoText removed as it's no longer used
+  DesktopNav,
+  NavLinkStyled,
+  MobileMenuContainer,
+  MenuButton,
+  MobileNav,
+  RightSection, // Import the new RightSection
+} from "./Toolbar.styles";
 import LanguageSelector from "./LanguageSelector/LanguageSelector";
 
-interface ToolbarProps {
-  language: string;
-  setLanguage: (lang: string) => void;
-}
-
-export default function MainToolbar({ language, setLanguage }: ToolbarProps) {
+export default function MainToolbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation();
+  const { currentUser } = useAuth(); // Get current user from auth context
+
+  const handleMenuToggle = () => setMenuOpen(!menuOpen);
+  const handleMenuClose = () => setMenuOpen(false);
+
+  const navItems = [
+    { path: "/", label: t("toolbar.home") },
+    { path: "/historie", label: t("toolbar.history") },
+    { path: "/dokumenty", label: t("toolbar.documents") },
+    { path: "/akce", label: t("toolbar.events") },
+    { path: "/galerie", label: t("toolbar.gallery") },
+    { path: "/sponzori", label: t("toolbar.sponsors") },
+    { path: "/kontakt", label: t("toolbar.contact") },
+  ];
 
   return (
     <Root>
-      <div style={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+      <LogoContainer>
         <LogoLink to="/">
-          <div className={styles.logo}>M</div>
-          <Typography variant="h6" component="div">
-            Klub APBT
-          </Typography>
+          {/* Replace LogoText and Typography with the img tag */}
+          <img src={logoSvg} alt="Klub APBT Logo" />
         </LogoLink>
-      </div>
+      </LogoContainer>
 
-      <nav className={styles.desktopNav}>
-        <Link to="/" className={styles.navLink}>
-          {t("toolbar.home")}
-        </Link>
-        <Link to="/historie" className={styles.navLink}>
-          {t("toolbar.history")}
-        </Link>
-        <Link to="/dokumenty" className={styles.navLink}>
-          {t("toolbar.documents")}
-        </Link>
-        <Link to="/akce" className={styles.navLink}>
-          {t("toolbar.events")}
-        </Link>
-        <Link to="/galerie" className={styles.navLink}>
-          {t("toolbar.gallery")}
-        </Link>
-        <Link to="/sponzori" className={styles.navLink}>
-          {t("toolbar.sponsors")}
-        </Link>
-        <Link to="/kontakt" className={styles.navLink}>
-          {t("toolbar.contact")}
-        </Link>
-      </nav>
+      <DesktopNav>
+        {navItems.map((item) => (
+          <NavLinkStyled key={item.path} to={item.path}>
+            {item.label}
+          </NavLinkStyled>
+        ))}
+      </DesktopNav>
 
-      <LanguageSelector language={language} setLanguage={setLanguage} />
-
-      <div className={styles.mobileMenu}>
-        <button
-          className={styles.menuButton}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          ☰
-        </button>
-        {menuOpen && (
-          <div className={styles.mobileNav}>
-            <Link
-              to="/"
-              className={styles.navLink}
-              onClick={() => setMenuOpen(false)}
+      {/* Wrap LanguageSelector, Admin Icon (if logged in), and MobileMenuContainer in RightSection */}
+      <RightSection>
+        <LanguageSelector />
+        {currentUser && (
+          // Wrap IconButton in RouterLink instead of using component prop
+          <RouterLink
+            to="/admin" // Corrected path to admin root
+            style={{ textDecoration: "none", color: "inherit" }} // Prevent default link styles
+          >
+            <IconButton
+              color="inherit"
+              aria-label="Admin Dashboard"
+              title="Admin Dashboard" // Tooltip for accessibility
             >
-              Domů
-            </Link>
-            <Link
-              to="/historie"
-              className={styles.navLink}
-              onClick={() => setMenuOpen(false)}
-            >
-              Historie
-            </Link>
-            <Link
-              to="/dokumenty"
-              className={styles.navLink}
-              onClick={() => setMenuOpen(false)}
-            >
-              Dokumenty
-            </Link>
-            <Link
-              to="/akce"
-              className={styles.navLink}
-              onClick={() => setMenuOpen(false)}
-            >
-              Akce
-            </Link>
-            <Link
-              to="/galerie"
-              className={styles.navLink}
-              onClick={() => setMenuOpen(false)}
-            >
-              Galerie
-            </Link>
-            <Link
-              to="/sponzori"
-              className={styles.navLink}
-              onClick={() => setMenuOpen(false)}
-            >
-              Sponzoři
-            </Link>
-            <Link
-              to="/kontakt"
-              className={styles.navLink}
-              onClick={() => setMenuOpen(false)}
-            >
-              Kontakt
-            </Link>
-          </div>
+              <AdminPanelSettingsIcon />
+            </IconButton>
+          </RouterLink>
         )}
-      </div>
+        <MobileMenuContainer>
+          <MenuButton
+            aria-label="menu"
+            aria-controls="mobile-menu"
+            aria-haspopup="true"
+            onClick={handleMenuToggle}
+          >
+            <MenuIcon />
+          </MenuButton>
+          {menuOpen && (
+            <MobileNav id="mobile-menu">
+              {navItems.map((item) => (
+                <NavLinkStyled
+                  key={item.path}
+                  to={item.path}
+                  onClick={handleMenuClose}
+                >
+                  {item.label}
+                </NavLinkStyled>
+              ))}
+            </MobileNav>
+          )}
+        </MobileMenuContainer>
+      </RightSection>
     </Root>
   );
 }
