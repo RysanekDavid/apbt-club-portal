@@ -1,6 +1,6 @@
-import { ThemeProvider, CssBaseline } from "@mui/material";
+// Removed ThemeProvider and CssBaseline imports from @mui/material
 import { BrowserRouter } from "react-router-dom";
-import theme from "./styles/theme";
+// Removed theme import
 import "./App.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import AppRouter from "./router"; // Import the new router component
@@ -13,10 +13,8 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <AppRouter />
-        </ThemeProvider>
+        {/* Removed ThemeProvider and CssBaseline wrapper */}
+        <AppRouter />
       </AuthProvider>
     </BrowserRouter>
   );

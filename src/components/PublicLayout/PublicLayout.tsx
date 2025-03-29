@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { AppBar, Container } from "@mui/material";
+import { AppBar, Box } from "@mui/material"; // Import Box instead of Container
 import MainToolbar from "../Toolbar/Toolbar";
 import Footer from "../Footer/Footer"; // Import the Footer component
 // Removed unused useLanguage import
@@ -18,11 +18,12 @@ const PublicLayout = ({ children }: PublicLayoutProps) => {
         {/* MainToolbar now gets language from context internally */}
         <MainToolbar />
       </AppBar>
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 8 }}>
+      {/* Removed Container wrapper - pages now manage their own width */}
+      <Box sx={{ mb: 8 }}>
         {" "}
-        {/* Add bottom margin to prevent content overlap */}
+        {/* Use Box for margin instead of Container */}
         {children}
-      </Container>
+      </Box>
       <Footer /> {/* Render the Footer component */}
     </>
   );

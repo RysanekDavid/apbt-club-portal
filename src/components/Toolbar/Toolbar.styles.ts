@@ -1,8 +1,10 @@
-import { styled } from "@mui/material/styles";
-import MuiToolbar from "@mui/material/Toolbar";
+import { styled } from "@mui/material/styles"; // Keep only one styled import
+import MuiToolbar from "@mui/material/Toolbar"; // Keep only one MuiToolbar import
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom"; // Import both NavLink and Link
+import pawIcon from "../../assets/paw.png"; // Import paw icon
+import pawInvertedIcon from "../../assets/paw_inverted.png"; // Import inverted paw icon
 
 // Main Toolbar Root
 export const Root = styled(MuiToolbar)(({ theme }) => ({
@@ -12,144 +14,135 @@ export const Root = styled(MuiToolbar)(({ theme }) => ({
       : theme.palette.grey[100], // Light grey background
   color: theme.palette.text.primary, // Dark text/icons
   display: "flex",
-  // Removed justifyContent: 'space-between' to allow centering nav
   alignItems: "center",
   boxShadow: theme.shadows[2], // Add subtle elevation
+  // Adjust justification for mobile within the Root itself
+  [theme.breakpoints.down("md")]: {
+    justifyContent: "space-between", // Space out Logo and RightSection
+  },
 }));
 
 // Logo Section
 export const LogoContainer = styled(Box)({
   display: "flex",
   alignItems: "center",
-  // Removed flexGrow: 1
 });
 
 export const LogoLink = styled(Link)(({ theme }) => ({
-  // Wrap in callback to access theme
   textDecoration: "none",
   color: "inherit",
   display: "flex",
   alignItems: "center",
-
-  // Add styling for the img tag within the link
   "& img": {
-    height: "3.5rem", // Adjust height as needed
-    marginRight: theme.spacing(1.5), // Add some space between logo and potential text (if added later)
-    verticalAlign: "middle", // Ensure proper vertical alignment
+    height: "3.5rem",
+    marginRight: theme.spacing(1.5),
+    verticalAlign: "middle",
   },
 }));
-
-// LogoText is removed as it's no longer used
 
 // Desktop Navigation
 export const DesktopNav = styled("nav")(({ theme }) => ({
   display: "flex",
-  flexGrow: 1, // Allow nav to take up space
-  justifyContent: "center", // Center the nav items within the flex container
-  gap: theme.spacing(2), // 1rem equivalent
+  flexGrow: 1, // Allow nav to take up space on desktop
+  justifyContent: "center", // Center the nav items
+  gap: theme.spacing(2),
   [theme.breakpoints.down("md")]: {
-    // Corresponds to max-width: 900px
     display: "none",
   },
 }));
 
-// Common Navigation Link Style (Cleaner - Option A)
-export const NavLinkStyled = styled(Link)(({ theme }) => ({
-  color: `${theme.palette.text.primary} !important`, // Dark text
-  textDecoration: "none !important",
-  padding: theme.spacing(1, 1.5), // Adjusted padding slightly
+// Common Navigation Link Style (Now based on NavLink)
+export const NavLinkStyled = styled(NavLink)(({ theme }) => ({
+  // display: "flex", // Ensure flex properties are removed
+  // alignItems: "center", // Ensure flex properties are removed
+  color: theme.palette.text.primary, // Use theme color
+  textDecoration: "none",
+  padding: theme.spacing(1, 1.5), // Base padding
   borderRadius: theme.shape.borderRadius,
-  // Removed backgroundColor
-  border: `1px solid ${theme.palette.grey[400]}`, // Add outline
   transition:
     "background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease",
-  position: "relative", // Needed for potential underline pseudo-element
+  position: "relative",
   "&:hover": {
     backgroundColor:
       theme.palette.mode === "dark"
-        ? theme.palette.grey[800]
-        : theme.palette.grey[300], // Darker grey background on hover
+        ? theme.palette.action.hover // Use theme action color for hover
+        : theme.palette.action.hover,
   },
-  // Optional: Add an underline effect on hover/active if desired
-  // "&:after": {
-  //   content: '""',
-  //   position: "absolute",
-  //   bottom: 0,
-  //   left: '50%',
-  //   transform: 'translateX(-50%)',
-  //   width: 0,
-  //   height: '2px',
-  //   backgroundColor: theme.palette.primary.contrastText,
-  //   transition: 'width 0.3s ease',
-  // },
-  // "&:hover:after": {
-  //   width: '80%', // Adjust width as needed
-  // },
+  // Active state styling
+  "&.active": {
+    fontWeight: "bold",
+    // paddingLeft removed, rely on marginRight of ::before
+    "&::before": {
+      content: '""', // Empty content, using background image
+      display: "inline-block", // Ensure display is inline-block
+      width: "1.2em", // Keep width
+      height: "1.1em", // Revert height back to this value
+      marginRight: theme.spacing(0.25), // Revert to this spacing
+      verticalAlign: "text-bottom", // Revert to this alignment
+      backgroundImage: `url(${
+        theme.palette.mode === "dark" ? pawInvertedIcon : pawIcon
+      })`,
+      backgroundSize: "contain",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center",
+    },
+  },
 }));
 
-// Mobile Navigation
+// Mobile Navigation Container (holds button and dropdown)
 export const MobileMenuContainer = styled(Box)(({ theme }) => ({
-  display: "none",
+  display: "none", // Hidden by default
   position: "relative", // For positioning the dropdown
   [theme.breakpoints.down("md")]: {
-    // Corresponds to max-width: 900px
-    display: "block",
+    display: "block", // Shown on mobile
   },
 }));
 
+// Mobile Menu Button (Hamburger Icon)
 export const MenuButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.text.primary, // Dark icon
-  padding: theme.spacing(1), // 0.5rem equivalent
-  fontSize: "1.5rem", // Keep explicit font size for icon
+  color: theme.palette.text.primary,
+  padding: theme.spacing(1),
+  fontSize: "1.5rem",
 }));
 
+// Mobile Navigation Dropdown Menu
 export const MobileNav = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   position: "absolute",
-  top: "calc(100% + 8px)", // Position below the button
+  top: "calc(100% + 8px)",
   right: 0,
   backgroundColor:
     theme.palette.mode === "dark"
       ? theme.palette.grey[900]
-      : theme.palette.grey[100], // Match new toolbar background
-  padding: theme.spacing(2), // 1rem equivalent
+      : theme.palette.grey[100],
+  padding: theme.spacing(2),
   minWidth: 200,
-  gap: theme.spacing(1), // 0.5rem equivalent
+  gap: theme.spacing(1),
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[4], // Example shadow
-  zIndex: theme.zIndex.appBar + 1, // Ensure it's above other content
+  boxShadow: theme.shadows[4],
+  zIndex: theme.zIndex.appBar + 1,
 }));
 
-// Container for elements on the right side
-export const RightSection = styled(Box)({
+// Container for elements on the right side (Language, Admin Icon, Menu Button)
+export const RightSection = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  gap: "8px", // Adjust gap as needed
-});
+  gap: theme.spacing(1), // Consistent gap
 
-// Language Selector Styles (Assuming they might be used here or in LanguageSelector.styles.ts)
-// If LanguageSelector has its own styles file, these might be redundant here.
-// Keeping them commented out for now unless LanguageSelector imports from here.
-/*
-export const LanguageSelectorContainer = styled("div")({
-  display: "flex",
-  alignItems: "center",
-  gap: "8px",
-  marginLeft: "20px", // Adjust as needed with theme spacing
-});
+  [theme.breakpoints.down("md")]: {
+    // On mobile, make the container take available space needed for ordering
+    flexGrow: 1, // Allow it to grow within the Toolbar flex container
+    justifyContent: "flex-end", // Align items to the right end
 
-export const LanguageIconStyled = styled(LanguageIcon)(({ theme }) => ({
-  color: theme.palette.secondary.main,
-}));
-
-export const SelectStyled = styled(MuiSelect)(({ theme }) => ({
-  color: theme.palette.secondary.main,
-  "& .MuiSelect-icon": {
-    color: theme.palette.secondary.main,
+    // Target the last direct child (MobileMenuContainer)
+    "& > *:nth-last-of-type(1)": {
+      order: -1, // Move the menu button visually before its preceding siblings (Lang, Admin)
+      // This effectively places it towards the center/left of this section
+    },
+    // LanguageSelector (and AdminIcon if present) retain their natural order (1, 2)
+    // but appear visually after the menu button due to the order property.
   },
-  "&:before": { borderColor: theme.palette.secondary.main },
-  "&:hover:not(.Mui-disabled):before": { borderColor: theme.palette.secondary.main },
-  // Add other necessary overrides for Select appearance
 }));
-*/
+
+// Removed duplicate/incorrect definitions

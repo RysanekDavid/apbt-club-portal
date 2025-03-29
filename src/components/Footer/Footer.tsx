@@ -32,14 +32,23 @@ const Footer: React.FC = () => {
         <Typography variant="body2" color="text.secondary">
           {t("footer.copyright", { year: new Date().getFullYear() })}
           {" made with ❤️ by "}
+          {/* Link the first part */}
           <Link
             color="inherit"
-            href="https://www.klub-apbt.cz/"
+            href="https://www.klub-apbt.cz/" // Link for the club name
             target="_blank"
             rel="noopener noreferrer"
           >
-            {t("footer.teamName")}
+            {/* Get the part before the last word */}
+            {t("footer.teamName").substring(
+              0,
+              t("footer.teamName").lastIndexOf(" ")
+            )}
           </Link>
+          {/* Add space and the last word ("team") as plain text */}{" "}
+          {t("footer.teamName").substring(
+            t("footer.teamName").lastIndexOf(" ") + 1
+          )}
         </Typography>
       </Box>
     </StyledFooter>

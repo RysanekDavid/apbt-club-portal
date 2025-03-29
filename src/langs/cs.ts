@@ -16,5 +16,6 @@ export default {
 
   // Patička
   "footer.copyright": "Copyright © {{year}}",
-  "footer.teamName": "Klub amerických pit bull teriérů tým",
+  // Changed tým to team
+  "footer.teamName": "Klub amerických pit bull teriérů team",
 };
