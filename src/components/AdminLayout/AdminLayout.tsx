@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
-import NewspaperIcon from "@mui/icons-material/Newspaper";
 import EventIcon from "@mui/icons-material/Event";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import HandshakeIcon from "@mui/icons-material/Handshake";
