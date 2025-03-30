@@ -46,7 +46,6 @@ const AdminLayout = () => {
   };
 
   const menuItems = [
-    { text: "Novinky", icon: <NewspaperIcon />, path: "/admin/news" },
     { text: "Akce", icon: <EventIcon />, path: "/admin/events" },
     { text: "Galerie", icon: <PhotoLibraryIcon />, path: "/admin/gallery" },
     { text: "Sponzoři", icon: <HandshakeIcon />, path: "/admin/sponsors" },

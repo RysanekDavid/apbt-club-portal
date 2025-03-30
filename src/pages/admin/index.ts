@@ -2,10 +2,6 @@
 export { default as AdminDashboard } from "./Dashboard";
 export { default as AdminLogin } from "./Login";
 
-// News pages
-export { default as NewsList } from "./News/NewsList";
-export { default as NewsForm } from "./News/NewsForm";
-
 // Events pages
 export { default as EventsList } from "./Events/EventsList";
 export { default as EventForm } from "./Events/EventForm";

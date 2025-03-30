@@ -1,42 +1,30 @@
 import { Container, Typography, Box } from "@mui/material";
+import { useTranslation } from "react-i18next"; // Import useTranslation
 
 export default function HistoryPage() {
+  const { t } = useTranslation(); // Initialize useTranslation
+
   return (
     <Container maxWidth="lg">
       <Box sx={{ my: 4 }}>
         <Typography variant="h3" component="h1" gutterBottom>
+          {/* TODO: Add translation key for "Historie klubu" */}
           Historie klubu
         </Typography>
 
-        <Typography variant="h5" component="h2" sx={{ mt: 4, mb: 2 }}>
-          Založení klubu
+        {/* Use translation keys for descriptive text */}
+        <Typography variant="body1" paragraph sx={{ mt: 4 }}>
+          {t("history.paragraph1")}
         </Typography>
         <Typography variant="body1" paragraph>
-          Klub byl založen v roce 2010 skupinou nadšenců s cílem vytvořit
-          platformu pro zodpovědné majitele amerických pit bull teriérů. První
-          schůze se konala v Praze s účastí 15 členů.
+          {t("history.paragraph2")}
         </Typography>
+        {/* End descriptive text */}
 
-        <Typography variant="h5" component="h2" sx={{ mt: 4, mb: 2 }}>
-          Významné milníky
-        </Typography>
-        <Box component="ul" sx={{ pl: 4 }}>
-          <li>
-            <Typography>2012 - První oficiální závody v poslušnosti</Typography>
-          </li>
-          <li>
-            <Typography>2015 - Certifikace výcvikového centra</Typography>
-          </li>
-          <li>
-            <Typography>2018 - Mezinárodní spolupráce s FCI</Typography>
-          </li>
-          <li>
-            <Typography>2020 - Založení záchranného programu</Typography>
-          </li>
-        </Box>
-
+        {/* Quote section */}
         <Box sx={{ mt: 4, textAlign: "center" }}>
           <Typography variant="body2" color="text.secondary">
+            {/* TODO: Add translation key for the quote if needed, or keep hardcoded */}
             "Společně budujeme lepší povědomí o tomto výjimečném plemeni"
           </Typography>
         </Box>

@@ -4,8 +4,6 @@ import HomePage from "../pages/Home";
 import HistoryPage from "../pages/History";
 import DocumentsPage from "../pages/Documents";
 import EventsPage from "../pages/Events";
-import NewsPage from "../pages/News";
-import NewsDetailPage from "../pages/NewsDetail";
 import GalleryPage from "../pages/Gallery";
 import SponsorsPage from "../pages/Sponsors";
 import ContactPage from "../pages/Contact";
@@ -17,8 +15,6 @@ import AdminLayout from "../components/AdminLayout/AdminLayout";
 import {
   AdminLogin,
   AdminDashboard,
-  NewsList,
-  NewsForm,
   EventsList,
   EventForm,
   SponsorsList,
@@ -38,9 +34,6 @@ const AppRouter = () => {
       <Route path="/admin" element={<ProtectedRoute />}>
         <Route element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
-          <Route path="news" element={<NewsList />} />
-          <Route path="news/add" element={<NewsForm />} />
-          <Route path="news/edit/:id" element={<NewsForm />} />
 
           {/* Events routes */}
           <Route path="events" element={<EventsList />} />
@@ -90,22 +83,6 @@ const AppRouter = () => {
         element={
           <PublicRoutesWrapper>
             <EventsPage />
-          </PublicRoutesWrapper>
-        }
-      />
-      <Route
-        path="/novinky" // Assuming this was meant to be /news based on page name? Correcting path.
-        element={
-          <PublicRoutesWrapper>
-            <NewsPage />
-          </PublicRoutesWrapper>
-        }
-      />
-      <Route
-        path="/novinky/:slug" // Correcting path.
-        element={
-          <PublicRoutesWrapper>
-            <NewsDetailPage />
           </PublicRoutesWrapper>
         }
       />
