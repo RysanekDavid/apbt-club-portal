@@ -14,6 +14,7 @@ import {
   ListItemText,
   Toolbar,
   Typography,
+  useTheme, // Import useTheme
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -23,6 +24,8 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import DescriptionIcon from "@mui/icons-material/Description";
 import HomeIcon from "@mui/icons-material/Home";
 import AdminAvatar from "../AdminAvatar/AdminAvatar";
+// Paw images are now used in PawBackground component
+import PawBackground from "../PawBackground/PawBackground"; // Import the new component
 
 const drawerWidth = 240;
 
@@ -30,6 +33,7 @@ const AdminLayout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const theme = useTheme(); // Get the current theme
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -158,9 +162,20 @@ const AdminLayout = () => {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          mt: 8,
+          mt: 8, // Margin top for AppBar
+          minHeight: "calc(100vh - 64px)", // Adjust based on AppBar height (mt: 8 is 64px)
+          position: "relative", // Needed for PawBackground absolute positioning
+          // Remove background image styles from here
+          // Keep background color for overlay effect
+          backgroundColor:
+            theme.palette.mode === "dark"
+              ? "rgba(33, 33, 33, 0.97)"
+              : "rgba(255, 255, 255, 0.95)",
+          // Ensure content is above the background component
+          zIndex: 0,
         }}
       >
+        <PawBackground /> {/* Add the PawBackground component */}
         <Outlet />
       </Box>
     </Box>
