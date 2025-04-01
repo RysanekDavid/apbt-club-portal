@@ -1,9 +1,7 @@
-import { describe, it, expect, vi, beforeEach, Mock, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import {
   collection,
   query,
-  where,
-  orderBy,
   getDocs,
   Timestamp,
   QuerySnapshot,
@@ -13,7 +11,6 @@ import {
   getPublishedDocuments,
   getDocumentsByCategory,
 } from "../../services/firestore"; // Import only document functions
-import { Document as DocModel } from "../../types/models"; // Renamed Document to avoid conflict
 
 // --- Mock Firebase Firestore ---
 vi.mock("firebase/firestore", async (importOriginal) => {
