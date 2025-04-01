@@ -65,6 +65,15 @@ export const InfoPaper = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   height: "100%",
   borderRadius: theme.shape.borderRadius * 2,
+  // Adjust border for better visibility in dark mode
+  border: `1.5px solid ${
+    theme.palette.mode === "dark"
+      ? theme.palette.grey[700]
+      : theme.palette.divider
+  }`,
+  // Restore default paper shadow for depth
+  // Use theme's paper background color for adaptability
+  backgroundColor: theme.palette.background.paper,
 }));
 
 export const NewsSectionContainer = styled(Container)(({ theme }) => ({

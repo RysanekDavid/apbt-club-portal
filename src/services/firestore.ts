@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 import {
-  News,
+  // News, // Removed News type import
   Event,
   Gallery,
   GalleryImage,
@@ -108,45 +108,8 @@ export const deleteDocument = async (
   await deleteDoc(docRef);
 };
 
-// News specific functions
-export const getPublishedNews = async (
-  limitCount?: number
-): Promise<News[]> => {
-  try {
-    console.log("Fetching published news...");
-    let q = query(
-      collection(db, "news"),
-      where("published", "==", true),
-      orderBy("publishedAt", "desc")
-    );
-
-    if (limitCount) {
-      q = query(q, limit(limitCount));
-    }
-
-    const querySnapshot = await getDocs(q);
-    console.log(`Retrieved ${querySnapshot.docs.length} news items`);
-
-    return querySnapshot.docs.map((doc) => {
-      const data = convertTimestampToDate(doc.data());
-      return { id: doc.id, ...data } as News;
-    });
-  } catch (error) {
-    console.error("Error in getPublishedNews:", error);
-    if (error instanceof Error) {
-      console.error("Error details:", error.message);
-
-      // Check if this is a missing index error
-      if (error.message.includes("requires an index")) {
-        console.error(
-          "Missing index error. Please create the required index in Firebase console."
-        );
-        throw new Error("Chybí index v databázi. Kontaktujte správce webu.");
-      }
-    }
-    throw error; // Re-throw to be handled by the component
-  }
-};
+// News specific functions - REMOVED
+// export const getPublishedNews = async ... { ... }
 
 // Events specific functions
 export const getUpcomingEvents = async (): Promise<Event[]> => {

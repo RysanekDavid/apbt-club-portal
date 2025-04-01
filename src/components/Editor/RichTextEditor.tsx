@@ -39,7 +39,7 @@ const RichTextEditor = ({
         }}
       >
         <CKEditor
-          editor={ClassicEditor}
+          editor={ClassicEditor as any} // Cast to any to bypass type mismatch
           data={value}
           onChange={(_event, editor) => {
             const data = editor.getData();

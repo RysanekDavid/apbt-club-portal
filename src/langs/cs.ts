@@ -12,7 +12,7 @@ export default {
     "Společně budujeme lepší povědomí o tomto výjimečném plemeni",
   // New combined key
   "homepage.heroSubtitle":
-    "Vítejte na oficiálních stránkách Klubu přátel amerických pit bull teriérů. Podporujeme zodpovědný chov, výcvik a komunitu nadšenců. Americký pit bull teriér je atleticky stavěný, svalnatý až šlachovitý pes. Zaujme člověka svou silou, zápalem, odhodláním a hlavně touhou vítězit.",
+    "Vítejte na oficiálních stránkách Klubu amerických pit bull teriérů. Podporujeme zodpovědný chov, výcvik a komunitu nadšenců. Americký pit bull teriér je atleticky stavěný, svalnatý až šlachovitý pes. Zaujme člověka svou silou, zápalem, odhodláním a hlavně touhou vítězit.",
   "homepage.eventsTitle": "Nadcházející Akce",
   "homepage.eventsDesc":
     "Podívejte se na plánované výstavy, soutěže a další klubové akce.",

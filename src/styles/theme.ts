@@ -50,13 +50,14 @@ const themeConfig: ThemeConfig = {
       "#f5f5f5", // 2: Light grey 1
       "#eeeeee", // 3: Light grey 2
       "#e0e0e0", // 4: Light grey 3
-      "#bdbdbd", // 5: Medium grey 1
-      "#9e9e9e", // 6: Medium grey 2
-      "#757575", // 7: Dark grey 1
-      "#616161", // 8: Dark grey 2
-      "#424242", // 9: Dark grey 3
-      "#212121", // 10: Very dark grey
-      "#000000", // 11: Black
+      "#d9d9d9", // 5: New light grey
+      "#bdbdbd", // 6: Medium grey 1
+      "#9e9e9e", // 7: Medium grey 2
+      "#757575", // 8: Dark grey 1
+      "#616161", // 9: Dark grey 2
+      "#424242", // 10: Dark grey 3
+      "#212121", // 11: Very dark grey
+      "#000000", // 12: Black
     ],
     error: "#d32f2f",
     warning: "#ffa000",
@@ -147,11 +148,12 @@ export const lightTheme = createTheme({
       secondary: themeConfig.colors.neutral[8],
       disabled: themeConfig.colors.neutral[6],
     },
+    neutral: themeConfig.colors.neutral, // Add neutral array to palette
     background: {
-      default: themeConfig.colors.neutral[0], // White
-      paper: themeConfig.colors.neutral[0], // White
+      default: themeConfig.colors.neutral[2], // Light grey 1 (#f5f5f5)
+      paper: themeConfig.colors.neutral[0], // White - Keep paper white unless specified otherwise
     },
-    divider: themeConfig.colors.neutral[4], // Light grey divider
+    divider: themeConfig.colors.neutral[5], // Use new light grey for dividers
     action: {
       active: "rgba(0, 0, 0, 0.54)",
       hover: "rgba(0, 0, 0, 0.04)",
@@ -188,6 +190,15 @@ export const lightTheme = createTheme({
           "&:hover": { boxShadow: themeConfig.shadows[1] },
         },
         contained: { "&:hover": { boxShadow: themeConfig.shadows[2] } },
+        outlined: {
+          // Style outlined buttons for light theme
+          borderColor: themeConfig.colors.primary[0], // Black border
+          color: themeConfig.colors.primary[0], // Black text
+          "&:hover": {
+            borderColor: themeConfig.colors.primary[1], // Darker grey border on hover
+            backgroundColor: "rgba(0, 0, 0, 0.04)", // Standard MUI hover background
+          },
+        },
         sizeLarge: { padding: "12px 24px", fontSize: "1rem" },
         sizeSmall: { padding: "4px 12px", fontSize: "0.8125rem" },
       },
@@ -320,7 +331,7 @@ export const darkTheme = createTheme({
       // Use lighter shades for primary in dark mode for contrast
       main: themeConfig.colors.neutral[3], // Light grey 2
       light: themeConfig.colors.neutral[2], // Light grey 1
-      dark: themeConfig.colors.neutral[5], // Medium grey 1
+      dark: themeConfig.colors.neutral[9], // Dark grey 2 (#616161) - Reverted from neutral[5]
       contrastText: themeConfig.colors.neutral[11], // Black text
     },
     secondary: {
@@ -336,9 +347,10 @@ export const darkTheme = createTheme({
     success: { main: "#66bb6a" }, // Slightly brighter green
     text: {
       primary: themeConfig.colors.neutral[0], // White text
-      secondary: themeConfig.colors.neutral[4], // Light grey 3
+      secondary: themeConfig.colors.neutral[5], // Use new light grey for secondary text
       disabled: themeConfig.colors.neutral[7], // Dark grey 1
     },
+    neutral: themeConfig.colors.neutral, // Add neutral array to palette
     background: {
       default: themeConfig.colors.neutral[10], // Very dark grey
       paper: themeConfig.colors.neutral[9], // Dark grey 3
@@ -389,14 +401,17 @@ export const darkTheme = createTheme({
           color: themeConfig.colors.neutral[0],
           "&:hover": { backgroundColor: themeConfig.colors.neutral[6] },
         },
-        outlinedPrimary: {
-          borderColor: themeConfig.colors.neutral[5],
-          color: themeConfig.colors.neutral[3],
+        // Apply consistent outlined styles for dark theme
+        outlined: {
+          borderColor: themeConfig.colors.neutral[5], // Use a lighter grey border in dark mode
+          color: themeConfig.colors.neutral[3], // Use a light grey text in dark mode
           "&:hover": {
-            borderColor: themeConfig.colors.neutral[4],
-            backgroundColor: "rgba(255, 255, 255, 0.08)",
+            borderColor: themeConfig.colors.neutral[4], // Adjust hover border color if needed
+            backgroundColor: "rgba(255, 255, 255, 0.08)", // Standard hover background
           },
         },
+        // Remove outlinedPrimary if general outlined style covers it, or keep if specific primary outlined style is needed
+        // outlinedPrimary: { ... },
         sizeLarge: { padding: "12px 24px", fontSize: "1rem" },
         sizeSmall: { padding: "4px 12px", fontSize: "0.8125rem" },
       },

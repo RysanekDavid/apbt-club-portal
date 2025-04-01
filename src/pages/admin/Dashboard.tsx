@@ -13,7 +13,6 @@ import {
   Divider,
   Paper,
 } from "@mui/material";
-import NewspaperIcon from "@mui/icons-material/Newspaper";
 import EventIcon from "@mui/icons-material/Event";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import HandshakeIcon from "@mui/icons-material/Handshake";
@@ -42,7 +41,7 @@ const AdminDashboard = () => {
     const fetchStats = async () => {
       try {
         // Fetch counts from Firestore collections
-        const newsCount = (await getDocs(collection(db, "news"))).size;
+        // const newsCount = (await getDocs(collection(db, "news"))).size; // Removed news count
         const eventsCount = (await getDocs(collection(db, "events"))).size;
         const galleryCount = (await getDocs(collection(db, "gallery"))).size;
         const sponsorsCount = (await getDocs(collection(db, "sponsors"))).size;
@@ -50,12 +49,12 @@ const AdminDashboard = () => {
           .size;
 
         setStats([
-          {
-            title: "Novinky",
-            count: newsCount,
-            icon: <NewspaperIcon fontSize="large" />,
-            color: "#1976d2",
-          },
+          // { // Removed News stat card
+          //   title: "Novinky",
+          //   count: newsCount,
+          //   icon: <NewspaperIcon fontSize="large" />,
+          //   color: "#1976d2",
+          // },
           {
             title: "Akce",
             count: eventsCount,
@@ -83,19 +82,19 @@ const AdminDashboard = () => {
         ]);
 
         // Fetch recent items
-        const recentNews = await getDocs(
-          query(collection(db, "news"), limit(3))
-        );
+        // const recentNews = await getDocs( // Removed recent news fetch
+        //   query(collection(db, "news"), limit(3))
+        // );
         const recentEvents = await getDocs(
           query(collection(db, "events"), limit(3))
         );
 
-        const newsItems = recentNews.docs.map((doc) => ({
-          id: doc.id,
-          title: doc.data().title,
-          date: doc.data().createdAt?.toDate() || new Date(),
-          type: "Novinka",
-        }));
+        // const newsItems = recentNews.docs.map((doc) => ({ // Removed news items mapping
+        //   id: doc.id,
+        //   title: doc.data().title,
+        //   date: doc.data().createdAt?.toDate() || new Date(),
+        //   type: "Novinka",
+        // }));
 
         const eventItems = recentEvents.docs.map((doc) => ({
           id: doc.id,
@@ -104,12 +103,12 @@ const AdminDashboard = () => {
           type: "Akce",
         }));
 
-        // Combine and sort by date
-        const combined = [...newsItems, ...eventItems].sort(
+        // Sort events by date
+        const sortedEvents = eventItems.sort(
           (a, b) => b.date.getTime() - a.date.getTime()
         );
 
-        setRecentItems(combined.slice(0, 5));
+        setRecentItems(sortedEvents.slice(0, 5)); // Only show recent events
         setLoading(false);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);

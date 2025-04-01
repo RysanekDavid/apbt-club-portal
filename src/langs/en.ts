@@ -12,7 +12,7 @@ export default {
     "Together we build better awareness of this exceptional breed",
   // New combined key
   "homepage.heroSubtitle":
-    "Welcome to the official website of the American Pit Bull Terrier Friends Club. We support responsible breeding, training, and a community of enthusiasts. The American Pit Bull Terrier is an athletically built, muscular to sinewy dog. It captivates people with its strength, passion, determination, and above all, its desire to win.",
+    "Welcome to the official website of the American Pit Bull Terrier Club. We support responsible breeding, training, and a community of enthusiasts. The American Pit Bull Terrier is an athletically built, muscular to sinewy dog. It captivates people with its strength, passion, determination, and above all, its desire to win.",
   "homepage.eventsTitle": "Upcoming Events",
   "homepage.eventsDesc":
     "Check out planned shows, competitions, and other club events.",

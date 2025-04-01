@@ -37,10 +37,12 @@ export default function HomePage() {
         <HeroContentContainer maxWidth="lg">
           <Grid container>
             <Grid item xs={12} md={8} lg={7}>
-              <HeroTitle variant={isMdUp ? "h2" : "h3"} as="h1" gutterBottom>
+              {/* Removed gutterBottom prop */}
+              <HeroTitle variant={isMdUp ? "h2" : "h3"} as="h1" sx={{ mb: 1 }}>
                 APBT Klub ČR
               </HeroTitle>
-              <HeroSubtitle variant="h6" as="p" gutterBottom>
+              {/* Removed gutterBottom prop */}
+              <HeroSubtitle variant="h6" as="p" sx={{ mb: 2 }}>
                 {t("homepage.heroSubtitle")}{" "}
               </HeroSubtitle>
               <Button
@@ -62,73 +64,108 @@ export default function HomePage() {
         {/* Added justifyContent="center" to the Grid container */}
         <Grid container spacing={4} sx={{ mb: 4 }} justifyContent="center">
           <Grid item xs={12} md={4}>
-            <InfoPaper elevation={3}>
+            <InfoPaper>
               <EventIcon color="primary" sx={{ fontSize: 40, mb: 1 }} />
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                {" "}
+                {/* Removed gutterBottom, added margin */}
                 {t("homepage.eventsTitle")}
               </Typography>
               <Typography variant="body2" paragraph>
                 {t("homepage.eventsDesc")}
               </Typography>
-              <Button variant="outlined" component={RouterLink} to="/akce">
+              <Button
+                variant="contained"
+                color="primary"
+                component={RouterLink}
+                to="/akce"
+              >
                 {t("homepage.eventsButton")}
               </Button>
             </InfoPaper>
           </Grid>
           <Grid item xs={12} md={4}>
-            <InfoPaper elevation={3}>
+            <InfoPaper>
               <GroupIcon color="primary" sx={{ fontSize: 40, mb: 1 }} />
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                {" "}
+                {/* Removed gutterBottom, added margin */}
                 {t("homepage.aboutTitle")}
               </Typography>
               <Typography variant="body2" paragraph>
                 {t("homepage.aboutDesc")}
               </Typography>
-              <Button variant="outlined" component={RouterLink} to="/historie">
+              <Button
+                variant="contained"
+                color="primary"
+                component={RouterLink}
+                to="/historie"
+              >
                 {t("homepage.aboutButton")}
               </Button>
             </InfoPaper>
           </Grid>
           <Grid item xs={12} md={4}>
-            <InfoPaper elevation={3}>
+            <InfoPaper>
               <ContactMailIcon color="primary" sx={{ fontSize: 40, mb: 1 }} />
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                {" "}
+                {/* Removed gutterBottom, added margin */}
                 {t("homepage.contactTitle")}
               </Typography>
               <Typography variant="body2" paragraph>
                 {t("homepage.contactDesc")}
               </Typography>
-              <Button variant="outlined" component={RouterLink} to="/kontakt">
+              <Button
+                variant="contained"
+                color="primary"
+                component={RouterLink}
+                to="/kontakt"
+              >
                 {t("homepage.contactButton")}
               </Button>
             </InfoPaper>
           </Grid>
           {/* Sponsor Section */}
           <Grid item xs={12} md={4}>
-            <InfoPaper elevation={3}>
+            <InfoPaper>
               <HandshakeIcon color="primary" sx={{ fontSize: 40, mb: 1 }} />
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                {" "}
+                {/* Removed gutterBottom, added margin */}
                 {t("homepage.sponsorsTitle")}
               </Typography>
               <Typography variant="body2" paragraph>
                 {t("homepage.sponsorsDesc")}
               </Typography>
-              <Button variant="outlined" component={RouterLink} to="/sponzori">
+              <Button
+                variant="contained"
+                color="primary"
+                component={RouterLink}
+                to="/sponzori"
+              >
                 {t("homepage.sponsorsButton")}
               </Button>
             </InfoPaper>
           </Grid>
           {/* Gallery Section */}
           <Grid item xs={12} md={4}>
-            <InfoPaper elevation={3}>
+            <InfoPaper>
               <PhotoLibraryIcon color="primary" sx={{ fontSize: 40, mb: 1 }} />
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                {" "}
+                {/* Removed gutterBottom, added margin */}
                 {t("homepage.galleryTitle")}
               </Typography>
               <Typography variant="body2" paragraph>
                 {t("homepage.galleryDesc")}
               </Typography>
-              <Button variant="outlined" component={RouterLink} to="/galerie">
+              <Button
+                variant="contained"
+                color="primary"
+                component={RouterLink}
+                to="/galerie"
+              >
                 {t("homepage.galleryButton")}
               </Button>
             </InfoPaper>

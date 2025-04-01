@@ -5,16 +5,7 @@ export interface BaseModel {
   updatedAt: Date;
 }
 
-// News model
-export interface News extends BaseModel {
-  title: string;
-  content: string;
-  imageUrl?: string;
-  imageName?: string;
-  published: boolean;
-  publishedAt?: Date;
-  slug: string;
-}
+// News model - REMOVED
 
 // Event model
 export interface Event extends BaseModel {
