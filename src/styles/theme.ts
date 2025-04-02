@@ -87,10 +87,31 @@ const themeConfig: ThemeConfig = {
   },
   shadows: [
     "none",
-    "0px 2px 1px -1px rgba(0,0,0,0.1),0px 1px 1px 0px rgba(0,0,0,0.07),0px 1px 3px 0px rgba(0,0,0,0.06)",
-    "0px 3px 3px -2px rgba(0,0,0,0.1),0px 2px 6px 0px rgba(0,0,0,0.07),0px 1px 8px 0px rgba(0,0,0,0.06)",
-    "0px 3px 4px -2px rgba(0,0,0,0.1),0px 3px 8px 0px rgba(0,0,0,0.07),0px 1px 12px 0px rgba(0,0,0,0.06)",
-    "0px 4px 5px -2px rgba(0,0,0,0.1),0px 4px 10px 0px rgba(0,0,0,0.07),0px 1px 16px 0px rgba(0,0,0,0.06)",
+    "0px 2px 1px -1px rgba(0,0,0,0.1),0px 1px 1px 0px rgba(0,0,0,0.07),0px 1px 3px 0px rgba(0,0,0,0.06)", // 1
+    "0px 3px 3px -2px rgba(0,0,0,0.1),0px 2px 6px 0px rgba(0,0,0,0.07),0px 1px 8px 0px rgba(0,0,0,0.06)", // 2
+    "0px 3px 4px -2px rgba(0,0,0,0.1),0px 3px 8px 0px rgba(0,0,0,0.07),0px 1px 12px 0px rgba(0,0,0,0.06)", // 3
+    "0px 4px 5px -2px rgba(0,0,0,0.1),0px 4px 10px 0px rgba(0,0,0,0.07),0px 1px 16px 0px rgba(0,0,0,0.06)", // 4
+    // Add standard MUI shadows from index 5 to 24
+    "0px 5px 5px -3px rgba(0,0,0,0.1),0px 8px 10px 1px rgba(0,0,0,0.07),0px 3px 14px 2px rgba(0,0,0,0.06)", // 5
+    "0px 6px 6px -3px rgba(0,0,0,0.1),0px 10px 14px 1px rgba(0,0,0,0.07),0px 4px 18px 3px rgba(0,0,0,0.06)", // 6
+    "0px 7px 8px -4px rgba(0,0,0,0.1),0px 12px 17px 2px rgba(0,0,0,0.07),0px 5px 22px 4px rgba(0,0,0,0.06)", // 7
+    "0px 8px 9px -5px rgba(0,0,0,0.1),0px 15px 22px 2px rgba(0,0,0,0.07),0px 6px 28px 5px rgba(0,0,0,0.06)", // 8
+    "0px 9px 11px -5px rgba(0,0,0,0.1),0px 18px 28px 2px rgba(0,0,0,0.07),0px 7px 34px 6px rgba(0,0,0,0.06)", // 9
+    "0px 10px 13px -6px rgba(0,0,0,0.1),0px 20px 31px 3px rgba(0,0,0,0.07),0px 8px 38px 7px rgba(0,0,0,0.06)", // 10
+    "0px 11px 14px -7px rgba(0,0,0,0.1),0px 22px 35px 3px rgba(0,0,0,0.07),0px 9px 42px 8px rgba(0,0,0,0.06)", // 11
+    "0px 11px 15px -7px rgba(0,0,0,0.1),0px 24px 38px 3px rgba(0,0,0,0.07),0px 9px 46px 8px rgba(0,0,0,0.06)", // 12
+    "0px 12px 17px -8px rgba(0,0,0,0.1),0px 26px 42px 4px rgba(0,0,0,0.07),0px 10px 50px 9px rgba(0,0,0,0.06)", // 13
+    "0px 13px 18px -8px rgba(0,0,0,0.1),0px 28px 45px 4px rgba(0,0,0,0.07),0px 11px 54px 10px rgba(0,0,0,0.06)", // 14
+    "0px 14px 20px -9px rgba(0,0,0,0.1),0px 30px 49px 5px rgba(0,0,0,0.07),0px 12px 58px 11px rgba(0,0,0,0.06)", // 15
+    "0px 15px 22px -9px rgba(0,0,0,0.1),0px 32px 52px 5px rgba(0,0,0,0.07),0px 13px 62px 12px rgba(0,0,0,0.06)", // 16
+    "0px 16px 24px -10px rgba(0,0,0,0.1),0px 34px 56px 6px rgba(0,0,0,0.07),0px 14px 66px 13px rgba(0,0,0,0.06)", // 17
+    "0px 17px 26px -10px rgba(0,0,0,0.1),0px 36px 59px 6px rgba(0,0,0,0.07),0px 15px 70px 14px rgba(0,0,0,0.06)", // 18
+    "0px 18px 28px -11px rgba(0,0,0,0.1),0px 38px 63px 7px rgba(0,0,0,0.07),0px 16px 74px 15px rgba(0,0,0,0.06)", // 19
+    "0px 19px 29px -11px rgba(0,0,0,0.1),0px 40px 66px 7px rgba(0,0,0,0.07),0px 17px 78px 16px rgba(0,0,0,0.06)", // 20
+    "0px 20px 31px -12px rgba(0,0,0,0.1),0px 42px 70px 8px rgba(0,0,0,0.07),0px 18px 82px 17px rgba(0,0,0,0.06)", // 21
+    "0px 21px 33px -12px rgba(0,0,0,0.1),0px 44px 74px 8px rgba(0,0,0,0.07),0px 19px 86px 18px rgba(0,0,0,0.06)", // 22
+    "0px 22px 35px -13px rgba(0,0,0,0.1),0px 46px 78px 9px rgba(0,0,0,0.07),0px 20px 90px 19px rgba(0,0,0,0.06)", // 23
+    "0px 24px 38px -13px rgba(0,0,0,0.1),0px 48px 82px 9px rgba(0,0,0,0.07),0px 20px 94px 20px rgba(0,0,0,0.06)", // 24
   ],
 };
 
@@ -257,10 +278,6 @@ export const lightTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         rounded: { borderRadius: themeConfig.radii.md },
-        elevation1: { boxShadow: themeConfig.shadows[1] },
-        elevation2: { boxShadow: themeConfig.shadows[2] },
-        elevation3: { boxShadow: themeConfig.shadows[3] },
-        elevation4: { boxShadow: themeConfig.shadows[4] },
       },
     },
     MuiTableCell: {
@@ -478,20 +495,13 @@ export const darkTheme = createTheme({
           backgroundImage: "none",
           backgroundColor: themeConfig.colors.neutral[9],
         }, // Dark paper
-        elevation2: {
-          boxShadow: themeConfig.shadows[2],
+        // Remove specific elevation overrides as the full shadows array is now provided
+        // elevation2: { ... },
+        // elevation3: { ... },
+        // elevation4: { ... },
+        // Ensure background image is none for all elevations if needed
+        root: {
           backgroundImage: "none",
-          backgroundColor: themeConfig.colors.neutral[9],
-        },
-        elevation3: {
-          boxShadow: themeConfig.shadows[3],
-          backgroundImage: "none",
-          backgroundColor: themeConfig.colors.neutral[9],
-        },
-        elevation4: {
-          boxShadow: themeConfig.shadows[4],
-          backgroundImage: "none",
-          backgroundColor: themeConfig.colors.neutral[9],
         },
       },
     },

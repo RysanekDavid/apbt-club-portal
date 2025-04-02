@@ -30,6 +30,7 @@ export interface Gallery extends BaseModel {
   coverImageName: string;
   published: boolean;
   slug: string;
+  images?: { url: string; fileName: string }[]; // Array to store gallery images
 }
 
 // Gallery image model
@@ -59,9 +60,9 @@ export interface Document extends BaseModel {
   description: string;
   fileUrl: string;
   fileName: string;
-  fileType: string;
-  fileSize: number;
-  category: string;
+  fileType?: string; // Made optional
+  fileSize?: number; // Made optional
+  // category: string; // Removed category field
   published: boolean;
 }
 

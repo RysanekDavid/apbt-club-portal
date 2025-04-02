@@ -50,7 +50,7 @@ const AdminLayout = () => {
 
   const menuItems = [
     { text: "Akce", icon: <EventIcon />, path: "/admin/events" },
-    { text: "Galerie", icon: <PhotoLibraryIcon />, path: "/admin/gallery" },
+    { text: "Galerie", icon: <PhotoLibraryIcon />, path: "/admin/galleries" }, // Updated path
     { text: "Sponzoři", icon: <HandshakeIcon />, path: "/admin/sponsors" },
     { text: "Dokumenty", icon: <DescriptionIcon />, path: "/admin/documents" },
   ];

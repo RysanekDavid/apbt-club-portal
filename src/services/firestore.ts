@@ -199,7 +199,7 @@ export const getPastEvents = async (limitCount?: number): Promise<Event[]> => {
 // Gallery specific functions
 export const getPublishedGalleries = async (): Promise<Gallery[]> => {
   const q = query(
-    collection(db, "gallery"),
+    collection(db, "galleries"), // Corrected collection name to plural
     where("published", "==", true),
     orderBy("date", "desc")
   );
@@ -214,8 +214,9 @@ export const getPublishedGalleries = async (): Promise<Gallery[]> => {
 export const getGalleryImages = async (
   galleryId: string
 ): Promise<GalleryImage[]> => {
+  // TODO: Verify this collection name is correct if/when implementing image details
   const q = query(
-    collection(db, "galleryImages"),
+    collection(db, "galleryImages"), // Assuming this collection name is correct for later use
     where("galleryId", "==", galleryId),
     orderBy("order", "asc")
   );
@@ -226,7 +227,29 @@ export const getGalleryImages = async (
   });
 };
 
-// Sponsors specific functions
+// Gallery specific functions
+export const getGalleryBySlug = async (
+  slug: string
+): Promise<Gallery | null> => {
+  const q = query(
+    collection(db, "galleries"),
+    where("slug", "==", slug),
+    limit(1) // Expecting only one gallery per slug
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    console.warn(`Gallery with slug "${slug}" not found.`);
+    return null; // Return null if not found
+  }
+
+  const doc = querySnapshot.docs[0];
+  const data = convertTimestampToDate(doc.data());
+  return { id: doc.id, ...data } as Gallery;
+};
+
+// Sponsors specific functions - Restore this function
 export const getActiveSponsors = async (): Promise<Sponsor[]> => {
   const q = query(
     collection(db, "sponsors"),
@@ -256,19 +279,5 @@ export const getPublishedDocuments = async (): Promise<Document[]> => {
   });
 };
 
-export const getDocumentsByCategory = async (
-  category: string
-): Promise<Document[]> => {
-  const q = query(
-    collection(db, "documents"),
-    where("published", "==", true),
-    where("category", "==", category),
-    orderBy("title", "asc")
-  );
-
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map((doc) => {
-    const data = convertTimestampToDate(doc.data());
-    return { id: doc.id, ...data } as Document;
-  });
-};
+// Removed getDocumentsByCategory as category field is removed
+// export const getDocumentsByCategory = async ...

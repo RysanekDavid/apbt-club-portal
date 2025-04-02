@@ -7,10 +7,7 @@ import {
   QuerySnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
-import {
-  getPublishedDocuments,
-  getDocumentsByCategory,
-} from "../../services/firestore"; // Import only document functions
+import { getPublishedDocuments } from "../../services/firestore"; // Import only document functions
 
 // --- Mock Firebase Firestore ---
 vi.mock("firebase/firestore", async (importOriginal) => {
@@ -155,69 +152,6 @@ describe("Firestore Documents Service", () => {
     });
   });
 
-  describe("getDocumentsByCategory", () => {
-    it("should return published documents for a specific category ordered by title", async () => {
-      const category = "Regulations";
-      const date1 = new Date();
-      const mockDocs = [
-        {
-          id: "doc1",
-          data: () => ({
-            title: "Doc Alpha",
-            category: category,
-            published: true,
-            fileUrl: "urlA",
-            createdAt: createMockTimestamp(date1),
-          }),
-        },
-        {
-          id: "doc2",
-          data: () => ({
-            title: "Doc Beta",
-            category: category,
-            published: true,
-            fileUrl: "urlB",
-            createdAt: createMockTimestamp(date1),
-          }),
-        },
-      ];
-      const mockQuerySnapshot = { docs: mockDocs } as unknown as QuerySnapshot;
-      mockGetDocs.mockResolvedValue(mockQuerySnapshot);
-
-      const result = await getDocumentsByCategory(category);
-
-      expect(mockCollection).toHaveBeenCalledWith(db, "documents");
-      expect(mockQuery).toHaveBeenCalledWith(
-        expect.objectContaining({ path: "documents" }),
-        expect.objectContaining({ field: "published", op: "==", value: true }),
-        expect.objectContaining({
-          field: "category",
-          op: "==",
-          value: category,
-        }),
-        expect.objectContaining({ field: "title", dir: "asc" })
-      );
-      expect(mockGetDocs).toHaveBeenCalledWith(
-        expect.objectContaining({ type: "query" })
-      );
-      expect(result).toEqual([
-        {
-          id: "doc1",
-          title: "Doc Alpha",
-          category: category,
-          published: true,
-          fileUrl: "urlA",
-          createdAt: date1,
-        },
-        {
-          id: "doc2",
-          title: "Doc Beta",
-          category: category,
-          published: true,
-          fileUrl: "urlB",
-          createdAt: date1,
-        },
-      ]);
-    });
-  });
+  // Removed describe block for getDocumentsByCategory as the function was removed
+  // describe("getDocumentsByCategory", () => { ... });
 });

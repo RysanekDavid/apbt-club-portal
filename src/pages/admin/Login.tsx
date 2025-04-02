@@ -21,6 +21,8 @@ import illustration2 from "../../assets/illustration2.png";
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isImage1Loaded, setIsImage1Loaded] = useState(false); // State for image 1 load status
+  const [isImage2Loaded, setIsImage2Loaded] = useState(false); // State for image 2 load status
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { loginWithEmail, currentUser } = useAuth(); // Removed loginWithGoogle
@@ -78,12 +80,13 @@ const AdminLogin = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 p: 4,
-                height: "100vh", // Ensure column takes full height
+                height: "100vh",
               }}
             >
               <Box
                 component="img"
                 src={illustration1}
+                onLoad={() => setIsImage1Loaded(true)} // Add onLoad handler
                 alt="Illustration 1"
                 sx={{
                   maxWidth: "60%", // Reduced size
@@ -111,9 +114,12 @@ const AdminLogin = () => {
                 sx={{
                   p: 4,
                   width: "100%",
-                  maxWidth: 400, // Limit form width
+                  maxWidth: 400,
                   border: `1px solid ${theme.palette.divider}`,
                   borderRadius: theme.shape.borderRadius,
+                  // Apply conditional opacity and transition
+                  opacity: isImage1Loaded && isImage2Loaded ? 1 : 0,
+                  transition: "opacity 0.5s ease-in-out",
                 }}
               >
                 <Typography
@@ -180,12 +186,13 @@ const AdminLogin = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 p: 4,
-                height: "100vh", // Ensure column takes full height
+                height: "100vh",
               }}
             >
               <Box
                 component="img"
                 src={illustration2}
+                onLoad={() => setIsImage2Loaded(true)} // Add onLoad handler
                 alt="Illustration 2"
                 sx={{
                   maxWidth: "60%", // Reduced size

@@ -9,6 +9,7 @@ const HistoryPage = lazy(() => import("../pages/History"));
 const DocumentsPage = lazy(() => import("../pages/Documents"));
 const EventsPage = lazy(() => import("../pages/Events"));
 const GalleryPage = lazy(() => import("../pages/Gallery"));
+const GalleryDetailPage = lazy(() => import("../pages/GalleryDetail.tsx")); // Explicitly add .tsx extension
 const SponsorsPage = lazy(() => import("../pages/Sponsors"));
 const ContactPage = lazy(() => import("../pages/Contact"));
 
@@ -23,6 +24,16 @@ const EventsList = lazy(() => import("../pages/admin/Events/EventsList"));
 const EventForm = lazy(() => import("../pages/admin/Events/EventForm"));
 const SponsorsList = lazy(() => import("../pages/admin/Sponsors/SponsorsList"));
 const SponsorForm = lazy(() => import("../pages/admin/Sponsors/SponsorForm"));
+const DocumentsList = lazy(
+  () => import("../pages/admin/Documents/DocumentsList")
+);
+const DocumentForm = lazy(
+  () => import("../pages/admin/Documents/DocumentForm")
+);
+const GalleriesList = lazy(
+  () => import("../pages/admin/Galleries/GalleriesList")
+);
+const GalleryForm = lazy(() => import("../pages/admin/Galleries/GalleryForm"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -57,19 +68,20 @@ const AppRouter = () => {
             <Route path="events/add" element={<EventForm />} />
             <Route path="events/edit/:id" element={<EventForm />} />
 
-            {/* Gallery routes - Redirecting to admin dashboard for now */}
-            <Route path="gallery" element={<Navigate to="/admin" replace />} />
+            {/* Gallery routes */}
+            <Route path="galleries" element={<GalleriesList />} />
+            <Route path="galleries/add" element={<GalleryForm />} />
+            <Route path="galleries/edit/:id" element={<GalleryForm />} />
 
             {/* Sponsors routes */}
             <Route path="sponsors" element={<SponsorsList />} />
             <Route path="sponsors/add" element={<SponsorForm />} />
             <Route path="sponsors/edit/:id" element={<SponsorForm />} />
 
-            {/* Documents routes - Redirecting to admin dashboard for now */}
-            <Route
-              path="documents"
-              element={<Navigate to="/admin" replace />}
-            />
+            {/* Documents routes */}
+            <Route path="documents" element={<DocumentsList />} />
+            <Route path="documents/add" element={<DocumentForm />} />
+            <Route path="documents/edit/:id" element={<DocumentForm />} />
           </Route>{" "}
           {/* This closes <Route element={<AdminLayout />}> */}
         </Route>{" "}
@@ -112,6 +124,15 @@ const AppRouter = () => {
           element={
             <PublicRoutesWrapper>
               <GalleryPage />
+            </PublicRoutesWrapper>
+          }
+        />
+        {/* Add route for gallery detail page */}
+        <Route
+          path="/galerie/:slug"
+          element={
+            <PublicRoutesWrapper>
+              <GalleryDetailPage />
             </PublicRoutesWrapper>
           }
         />
