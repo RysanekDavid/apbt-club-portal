@@ -26,6 +26,7 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import { Gallery as GalleryModel } from "../../../types/models"; // Rename imported type
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
+import * as styles from "./GalleriesList.styles"; // Import styles
 
 const GalleriesList: React.FC = () => {
   const navigate = useNavigate();
@@ -105,14 +106,7 @@ const GalleriesList: React.FC = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
+      <Box sx={styles.headerBox}>
         <Typography variant="h4">Správa galerií</Typography>
         <Button
           variant="contained"
@@ -124,17 +118,17 @@ const GalleriesList: React.FC = () => {
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       )}
 
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+        <Box sx={styles.loadingBox}>
           <CircularProgress />
         </Box>
       ) : galleries.length === 0 ? (
-        <Paper sx={{ p: 3, textAlign: "center" }}>
+        <Paper sx={styles.noDataPaper}>
           <Typography variant="body1">
             Zatím nejsou přidány žádné galerie.
           </Typography>
@@ -144,7 +138,7 @@ const GalleriesList: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ width: "60px" }}>Náhled</TableCell>
+                <TableCell sx={styles.thumbnailCell}>Náhled</TableCell>
                 <TableCell>Název</TableCell>
                 <TableCell>Datum</TableCell>
                 <TableCell>Status</TableCell>
@@ -159,7 +153,7 @@ const GalleriesList: React.FC = () => {
                       src={gallery.coverImageUrl}
                       alt={gallery.title}
                       variant="rounded" // Or "square"
-                      sx={{ width: 56, height: 56 }}
+                      sx={styles.thumbnailAvatar}
                     />
                   </TableCell>
                   <TableCell>{gallery.title}</TableCell>

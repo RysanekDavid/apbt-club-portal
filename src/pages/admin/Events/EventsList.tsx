@@ -24,6 +24,7 @@ import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import { Event } from "../../../types/models";
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
+import * as styles from "./EventsList.styles"; // Import styles
 
 const EventsList = () => {
   const navigate = useNavigate();
@@ -91,14 +92,7 @@ const EventsList = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
+      <Box sx={styles.headerBox}>
         <Typography variant="h4">Akce / Závody</Typography>
         <Button
           variant="contained"
@@ -110,17 +104,17 @@ const EventsList = () => {
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       )}
 
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+        <Box sx={styles.loadingBox}>
           <CircularProgress />
         </Box>
       ) : events.length === 0 ? (
-        <Paper sx={{ p: 3, textAlign: "center" }}>
+        <Paper sx={styles.noDataPaper}>
           <Typography variant="body1">
             Zatím nejsou přidány žádné akce.
           </Typography>
@@ -154,7 +148,7 @@ const EventsList = () => {
                         label="Proběhlé"
                         color="primary"
                         size="small"
-                        sx={{ ml: 1 }}
+                        sx={styles.pastEventChip}
                       />
                     )}
                   </TableCell>

@@ -16,6 +16,7 @@ import { cs } from "date-fns/locale"; // Import Czech locale
 import { useState, useEffect } from "react"; // Added hooks
 import { getPublishedDocuments } from "../services/firestore"; // Corrected Firestore service import
 import { Document as DocumentModel } from "../types/models"; // Added model type
+import * as styles from "./Documents.styles"; // Import styles
 
 // Removed helper function groupDocumentsByCategory
 // const groupDocumentsByCategory = ...
@@ -54,31 +55,31 @@ export default function DocumentsPage() {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ my: 4 }}>
+      <Box sx={styles.pageContainer}>
         <Typography variant="h3" component="h1" gutterBottom>
           Dokumenty ke stažení
         </Typography>
 
         {loading && (
-          <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+          <Box sx={styles.loadingBox}>
             <CircularProgress />
           </Box>
         )}
 
         {error && (
-          <Alert severity="error" sx={{ my: 2 }}>
+          <Alert severity="error" sx={styles.errorAlert}>
             {error}
           </Alert>
         )}
 
         {!loading && !error && documents.length === 0 && (
-          <Typography sx={{ textAlign: "center", my: 4 }}>
+          <Typography sx={styles.noDocumentsText}>
             Aktuálně nejsou k dispozici žádné dokumenty ke stažení.
           </Typography>
         )}
 
         {!loading && !error && documents.length > 0 && (
-          <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+          <List sx={styles.documentList}>
             {/* Removed category mapping */}
             {/* {categories.map((category) => ( ... ))} */}
             {documents.map(
@@ -97,7 +98,7 @@ export default function DocumentsPage() {
                   <Button
                     variant="contained"
                     startIcon={<Download />}
-                    sx={{ ml: 2 }}
+                    sx={styles.downloadButton}
                     href={doc.fileUrl} // Link directly to the file URL
                     target="_blank" // Open in new tab
                     rel="noopener noreferrer"

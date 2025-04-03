@@ -20,8 +20,8 @@ import {
   addDocument,
   updateDocument,
 } from "../../../services/firestore";
-
 import { Sponsor } from "../../../types/models";
+import * as styles from "./SponsorForm.styles"; // Import styles
 
 interface SponsorFormData {
   name: string;
@@ -130,7 +130,7 @@ const SponsorForm = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+      <Box sx={styles.loadingBox}>
         <CircularProgress />
       </Box>
     );
@@ -138,14 +138,7 @@ const SponsorForm = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
+      <Box sx={styles.headerBox}>
         <Typography variant="h4">
           {isEditMode ? "Upravit sponzora" : "Přidat sponzora"}
         </Typography>
@@ -159,12 +152,12 @@ const SponsorForm = () => {
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       )}
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={styles.formPaper}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -243,18 +236,14 @@ const SponsorForm = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Divider sx={{ my: 2 }} />
+              <Divider sx={styles.formDivider} />
             </Grid>
 
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
-            >
+            <Grid item xs={12} sx={styles.actionsGrid}>
               <Button
                 variant="outlined"
                 onClick={handleCancel}
-                sx={{ mr: 2 }}
+                sx={styles.cancelButton}
                 disabled={submitting}
               >
                 Zrušit

@@ -23,6 +23,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility"; // Icon to view fil
 import { getAllDocuments, deleteDocument } from "../../../services/firestore";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import { Document as DocumentModel } from "../../../types/models"; // Rename imported type
+import * as styles from "./DocumentsList.styles"; // Import styles
 
 const DocumentsList: React.FC = () => {
   const navigate = useNavigate();
@@ -92,14 +93,7 @@ const DocumentsList: React.FC = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
+      <Box sx={styles.headerBox}>
         <Typography variant="h4">Správa dokumentů</Typography>
         <Button
           variant="contained"
@@ -111,17 +105,17 @@ const DocumentsList: React.FC = () => {
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       )}
 
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+        <Box sx={styles.loadingBox}>
           <CircularProgress />
         </Box>
       ) : documents.length === 0 ? (
-        <Paper sx={{ p: 3, textAlign: "center" }}>
+        <Paper sx={styles.noDataPaper}>
           <Typography variant="body1">
             Zatím nejsou přidány žádné dokumenty.
           </Typography>

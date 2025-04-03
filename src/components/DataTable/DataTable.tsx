@@ -19,6 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import SearchIcon from "@mui/icons-material/Search";
+import * as styles from "./DataTable.styles"; // Import styles
 
 export interface Column<T> {
   id: keyof T | "actions";
@@ -82,15 +83,8 @@ const DataTable = <T extends object>({
   );
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <Box
-        sx={{
-          p: 2,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <Paper sx={styles.rootPaper}>
+      <Box sx={styles.headerBox}>
         {title && (
           <Typography variant="h6" component="div">
             {title}
@@ -114,7 +108,7 @@ const DataTable = <T extends object>({
         )}
       </Box>
 
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={styles.tableContainer}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

@@ -17,6 +17,7 @@ import EventIcon from "@mui/icons-material/Event";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import DescriptionIcon from "@mui/icons-material/Description";
+import * as styles from "./Dashboard.styles"; // Import styles
 
 interface StatItem {
   title: string;
@@ -125,12 +126,12 @@ const AdminDashboard = () => {
         Dashboard
       </Typography>
 
-      <Grid container spacing={3} sx={{ mb: 4 }}>
+      <Grid container spacing={3} sx={styles.statsGrid}>
         {stats.map((stat) => (
           <Grid item xs={12} sm={6} md={4} lg={2.4} key={stat.title}>
             <Card>
-              <CardContent sx={{ textAlign: "center" }}>
-                <Box sx={{ color: stat.color, mb: 2 }}>{stat.icon}</Box>
+              <CardContent sx={styles.statCardContent}>
+                <Box sx={styles.statIconBox(stat.color)}>{stat.icon}</Box>
                 <Typography variant="h5" component="div">
                   {stat.count}
                 </Typography>
@@ -145,7 +146,7 @@ const AdminDashboard = () => {
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <Paper elevation={2} sx={{ p: 2 }}>
+          <Paper elevation={2} sx={styles.recentItemsPaper}>
             <Typography variant="h6" gutterBottom>
               Nedávné položky
             </Typography>
@@ -175,7 +176,7 @@ const AdminDashboard = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Paper elevation={2} sx={{ p: 2 }}>
+          <Paper elevation={2} sx={styles.welcomePaper}>
             <Typography variant="h6" gutterBottom>
               Vítejte v administraci
             </Typography>

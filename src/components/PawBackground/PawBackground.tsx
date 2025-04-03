@@ -2,6 +2,7 @@ import React from "react";
 import { Box, useTheme } from "@mui/material";
 import pawLight from "../../assets/paw.png";
 import pawDark from "../../assets/paw_inverted.png";
+import * as styles from "./PawBackground.styles"; // Import styles
 
 interface PawData {
   id: number;
@@ -39,18 +40,7 @@ const PawBackground: React.FC = () => {
   const paws = staticPaws;
 
   return (
-    <Box
-      sx={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        overflow: "hidden", // Hide paws overflowing the container
-        zIndex: -1, // Ensure paws are behind the main content
-        pointerEvents: "none", // Make sure paws don't interfere with clicks
-      }}
-    >
+    <Box sx={styles.backgroundContainer}>
       {paws.map((paw) => (
         <Box
           key={paw.id}
@@ -58,14 +48,14 @@ const PawBackground: React.FC = () => {
           src={pawImage}
           alt="" // Decorative image
           sx={{
-            position: "absolute",
+            ...styles.pawImageBase, // Apply base styles
+            // Keep dynamic styles inline
             top: paw.top,
             left: paw.left,
             width: `${paw.size}px`,
             height: `${paw.size}px`,
             transform: `rotate(${paw.rotation}deg)`,
             opacity: paw.opacity,
-            userSelect: "none", // Prevent image selection
           }}
         />
       ))}

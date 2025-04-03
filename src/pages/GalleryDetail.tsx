@@ -1,8 +1,9 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import {
   Container,
   Typography,
+  Button, // Import Button
   Box,
   CircularProgress,
   Alert,
@@ -11,6 +12,7 @@ import {
   CardMedia,
   CardActionArea, // Make card clickable
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"; // Import back arrow icon
 import { useEffect, useState } from "react";
 import Lightbox from "yet-another-react-lightbox"; // Import Lightbox
 import "yet-another-react-lightbox/styles.css"; // Import default styles
@@ -18,9 +20,11 @@ import { getGalleryBySlug } from "../services/firestore";
 import { Gallery as GalleryModel } from "../types/models";
 import { format } from "date-fns"; // Import format for date display
 import { cs } from "date-fns/locale"; // Import Czech locale
+import * as styles from "./GalleryDetail.styles"; // Import styles
 
 const GalleryDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate(); // Get navigate function
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [gallery, setGallery] = useState<GalleryModel | null>(null);
@@ -56,32 +60,46 @@ const GalleryDetailPage: React.FC = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ my: 4 }}>
+      <Box sx={styles.pageContainer}>
         {loading && (
-          <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+          <Box sx={styles.loadingBox}>
             <CircularProgress />
           </Box>
         )}
 
         {error && (
-          <Alert severity="error" sx={{ my: 2 }}>
+          <Alert severity="error" sx={styles.errorAlert}>
             {error}
           </Alert>
         )}
 
         {!loading && !error && gallery && (
           <>
-            <Typography variant="h3" component="h1" gutterBottom>
-              {gallery.title}
-            </Typography>
+            {/* Wrap Title and Button in a Flex Box */}
+            <Box sx={styles.headerBox}>
+              <Typography
+                variant="h3"
+                component="h1"
+                gutterBottom
+                sx={styles.headerTitle}
+              >
+                {" "}
+                {gallery.title}
+              </Typography>
+              {/* Back Button */}
+              <Button
+                variant="outlined"
+                startIcon={<ArrowBackIcon />}
+                onClick={() => navigate(-1)} // Use navigate(-1) to go back in history
+              >
+                Zpět na galerie
+              </Button>
+            </Box>
+
             <Typography variant="subtitle1" color="text.secondary" gutterBottom>
               {format(gallery.date, "d. MMMM yyyy", { locale: cs })}
             </Typography>
-            {gallery.description && (
-              <Typography variant="body1" sx={{ mb: 4 }}>
-                {gallery.description}
-              </Typography>
-            )}
+            {/* Removed gallery description display */}
 
             {/* Display gallery images */}
             {gallery.images && gallery.images.length > 0 ? (
@@ -89,22 +107,19 @@ const GalleryDetailPage: React.FC = () => {
                 {gallery.images.map((image, index) => (
                   <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
                     {/* Wrap CardMedia in CardActionArea to make it clickable */}
-                    <Card sx={{ height: "100%" }}>
+                    <Card sx={styles.imageCard}>
                       <CardActionArea
                         onClick={() => {
                           setLightboxIndex(index);
                           setOpenLightbox(true);
                         }}
-                        sx={{ height: "100%" }}
+                        sx={styles.imageCardActionArea}
                       >
                         <CardMedia
                           component="img"
                           image={image.url}
                           alt={image.fileName || `Obrázek ${index + 1}`}
-                          sx={{
-                            aspectRatio: "1 / 1", // Make images square
-                            objectFit: "cover",
-                          }}
+                          sx={styles.cardMedia}
                         />
                         {/* Optionally add a CardContent here if needed */}
                       </CardActionArea>
@@ -114,7 +129,7 @@ const GalleryDetailPage: React.FC = () => {
                 ))}
               </Grid>
             ) : (
-              <Typography sx={{ mt: 4 }}>
+              <Typography sx={styles.noImagesText}>
                 Tato galerie zatím neobsahuje žádné obrázky.
               </Typography>
             )}

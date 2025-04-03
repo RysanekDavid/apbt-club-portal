@@ -1,6 +1,7 @@
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material"; // Import useTheme
+import * as styles from "./RichTextEditor.styles"; // Import styles
 
 interface RichTextEditorProps {
   label?: string;
@@ -17,27 +18,16 @@ const RichTextEditor = ({
   error,
   height = "300px",
 }: RichTextEditorProps) => {
+  const theme = useTheme(); // Get theme object
+
   return (
-    <Box sx={{ mb: 2 }}>
+    <Box sx={styles.rootBox}>
       {label && (
         <Typography variant="subtitle1" gutterBottom>
           {label}
         </Typography>
       )}
-      <Box
-        sx={{
-          border: (theme) =>
-            error
-              ? `1px solid ${theme.palette.error.main}`
-              : `1px solid ${theme.palette.divider}`,
-          borderRadius: 1,
-          overflow: "hidden",
-          "& .ck-editor__editable": {
-            minHeight: height,
-            maxHeight: "600px",
-          },
-        }}
-      >
+      <Box sx={styles.editorWrapper(theme, error, height)}>
         <CKEditor
           editor={ClassicEditor as any} // Cast to any to bypass type mismatch
           data={value}

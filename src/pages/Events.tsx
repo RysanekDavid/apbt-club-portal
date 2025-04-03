@@ -20,6 +20,7 @@ import { cs } from "date-fns/locale";
 import { getUpcomingEvents, getPastEvents } from "../services/firestore";
 import { Event as EventModel } from "../types/models"; // Renamed Event to EventModel to avoid conflict
 import placeholderImage from "../assets/image_placeholder.jpg"; // Corrected import extension
+import * as styles from "./Events.styles"; // Import styles
 
 const EventsPage = () => {
   const [upcomingEvents, setUpcomingEvents] = useState<EventModel[]>([]);
@@ -63,85 +64,49 @@ const EventsPage = () => {
     const descriptionNeedsTruncation = event.description.length >= 200;
 
     return (
-      <Card key={event.id} sx={{ mb: 2, display: "flex" }}>
+      <Card key={event.id} sx={styles.eventCard}>
         <Grid container>
           {/* Image Column */}
           <Grid item xs={12} sm={4} md={3}>
             <CardMedia
               component="img"
-              sx={{
-                height: { xs: 100, sm: "100%" }, // Full height on sm+
-                width: "100%",
-                objectFit: "contain", // Changed from cover to contain
-                backgroundColor: "#fff", // Added white background
-                filter: !event.imageUrl
-                  ? "grayscale(70%) opacity(70%)"
-                  : "none",
-              }}
+              sx={
+                event.imageUrl ? styles.cardMedia : styles.cardMediaPlaceholder
+              }
               image={event.imageUrl || placeholderImage}
               alt={event.imageUrl ? event.title : "Placeholder"}
             />
           </Grid>
           {/* Text Content Column */}
           <Grid item xs={12} sm={8} md={9}>
-            <CardContent
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
+            <CardContent sx={styles.cardContent}>
               <Box>
                 <Typography
                   variant="h4"
                   component="div"
                   gutterBottom
-                  sx={{ mt: 1 }}
+                  sx={styles.eventTitle}
                 >
                   {event.title}
                 </Typography>
-                <Box
-                  sx={{
-                    mb: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                    gap: 1,
-                  }}
-                >
+                <Box sx={styles.chipsContainer}>
                   <Chip
                     icon={<CalendarMonthIcon />}
                     label={formatDate(event.date)}
                     size="medium"
-                    sx={{
-                      backgroundColor: "#000",
-                      color: "#fff",
-                      px: 1,
-                      py: 2,
-
-                      "& .MuiChip-icon": {
-                        color: "#fff",
-                      },
-                    }}
+                    sx={styles.infoChip}
                   />
                   <Chip
                     icon={<LocationOnIcon />}
                     label={event.location}
                     size="medium"
-                    sx={{
-                      backgroundColor: "#000",
-                      color: "#fff",
-                      px: 1.5,
-                      py: 2,
-                      "& .MuiChip-icon": {
-                        color: "#fff",
-                      },
-                    }}
+                    sx={styles.infoChip}
                   />
                 </Box>
                 <Typography
                   variant="body2"
                   color="text.primary"
-                  sx={{ mt: 1 }}
+                  sx={styles.descriptionText}
                   dangerouslySetInnerHTML={{
                     __html:
                       isExpanded || !descriptionNeedsTruncation
@@ -151,31 +116,13 @@ const EventsPage = () => {
                 />
               </Box>
               {descriptionNeedsTruncation && ( // Show button only if text is long
-                <Box sx={{ mt: 1, textAlign: "left" }}>
-                  {" "}
-                  {/* Button wrapper */}
+                <Box sx={styles.readMoreButtonContainer}>
                   <Button
                     size="small"
                     onClick={() =>
                       setExpandedEventId(isExpanded ? null : event.id)
                     }
-                    sx={{
-                      py: 0.5, // Keep vertical padding
-                      px: 1, // Keep horizontal padding
-                      textTransform: "none",
-                      border: 1,
-                      borderColor: "divider",
-                      borderRadius: 1,
-                      lineHeight: 1.4,
-                      minWidth: "auto",
-                      display: "inline-flex",
-                      verticalAlign: "baseline",
-                      mt: 1,
-                      "&:hover": {
-                        backgroundColor: "action.hover",
-                        borderColor: "text.primary",
-                      },
-                    }}
+                    sx={styles.readMoreButton}
                   >
                     {isExpanded ? "Skrýt" : "Zobrazit více"}
                   </Button>
@@ -190,8 +137,8 @@ const EventsPage = () => {
 
   if (loading) {
     return (
-      <Container sx={{ py: 4 }}>
-        <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+      <Container sx={styles.pageContainer}>
+        <Box sx={styles.loadingBox}>
           <CircularProgress />
         </Box>
       </Container>
@@ -200,8 +147,8 @@ const EventsPage = () => {
 
   if (error) {
     return (
-      <Container sx={{ py: 4 }}>
-        <Alert severity="error" sx={{ mb: 3 }}>
+      <Container sx={styles.pageContainer}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       </Container>
@@ -209,14 +156,14 @@ const EventsPage = () => {
   }
 
   return (
-    <Container sx={{ py: 4 }}>
+    <Container sx={styles.pageContainer}>
       <Typography variant="h4" gutterBottom>
         Akce klubu
       </Typography>
 
       {upcomingEvents.length > 0 && (
         <>
-          <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
+          <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
             Nadcházející akce
           </Typography>
           <Grid container spacing={3}>
@@ -229,10 +176,10 @@ const EventsPage = () => {
 
       {pastEvents.length > 0 && (
         <>
-          <Typography variant="h5" gutterBottom sx={{ mt: 4 }}>
+          <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
             Proběhlé akce
           </Typography>
-          <Divider sx={{ mb: 3 }} />
+          <Divider sx={styles.sectionDivider} />
           <Grid container spacing={3}>
             <Grid item xs={12}>
               {pastEvents.map(renderEventCard)}
@@ -242,7 +189,7 @@ const EventsPage = () => {
       )}
 
       {upcomingEvents.length === 0 && pastEvents.length === 0 && (
-        <Alert severity="info" sx={{ mt: 3 }}>
+        <Alert severity="info" sx={styles.noEventsAlert}>
           Momentálně nejsou naplánovány žádné akce.
         </Alert>
       )}

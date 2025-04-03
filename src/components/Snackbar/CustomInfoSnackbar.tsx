@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { SnackbarContent, CustomContentProps } from "notistack";
 import { Alert } from "@mui/material";
+import * as styles from "./CustomInfoSnackbar.styles"; // Import styles
 
 // Define the props for our custom component, extending notistack's props
 interface CustomInfoSnackbarProps extends CustomContentProps {
@@ -15,14 +16,7 @@ const CustomInfoSnackbar = forwardRef<HTMLDivElement, CustomInfoSnackbarProps>(
       <SnackbarContent ref={ref} role="alert" {...props}>
         <Alert
           severity="info"
-          sx={{
-            width: "100%", // Ensure alert takes full width of the snackbar
-            backgroundColor: "#03045e", // Custom dark blue background
-            color: "#ffffff", // White text
-            "& .MuiAlert-icon": {
-              color: "#ffffff", // White icon
-            },
-          }}
+          sx={styles.alertStyle}
           elevation={6} // Optional: match default snackbar elevation
         >
           {message}

@@ -16,6 +16,7 @@ import { getPublishedGalleries } from "../services/firestore";
 import { Gallery as GalleryModel } from "../types/models";
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
+import * as styles from "./Gallery.styles"; // Import styles
 
 const GalleryPage = () => {
   const [galleries, setGalleries] = useState<GalleryModel[]>([]);
@@ -49,28 +50,32 @@ const GalleryPage = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box sx={{ my: 4 }}>
+      <Box sx={styles.pageContainer}>
         <Typography variant="h3" component="h1" gutterBottom>
           Galerie
         </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          sx={styles.pageSubtitle}
+        >
           Fotogalerie z akcí a setkání klubu.
         </Typography>
 
         {loading && (
-          <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+          <Box sx={styles.loadingBox}>
             <CircularProgress />
           </Box>
         )}
 
         {error && (
-          <Alert severity="error" sx={{ my: 2 }}>
+          <Alert severity="error" sx={styles.errorAlert}>
             {error}
           </Alert>
         )}
 
         {!loading && !error && galleries.length === 0 && (
-          <Typography sx={{ textAlign: "center", my: 4 }}>
+          <Typography sx={styles.noGalleriesText}>
             Aktuálně nejsou k dispozici žádné galerie.
           </Typography>
         )}
@@ -79,26 +84,20 @@ const GalleryPage = () => {
           <Grid container spacing={4}>
             {galleries.map((gallery) => (
               <Grid item key={gallery.id} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
+                <Card sx={styles.galleryCard}>
                   {/* Re-enable CardActionArea with onClick */}
                   <CardActionArea
                     onClick={() => handleGalleryClick(gallery.slug)}
-                    sx={{ flexGrow: 1 }}
+                    sx={styles.cardActionArea}
                   >
                     <CardMedia
                       component="img"
                       height="200" // Fixed height for consistency
                       image={gallery.coverImageUrl || "/placeholder-image.jpg"} // Use placeholder if no image
                       alt={gallery.title}
-                      sx={{ objectFit: "cover" }} // Ensure image covers the area
+                      sx={styles.cardMedia} // Use imported style
                     />
-                    <CardContent sx={{ flexGrow: 1 }}>
+                    <CardContent sx={styles.cardContent}>
                       <Typography gutterBottom variant="h6" component="div">
                         {gallery.title}
                       </Typography>

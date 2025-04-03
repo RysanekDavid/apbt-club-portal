@@ -1,4 +1,5 @@
 import { Typography, Container, TextField, Button, Box } from "@mui/material";
+import * as styles from "./Contact.styles"; // Import styles
 
 const ContactPage = () => {
   return (
@@ -6,7 +7,7 @@ const ContactPage = () => {
       <Typography variant="h4" gutterBottom>
         Kontaktní formulář
       </Typography>
-      <Box component="form" sx={{ maxWidth: 600, mt: 3 }}>
+      <Box component="form" sx={styles.formBox}>
         <TextField
           fullWidth
           label="Jméno"
@@ -31,7 +32,12 @@ const ContactPage = () => {
           margin="normal"
           required
         />
-        <Button type="submit" variant="contained" size="large" sx={{ mt: 2 }}>
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          sx={styles.submitButton}
+        >
           Odeslat
         </Button>
       </Box>

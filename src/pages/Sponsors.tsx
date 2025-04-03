@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { getActiveSponsors } from "../services/firestore"; // Use the specific function
 import { Sponsor } from "../types/models"; // Import the Sponsor type
+import * as styles from "./Sponsors.styles"; // Import styles
 
 const SponsorsPage = () => {
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
@@ -41,19 +42,24 @@ const SponsorsPage = () => {
   }, []);
 
   return (
-    <Container sx={{ py: 4 }}>
-      <Typography variant="h4" gutterBottom align="center" sx={{ mb: 4 }}>
+    <Container sx={styles.pageContainer}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        align="center"
+        sx={styles.pageTitle}
+      >
         Sponzoři a Partneři
       </Typography>
 
       {loading && (
-        <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+        <Box sx={styles.loadingBox}>
           <CircularProgress />
         </Box>
       )}
 
       {error && (
-        <Alert severity="error" sx={{ mb: 4 }}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       )}
@@ -69,26 +75,16 @@ const SponsorsPage = () => {
           ) : (
             sponsors.map((sponsor) => (
               <Grid item key={sponsor.id} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
+                <Card sx={styles.sponsorCard}>
                   {sponsor.logoUrl && (
                     <CardMedia
                       component="img"
-                      sx={{
-                        height: 140,
-                        objectFit: "contain", // Use 'contain' to fit logo without cropping
-                        p: 2, // Add padding around the logo
-                      }}
+                      sx={styles.cardMedia}
                       image={sponsor.logoUrl}
                       alt={`${sponsor.name} logo`}
                     />
                   )}
-                  <CardContent sx={{ flexGrow: 1 }}>
+                  <CardContent sx={styles.cardContent}>
                     <Typography gutterBottom variant="h5" component="div">
                       {sponsor.name}
                     </Typography>
@@ -97,7 +93,7 @@ const SponsorsPage = () => {
                     </Typography>
                   </CardContent>
                   {sponsor.websiteUrl && ( // Only show button if websiteUrl exists
-                    <CardActions sx={{ justifyContent: "center", pb: 2 }}>
+                    <CardActions sx={styles.cardActions}>
                       <Button
                         size="small"
                         variant="contained"

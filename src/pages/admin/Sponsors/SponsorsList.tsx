@@ -20,6 +20,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { getAllDocuments, deleteDocument } from "../../../services/firestore";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
+import * as styles from "./SponsorsList.styles"; // Import styles
 
 interface Sponsor {
   id: string;
@@ -91,14 +92,7 @@ const SponsorsList = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
+      <Box sx={styles.headerBox}>
         <Typography variant="h4">Sponzoři</Typography>
         <Button
           variant="contained"
@@ -110,17 +104,17 @@ const SponsorsList = () => {
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       )}
 
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+        <Box sx={styles.loadingBox}>
           <CircularProgress />
         </Box>
       ) : sponsors.length === 0 ? (
-        <Paper sx={{ p: 3, textAlign: "center" }}>
+        <Paper sx={styles.noDataPaper}>
           <Typography variant="body1">
             Zatím nejsou přidáni žádní sponzoři.
           </Typography>
@@ -145,11 +139,7 @@ const SponsorsList = () => {
                         component="img"
                         src={sponsor.logoUrl}
                         alt={sponsor.name}
-                        sx={{
-                          maxWidth: "100px",
-                          maxHeight: "50px",
-                          objectFit: "contain",
-                        }}
+                        sx={styles.logoImage}
                       />
                     ) : (
                       "Bez loga"

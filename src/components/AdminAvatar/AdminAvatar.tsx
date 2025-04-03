@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
+import * as styles from "./AdminAvatar.styles"; // Import styles
 
 // Subtle pastel colors that are feminine but professional
 const avatarColors = ["#f8bbd0", "#e1bee7", "#d1c4e9", "#c5cae9", "#bbdefb"];
@@ -63,24 +64,19 @@ const AdminAvatar = ({ showName = true }: AdminAvatarProps) => {
   const initials = getInitials(currentUser.email || "admin");
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box sx={styles.container}>
       {showName && (
-        <Typography
-          variant="body2"
-          sx={{ mr: 1, display: { xs: "none", sm: "block" } }}
-        >
+        <Typography variant="body2" sx={styles.userName}>
           {currentUser.email}
         </Typography>
       )}
       <Tooltip title="Nastavení účtu">
-        <IconButton onClick={handleMenu} size="small" sx={{ ml: 1 }}>
+        <IconButton onClick={handleMenu} size="small" sx={styles.iconButton}>
           <Avatar
             sx={{
-              bgcolor: avatarColor,
-              width: 40,
-              height: 40,
-              fontWeight: "bold",
-              color: "#424242", // Dark gray text for contrast
+              ...styles.avatar, // Apply base styles
+              bgcolor: avatarColor, // Dynamic background color
+              color: "#424242", // Dark gray text for contrast - kept inline for specificity
             }}
           >
             {initials}
@@ -103,15 +99,15 @@ const AdminAvatar = ({ showName = true }: AdminAvatarProps) => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
-          <AccountCircleIcon fontSize="small" sx={{ mr: 1 }} />
+          <AccountCircleIcon fontSize="small" sx={styles.menuItemIcon} />
           Profil
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <SettingsIcon fontSize="small" sx={{ mr: 1 }} />
+          <SettingsIcon fontSize="small" sx={styles.menuItemIcon} />
           Nastavení
         </MenuItem>
         <MenuItem onClick={handleLogout}>
-          <LogoutIcon fontSize="small" sx={{ mr: 1 }} />
+          <LogoutIcon fontSize="small" sx={styles.menuItemIcon} />
           Odhlásit se
         </MenuItem>
       </Menu>

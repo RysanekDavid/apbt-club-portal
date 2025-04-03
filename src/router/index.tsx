@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react"; // Import Suspense and lazy
 import { Routes, Route, Navigate } from "react-router-dom";
 import PublicLayout from "../components/PublicLayout/PublicLayout";
 import { Box, CircularProgress } from "@mui/material"; // For loading indicator
+import * as styles from "./index.styles"; // Import styles
 
 // Lazy load page components
 const HomePage = lazy(() => import("../pages/Home"));
@@ -37,12 +38,7 @@ const GalleryForm = lazy(() => import("../pages/admin/Galleries/GalleryForm"));
 
 // Loading fallback component
 const LoadingFallback = () => (
-  <Box
-    display="flex"
-    justifyContent="center"
-    alignItems="center"
-    minHeight="calc(100vh - 64px)" // Adjust height based on your AppBar
-  >
+  <Box sx={styles.loadingFallbackContainer}>
     <CircularProgress />
   </Box>
 );

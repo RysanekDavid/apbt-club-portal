@@ -34,12 +34,13 @@ import {
 } from "../../../services/firestore"; // Import Firestore functions
 import { Gallery as GalleryModel } from "../../../types/models"; // Import Gallery type
 import { slugify } from "../../../utils/slugify"; // Import slugify
+import * as styles from "./GalleryForm.styles"; // Import styles
 
 // Removed unused GalleryImageData interface
 
 interface GalleryFormData {
   title: string;
-  description: string;
+  // description: string; // Removed description
   date: string; // Use string for date input initially
   coverImageUrl: string;
   coverImageName: string;
@@ -76,7 +77,7 @@ const GalleryForm: React.FC = () => {
   } = useForm<GalleryFormData>({
     defaultValues: {
       title: "",
-      description: "",
+      // description: "", // Removed description
       date: new Date().toISOString().split("T")[0], // Default to today's date
       coverImageUrl: "",
       coverImageName: "",
@@ -100,7 +101,7 @@ const GalleryForm: React.FC = () => {
       );
       reset({
         title: galleryData.title,
-        description: galleryData.description || "",
+        // description: galleryData.description || "", // Removed description
         date: galleryData.date.toISOString().split("T")[0], // Format date for input
         coverImageUrl: galleryData.coverImageUrl || "",
         coverImageName: galleryData.coverImageName || "",
@@ -166,10 +167,10 @@ const GalleryForm: React.FC = () => {
       // 2. Prepare gallery data with all images (existing + newly uploaded)
       const galleryData: Omit<
         GalleryModel,
-        "id" | "createdAt" | "updatedAt"
+        "id" | "createdAt" | "updatedAt" | "description" // Also omit description
       > & { createdAt?: Date; updatedAt?: Date } = {
         title: data.title,
-        description: data.description,
+        // description: data.description, // Removed description
         date: new Date(data.date), // Convert string date back to Date object
         coverImageUrl: data.coverImageUrl,
         coverImageName: data.coverImageName,
@@ -247,7 +248,7 @@ const GalleryForm: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+      <Box sx={styles.loadingBox}>
         <CircularProgress />
       </Box>
     );
@@ -255,14 +256,7 @@ const GalleryForm: React.FC = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
+      <Box sx={styles.headerBox}>
         <Typography variant="h4">
           {isEditMode ? "Upravit galerii" : "Přidat novou galerii"}
         </Typography>
@@ -276,12 +270,12 @@ const GalleryForm: React.FC = () => {
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       )}
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={styles.formPaper}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={8}>
@@ -320,24 +314,7 @@ const GalleryForm: React.FC = () => {
                 )}
               />
             </Grid>
-            <Grid item xs={12}>
-              <Controller
-                name="description"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Popis galerie"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    error={!!errors.description}
-                    helperText={errors.description?.message}
-                    disabled={submitting}
-                  />
-                )}
-              />
-            </Grid>
+            {/* Removed Description Grid Item */}
 
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
@@ -359,7 +336,11 @@ const GalleryForm: React.FC = () => {
                 )}
               />
               {errors.coverImageUrl && (
-                <Typography color="error" variant="caption" sx={{ mt: 1 }}>
+                <Typography
+                  color="error"
+                  variant="caption"
+                  sx={styles.coverImageErrorText}
+                >
                   {errors.coverImageUrl.message ||
                     "Prosím, nahrajte titulní obrázek."}
                 </Typography>
@@ -376,7 +357,7 @@ const GalleryForm: React.FC = () => {
                 component="label"
                 startIcon={<CloudUploadIcon />}
                 disabled={submitting}
-                sx={{ mb: 1 }}
+                sx={styles.uploadButton}
               >
                 Vybrat obrázky
                 <input
@@ -391,7 +372,7 @@ const GalleryForm: React.FC = () => {
 
               {/* Display selected files for upload */}
               {selectedFiles.length > 0 && (
-                <Paper variant="outlined" sx={{ p: 1, mb: 2 }}>
+                <Paper variant="outlined" sx={styles.selectedFilesPaper}>
                   <Typography variant="caption" display="block" gutterBottom>
                     Soubory k nahrání:
                   </Typography>
@@ -420,7 +401,7 @@ const GalleryForm: React.FC = () => {
 
               {/* Display existing/uploaded images */}
               {galleryImages.length > 0 && (
-                <Paper variant="outlined" sx={{ p: 1 }}>
+                <Paper variant="outlined" sx={styles.uploadedImagesPaper}>
                   <Typography variant="caption" display="block" gutterBottom>
                     Nahrané obrázky:
                   </Typography>
@@ -479,18 +460,14 @@ const GalleryForm: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Divider sx={{ my: 2 }} />
+              <Divider sx={styles.formDivider} />
             </Grid>
 
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
-            >
+            <Grid item xs={12} sx={styles.actionsGrid}>
               <Button
                 variant="outlined"
                 onClick={handleCancel}
-                sx={{ mr: 2 }}
+                sx={styles.cancelButton}
                 disabled={submitting}
               >
                 Zrušit

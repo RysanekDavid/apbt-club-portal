@@ -14,9 +14,9 @@ import {
   useTheme, // Import useTheme for accessing theme properties
   useMediaQuery, // Import useMediaQuery for responsive design
 } from "@mui/material";
-// Import illustrations
 import illustration1 from "../../assets/illustration1.png";
 import illustration2 from "../../assets/illustration2.png";
+import * as styles from "./Login.styles"; // Import styles
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -57,14 +57,10 @@ const AdminLogin = () => {
   };
 
   return (
-    <Container
-      maxWidth={false}
-      disableGutters
-      sx={{ minHeight: "100vh", display: "flex" }}
-    >
+    <Container maxWidth={false} disableGutters sx={styles.rootContainer}>
       <Grid
         container
-        sx={{ flexGrow: 1 }}
+        sx={styles.gridContainer}
         alignItems="center"
         justifyContent="center"
       >
@@ -72,55 +68,21 @@ const AdminLogin = () => {
         {isMdUp ? (
           <>
             {/* Left Column: Illustration 1 */}
-            <Grid
-              item
-              md={4} // Adjusted column size (e.g., 4/12)
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                p: 4,
-                height: "100vh",
-              }}
-            >
+            <Grid item md={4} sx={styles.illustrationColumn}>
               <Box
                 component="img"
                 src={illustration1}
                 onLoad={() => setIsImage1Loaded(true)} // Add onLoad handler
                 alt="Illustration 1"
-                sx={{
-                  maxWidth: "60%", // Reduced size
-                  maxHeight: "60%", // Reduced size
-                  height: "auto",
-                  width: "auto",
-                }}
+                sx={styles.illustrationImage}
               />
             </Grid>
 
             {/* Middle Column: Login Form */}
-            <Grid
-              item
-              xs={12} // Fallback for smaller screens if needed, but handled below
-              md={4} // Adjusted column size (e.g., 4/12)
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                p: 4,
-              }}
-            >
+            <Grid item xs={12} md={4} sx={styles.formColumn}>
               <Paper
                 elevation={0} // No shadow needed in 3-col layout
-                sx={{
-                  p: 4,
-                  width: "100%",
-                  maxWidth: 400,
-                  border: `1px solid ${theme.palette.divider}`,
-                  borderRadius: theme.shape.borderRadius,
-                  // Apply conditional opacity and transition
-                  opacity: isImage1Loaded && isImage2Loaded ? 1 : 0,
-                  transition: "opacity 0.5s ease-in-out",
-                }}
+                sx={styles.formPaperMd(theme, isImage1Loaded, isImage2Loaded)}
               >
                 <Typography
                   variant="h4"
@@ -132,7 +94,7 @@ const AdminLogin = () => {
                 </Typography>
 
                 {error && (
-                  <Alert severity="error" sx={{ mb: 2 }}>
+                  <Alert severity="error" sx={styles.errorAlert}>
                     {error}
                   </Alert>
                 )}
@@ -168,7 +130,7 @@ const AdminLogin = () => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={styles.submitButton}
                     disabled={loading}
                   >
                     {loading ? <CircularProgress size={24} /> : "Přihlásit se"}
@@ -178,51 +140,20 @@ const AdminLogin = () => {
             </Grid>
 
             {/* Right Column: Illustration 2 */}
-            <Grid
-              item
-              md={4} // Adjusted column size (e.g., 4/12)
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                p: 4,
-                height: "100vh",
-              }}
-            >
+            <Grid item md={4} sx={styles.illustrationColumn}>
               <Box
                 component="img"
                 src={illustration2}
                 onLoad={() => setIsImage2Loaded(true)} // Add onLoad handler
                 alt="Illustration 2"
-                sx={{
-                  maxWidth: "60%", // Reduced size
-                  maxHeight: "60%", // Reduced size
-                  height: "auto",
-                  width: "auto",
-                }}
+                sx={styles.illustrationImage}
               />
             </Grid>
           </>
         ) : (
           // Layout for small screens (single column, form only)
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              p: 4,
-            }}
-          >
-            <Paper
-              elevation={3} // Add shadow back for stacked view
-              sx={{
-                p: 4,
-                width: "100%",
-                maxWidth: 400, // Limit form width
-              }}
-            >
+          <Grid item xs={12} sx={styles.formColumn}>
+            <Paper elevation={3} sx={styles.formPaperSm}>
               <Typography
                 variant="h4"
                 component="h1"
@@ -233,7 +164,7 @@ const AdminLogin = () => {
               </Typography>
 
               {error && (
-                <Alert severity="error" sx={{ mb: 2 }}>
+                <Alert severity="error" sx={styles.errorAlert}>
                   {error}
                 </Alert>
               )}
@@ -269,7 +200,7 @@ const AdminLogin = () => {
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={styles.submitButton}
                   disabled={loading}
                 >
                   {loading ? <CircularProgress size={24} /> : "Přihlásit se"}

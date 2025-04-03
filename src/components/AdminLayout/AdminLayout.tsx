@@ -24,8 +24,8 @@ import HandshakeIcon from "@mui/icons-material/Handshake";
 import DescriptionIcon from "@mui/icons-material/Description";
 import HomeIcon from "@mui/icons-material/Home";
 import AdminAvatar from "../AdminAvatar/AdminAvatar";
-// Paw images are now used in PawBackground component
 import PawBackground from "../PawBackground/PawBackground"; // Import the new component
+import * as styles from "./AdminLayout.styles"; // Import styles
 
 const drawerWidth = 240;
 
@@ -96,25 +96,24 @@ const AdminLayout = () => {
   );
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
+    <Box sx={styles.rootBox}>
+      <AppBar position="fixed" sx={styles.appBar(drawerWidth)}>
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={styles.menuButton}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={styles.appBarTitle}
+          >
             Administrace KLUB APBT
           </Typography>
           <AdminAvatar />
@@ -122,7 +121,7 @@ const AdminLayout = () => {
       </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={styles.navBox(drawerWidth)}
         aria-label="mailbox folders"
       >
         <Drawer
@@ -132,47 +131,23 @@ const AdminLayout = () => {
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
+          sx={styles.mobileDrawer(drawerWidth)}
         >
           {drawer}
         </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
+        <Drawer variant="permanent" sx={styles.desktopDrawer(drawerWidth)} open>
           {drawer}
         </Drawer>
       </Box>
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          mt: 8, // Margin top for AppBar
-          minHeight: "calc(100vh - 64px)", // Adjust based on AppBar height (mt: 8 is 64px)
-          position: "relative", // Needed for PawBackground absolute positioning
-          // Remove background image styles from here
-          // Keep background color for overlay effect
+          ...styles.mainContentBox(drawerWidth),
+          // Keep theme-dependent background color inline
           backgroundColor:
             theme.palette.mode === "dark"
               ? "rgba(33, 33, 33, 0.97)"
               : "rgba(255, 255, 255, 0.95)",
-          // Ensure content is above the background component
-          zIndex: 0,
         }}
       >
         <PawBackground /> {/* Add the PawBackground component */}

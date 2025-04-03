@@ -29,6 +29,7 @@ import {
 } from "../../../services/firestore";
 import { Event } from "../../../types/models";
 import { slugify, generateUniqueSlug } from "../../../utils/slugify";
+import * as styles from "./EventForm.styles"; // Import styles
 
 interface EventFormData {
   title: string;
@@ -157,7 +158,7 @@ const EventForm = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+      <Box sx={styles.loadingBox}>
         <CircularProgress />
       </Box>
     );
@@ -165,14 +166,7 @@ const EventForm = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
+      <Box sx={styles.headerBox}>
         <Typography variant="h4">
           {isEditMode ? "Upravit akci" : "Přidat akci"}
         </Typography>
@@ -186,12 +180,12 @@ const EventForm = () => {
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       )}
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={styles.formPaper}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -297,7 +291,7 @@ const EventForm = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Divider sx={{ my: 2 }} />
+              <Divider sx={styles.formDivider} />
               <Controller
                 name="published"
                 control={control}
@@ -316,15 +310,11 @@ const EventForm = () => {
               />
             </Grid>
 
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
-            >
+            <Grid item xs={12} sx={styles.actionsGrid}>
               <Button
                 variant="outlined"
                 onClick={handleCancel}
-                sx={{ mr: 2 }}
+                sx={styles.cancelButton}
                 disabled={submitting}
               >
                 Zrušit

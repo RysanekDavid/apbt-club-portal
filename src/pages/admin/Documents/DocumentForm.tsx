@@ -23,6 +23,7 @@ import {
   updateDocument,
 } from "../../../services/firestore"; // Import Firestore functions
 import { Document as DocumentModel } from "../../../types/models"; // Import Document type
+import * as styles from "./DocumentForm.styles"; // Import styles
 
 interface DocumentFormData {
   title: string;
@@ -153,7 +154,7 @@ const DocumentForm: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+      <Box sx={styles.loadingBox}>
         <CircularProgress />
       </Box>
     );
@@ -161,14 +162,7 @@ const DocumentForm: React.FC = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
+      <Box sx={styles.headerBox}>
         <Typography variant="h4">
           {isEditMode ? "Upravit dokument" : "Přidat nový dokument"}
         </Typography>
@@ -182,12 +176,12 @@ const DocumentForm: React.FC = () => {
       </Box>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }}>
+        <Alert severity="error" sx={styles.errorAlert}>
           {error}
         </Alert>
       )}
 
-      <Paper sx={{ p: 3 }}>
+      <Paper sx={styles.formPaper}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -254,13 +248,17 @@ const DocumentForm: React.FC = () => {
               />
               {/* Display error message specifically for file upload */}
               {errors.fileUrl && (
-                <Typography color="error" variant="caption" sx={{ mt: 1 }}>
+                <Typography
+                  color="error"
+                  variant="caption"
+                  sx={styles.fileErrorText}
+                >
                   {errors.fileUrl.message || "Prosím, nahrajte soubor."}
                 </Typography>
               )}
               {/* Removed file type/size display */}
               {watch("fileName") && (
-                <Typography variant="body2" sx={{ mt: 1 }}>
+                <Typography variant="body2" sx={styles.fileNameText}>
                   Nahraný soubor: {watch("fileName")}
                 </Typography>
               )}
@@ -286,18 +284,14 @@ const DocumentForm: React.FC = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Divider sx={{ my: 2 }} />
+              <Divider sx={styles.formDivider} />
             </Grid>
 
-            <Grid
-              item
-              xs={12}
-              sx={{ display: "flex", justifyContent: "flex-end" }}
-            >
+            <Grid item xs={12} sx={styles.actionsGrid}>
               <Button
                 variant="outlined"
                 onClick={handleCancel}
-                sx={{ mr: 2 }}
+                sx={styles.cancelButton}
                 disabled={submitting}
               >
                 Zrušit

@@ -24,7 +24,7 @@ export interface Event extends BaseModel {
 // Gallery model
 export interface Gallery extends BaseModel {
   title: string;
-  description: string;
+  description?: string; // Made description optional
   date: Date;
   coverImageUrl: string;
   coverImageName: string;

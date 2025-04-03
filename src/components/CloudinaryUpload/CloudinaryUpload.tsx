@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DeleteIcon from "@mui/icons-material/Delete";
+import * as styles from "./CloudinaryUpload.styles"; // Import styles
 
 interface CloudinaryUploadProps {
   folder: string;
@@ -108,7 +109,7 @@ const CloudinaryUpload = ({
       fileUrl.includes(".webp"));
 
   return (
-    <Box sx={{ mb: 3 }}>
+    <Box sx={styles.rootBox}>
       <Typography variant="subtitle1" gutterBottom>
         {label}
       </Typography>
@@ -119,7 +120,7 @@ const CloudinaryUpload = ({
           component="label"
           startIcon={<CloudUploadIcon />}
           disabled={uploading}
-          sx={{ mb: 2 }}
+          sx={styles.uploadButton}
         >
           {uploading ? <CircularProgress size={24} /> : buttonText}
           <input
@@ -133,7 +134,7 @@ const CloudinaryUpload = ({
       )}
 
       {uploading && (
-        <Box sx={{ width: "100%", mt: 2 }}>
+        <Box sx={styles.progressBox}>
           <LinearProgress variant="determinate" value={progress} />
           <Typography variant="body2" color="text.secondary" align="center">
             {Math.round(progress)}%
@@ -142,50 +143,27 @@ const CloudinaryUpload = ({
       )}
 
       {error && (
-        <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+        <Typography variant="body2" color="error" sx={styles.errorText}>
           {error}
         </Typography>
       )}
 
       {fileUrl && (
-        <Box
-          sx={{
-            mt: 2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-          }}
-        >
+        <Box sx={styles.filePreviewContainer}>
           {isImage ? (
             <Box
               component="img"
               src={fileUrl}
               alt={fileName}
-              sx={{
-                maxWidth: "100%",
-                maxHeight: "200px",
-                objectFit: "contain",
-                mb: 1,
-                border: "1px solid #ddd",
-                borderRadius: 1,
-              }}
+              sx={styles.imagePreview}
             />
           ) : (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                p: 2,
-                border: "1px solid #ddd",
-                borderRadius: 1,
-                mb: 1,
-              }}
-            >
+            <Box sx={styles.fileInfoBox}>
               <Typography variant="body2">{fileName}</Typography>
             </Box>
           )}
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography variant="body2" sx={{ mr: 1 }}>
+          <Box sx={styles.fileNameContainer}>
+            <Typography variant="body2" sx={styles.fileNameText}>
               {fileName}
             </Typography>
             <IconButton
