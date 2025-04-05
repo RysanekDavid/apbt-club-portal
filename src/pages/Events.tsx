@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
   Typography,
   Container,
-  Grid, // Use standard Grid import for v6
+  Grid,
   Card,
   CardContent,
   CardMedia,
@@ -12,23 +12,22 @@ import {
   Alert,
   Button,
 } from "@mui/material";
-// import Grid from "@mui/material/Unstable_Grid2"; // Remove incorrect v2 import path
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import AccessTimeIcon from "@mui/icons-material/AccessTime"; // Import AccessTime icon
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
 import { getUpcomingEvents, getPastEvents } from "../services/firestore";
-import { Event as EventModel } from "../types/models"; // Renamed Event to EventModel to avoid conflict
-import placeholderImage from "../assets/image_placeholder.jpg"; // Corrected import extension
-import * as styles from "./Events.styles"; // Import styles
+import { Event as EventModel } from "../types/models";
+import placeholderImage from "../assets/image_placeholder.jpg";
+import * as styles from "./Events.styles";
 
 const EventsPage = () => {
   const [upcomingEvents, setUpcomingEvents] = useState<EventModel[]>([]);
   const [pastEvents, setPastEvents] = useState<EventModel[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [expandedEventId, setExpandedEventId] = useState<string | null>(null); // State for expanded description
+  const [expandedEventId, setExpandedEventId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -62,10 +61,9 @@ const EventsPage = () => {
 
   const renderEventCard = (event: EventModel) => {
     const isExpanded = expandedEventId === event.id;
-    const descriptionNeedsTruncation = event.description.length > 150; // Adjust truncation length if needed
+    const descriptionNeedsTruncation = event.description.length > 150;
 
     return (
-      // Wrap card in Grid item for multi-column layout
       <Grid item xs={12} sm={6} md={4} key={event.id}>
         <Card sx={styles.eventCard}>
           <CardMedia
@@ -76,15 +74,13 @@ const EventsPage = () => {
           />
           <CardContent sx={styles.cardContent}>
             <Typography
-              variant="h5" // Adjusted heading size
+              variant="h5"
               component="div"
               gutterBottom
               sx={styles.eventTitle}
             >
               {event.title}
             </Typography>
-
-            {/* Info Section */}
             <Box sx={styles.infoContainer}>
               <Box sx={styles.infoItem}>
                 <CalendarMonthIcon sx={styles.infoIcon} />
@@ -92,7 +88,6 @@ const EventsPage = () => {
                   {formatDate(event.date)}
                 </Typography>
               </Box>
-              {/* Display Time if available */}
               {event.time && (
                 <Box sx={styles.infoItem}>
                   <AccessTimeIcon sx={styles.infoIcon} />
@@ -108,31 +103,26 @@ const EventsPage = () => {
                 </Typography>
               </Box>
             </Box>
-
-            {/* Description */}
             <Typography
               variant="body2"
-              color="text.secondary" // Use secondary color for description
+              color="text.secondary"
               sx={styles.descriptionText}
               dangerouslySetInnerHTML={{
                 __html:
                   isExpanded || !descriptionNeedsTruncation
                     ? event.description
-                    : `${event.description.substring(0, 150)}...`, // Use adjusted length
+                    : `${event.description.substring(0, 150)}...`,
               }}
             />
-
-            {/* Learn More / Toggle Button */}
             {descriptionNeedsTruncation ? (
               <Button
                 size="small"
                 onClick={() => setExpandedEventId(isExpanded ? null : event.id)}
-                sx={styles.learnMoreButton} // Use new style name
+                sx={styles.learnMoreButton}
               >
                 {isExpanded ? "Skrýt" : "Číst dále"}
               </Button>
             ) : null}
-            {/* Render nothing if description doesn't need truncation */}
           </CardContent>
         </Card>
       </Grid>
@@ -140,6 +130,7 @@ const EventsPage = () => {
   };
 
   if (loading) {
+    // Render loading state within the main structure if needed, or keep separate
     return (
       <Container sx={styles.pageContainer}>
         <Box sx={styles.loadingBox}>
@@ -150,6 +141,7 @@ const EventsPage = () => {
   }
 
   if (error) {
+    // Render error state within the main structure if needed, or keep separate
     return (
       <Container sx={styles.pageContainer}>
         <Alert severity="error" sx={styles.errorAlert}>
@@ -160,43 +152,62 @@ const EventsPage = () => {
   }
 
   return (
-    <Container sx={styles.pageContainer}>
-      <Typography variant="h4" gutterBottom>
-        Akce klubu
-      </Typography>
+    <>
+      {/* Hero section */}
+      <Box sx={styles.heroSection}>
+        <Box sx={styles.heroOverlay}>
+          <Container maxWidth="md" sx={styles.heroContent}>
+            <Typography variant="h2" component="h1" sx={styles.heroTitle}>
+              Akce
+            </Typography>
+            <Typography variant="body1" sx={styles.heroSubtitle}>
+              Objevte naše nadcházející akce a ohlédněte se za minulými
+              setkáními
+            </Typography>
+          </Container>
+        </Box>
+      </Box>
 
-      {upcomingEvents.length > 0 && (
-        <>
-          <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
-            Nadcházející akce
-          </Typography>
-          <Divider sx={styles.sectionDivider} />
-          {/* Grid container for the cards */}
-          <Grid container spacing={3}>
-            {upcomingEvents.map(renderEventCard)}
-          </Grid>
-        </>
-      )}
+      {/* Existing Content Wrapped in Container */}
+      <Container sx={styles.pageContainer}>
+        {/* Removed original h4 title */}
+        {/* <Typography variant="h4" gutterBottom> Akce klubu </Typography> */}
 
-      {pastEvents.length > 0 && (
-        <>
-          <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
-            Proběhlé akce
-          </Typography>
-          <Divider sx={styles.sectionDivider} />
-          {/* Grid container for the cards */}
-          <Grid container spacing={3}>
-            {pastEvents.map(renderEventCard)}
-          </Grid>
-        </>
-      )}
+        {upcomingEvents.length > 0 && (
+          <Box mb={4}>
+            {" "}
+            {/* Added Box wrapper with margin */}
+            <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
+              Nadcházející akce
+            </Typography>
+            <Divider sx={styles.sectionDivider} />
+            <Grid container spacing={3}>
+              {upcomingEvents.map(renderEventCard)}
+            </Grid>
+          </Box>
+        )}
 
-      {upcomingEvents.length === 0 && pastEvents.length === 0 && (
-        <Alert severity="info" sx={styles.noEventsAlert}>
-          Momentálně nejsou naplánovány žádné akce.
-        </Alert>
-      )}
-    </Container>
+        {pastEvents.length > 0 && (
+          <Box mb={4}>
+            {" "}
+            {/* Added Box wrapper with margin */}
+            <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
+              Proběhlé akce
+            </Typography>
+            <Divider sx={styles.sectionDivider} />
+            <Grid container spacing={3}>
+              {pastEvents.map(renderEventCard)}
+            </Grid>
+          </Box>
+        )}
+
+        {upcomingEvents.length === 0 && pastEvents.length === 0 && (
+          <Alert severity="info" sx={styles.noEventsAlert}>
+            Momentálně nejsou naplánovány žádné akce.
+          </Alert>
+        )}
+      </Container>
+    </>
   );
 };
 

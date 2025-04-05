@@ -11,27 +11,38 @@ export default {
   "homepage.quote":
     "Together we build better awareness of this exceptional breed",
   // New combined key
+  "homepage.heroTitle": "APBT Club CZ", // Added from template
   "homepage.heroSubtitle":
     "Welcome to the official website of the American Pit Bull Terrier Club. We support responsible breeding, training, and a community of enthusiasts. The American Pit Bull Terrier is an athletically built, muscular to sinewy dog. It captivates people with its strength, passion, determination, and above all, its desire to win.",
+  "homepage.heroButtonEvents": "Upcoming Events", // Added from template
+  "homepage.heroButtonAbout": "About the Club", // Added from template
+  "homepage.exploreTitle": "Explore Our Club", // Added from template
+  "homepage.exploreSubtitle":
+    "Learn more about our activities, membership, and the community of American Pit Bull Terrier lovers", // Added from template
   "homepage.eventsTitle": "Upcoming Events",
   "homepage.eventsDesc":
     "Check out planned shows, competitions, and other club events.",
-  "homepage.eventsButton": "View Events",
+  // "homepage.eventsButton": "View Events", // Button removed from card in template
   "homepage.aboutTitle": "About Us / Membership",
   "homepage.aboutDesc":
     "Learn more about our history, goals, and the benefits of club membership.",
-  "homepage.aboutButton": "More About Us",
+  // "homepage.aboutButton": "More About Us", // Button removed from card in template
   "homepage.contactTitle": "Contact Us",
   "homepage.contactDesc":
     "Have questions or want to get involved? Feel free to contact us.",
-  "homepage.contactButton": "Contact Details",
+  // "homepage.contactButton": "Contact Details", // Button removed from card in template
   "homepage.sponsorsTitle": "Our Sponsors",
   "homepage.sponsorsDesc": "See who supports our club and its activities.",
-  "homepage.sponsorsButton": "View Sponsors",
+  // "homepage.sponsorsButton": "View Sponsors", // Button removed from card in template
   "homepage.galleryTitle": "Gallery",
   "homepage.galleryDesc": "Browse photos from our events and shows.",
-  "homepage.galleryButton": "Enter Gallery",
-  "homepage.heroButton": "Contact Us",
+  // "homepage.galleryButton": "Enter Gallery", // Button removed from card in template
+  // "homepage.heroButton": "Contact Us", // Replaced by two specific buttons
+  "homepage.ctaTitle": "Become a Member of Our Club", // Added from template
+  "homepage.ctaSubtitle":
+    "Join our community of enthusiasts and gain access to exclusive events, information, and support for you and your dog.", // Added from template
+  "homepage.ctaButton": "Learn More About Membership", // Added from template
+
   "history.paragraph1":
     "The club was founded in 1998 for the purpose of supporting and educating about probably the most discussed breed of the last two decades.",
   "history.paragraph2":

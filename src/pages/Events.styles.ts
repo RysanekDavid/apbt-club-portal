@@ -1,7 +1,45 @@
 import { SxProps, Theme } from "@mui/material/styles";
 
+// --- Hero Section Styles (similar to Documents) ---
+export const heroSection: SxProps<Theme> = {
+  position: "relative",
+  height: { xs: "20vh", sm: "25vh" },
+  minHeight: "180px",
+  width: "100%",
+  backgroundColor: "black",
+  color: "white",
+  mb: 4, // Adjusted margin bottom for Events page
+};
+
+export const heroOverlay: SxProps<Theme> = {
+  position: "absolute",
+  inset: 0,
+  backgroundColor: "rgba(0, 0, 0, 0.7)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+export const heroContent: SxProps<Theme> = {
+  textAlign: "center",
+  px: 2,
+};
+
+export const heroTitle: SxProps<Theme> = {
+  mb: 1,
+  fontWeight: "bold",
+  letterSpacing: "tight",
+};
+
+export const heroSubtitle: SxProps<Theme> = (theme) => ({
+  maxWidth: "600px",
+  color: theme.palette.grey[300],
+  mx: "auto",
+});
+
+// --- Existing Styles ---
 export const pageContainer: SxProps<Theme> = {
-  pt: 4, // Keep padding top
+  // pt: 4, // Padding top is handled by hero section margin bottom
   pb: 8, // Increase padding bottom significantly for scroll room
 };
 

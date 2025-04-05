@@ -15,18 +15,35 @@ import {
   CircularProgress,
   Alert,
   Chip,
-  Avatar, // To display cover image thumbnail
+  Avatar,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-// import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary"; // Icon for view/manage images (future) - Removed as unused
-import { getAllDocuments, deleteDocument } from "../../../services/firestore";
+import {
+  getAllDocuments,
+  deleteDocument,
+  getDocumentById,
+} from "../../../services/firestore";
+import { deleteFromCloudinary } from "../../../services/cloudinary";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
-import { Gallery as GalleryModel } from "../../../types/models"; // Rename imported type
+import { Gallery as GalleryModel } from "../../../types/models"; // Removed ImageModel import
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
-import * as styles from "./GalleriesList.styles"; // Import styles
+import * as styles from "./GalleriesList.styles";
+
+// Helper function to extract publicId from Cloudinary URL
+const getPublicIdFromUrl = (url: string): string | null => {
+  try {
+    const regex = /\/upload\/(?:v\d+\/)?([^\.]+)/;
+    const match = url.match(regex);
+    // The public ID might include folder structure, which is correct
+    return match ? match[1] : null;
+  } catch (e) {
+    console.error("Error extracting publicId from URL:", e);
+    return null;
+  }
+};
 
 const GalleriesList: React.FC = () => {
   const navigate = useNavigate();
@@ -43,7 +60,6 @@ const GalleriesList: React.FC = () => {
   const fetchGalleries = async () => {
     try {
       setLoading(true);
-      // Fetch galleries, order by date descending
       const galleriesData = await getAllDocuments<GalleryModel>(
         "galleries",
         "date",
@@ -67,12 +83,6 @@ const GalleriesList: React.FC = () => {
     navigate(`/admin/galleries/edit/${id}`);
   };
 
-  // Removed unused function handleManageImages
-  // const handleManageImages = (id: string) => {
-  //   console.log("Navigate to manage images for gallery:", id);
-  //   // navigate(`/admin/galleries/${id}/images`); // Example future route
-  // };
-
   const handleDeleteClick = (id: string) => {
     setGalleryToDelete(id);
     setDeleteDialogOpen(true);
@@ -81,17 +91,59 @@ const GalleriesList: React.FC = () => {
   const handleDeleteConfirm = async () => {
     if (!galleryToDelete) return;
 
+    setLoading(true);
+    setError("");
+
     try {
-      // TODO: Consider deleting associated images from Cloudinary and Firestore subcollections
+      // 1. Fetch gallery details to get image URLs
+      const galleryDoc = await getDocumentById<GalleryModel>(
+        "galleries",
+        galleryToDelete
+      );
+
+      // 2. Attempt to delete images from Cloudinary
+      if (galleryDoc && galleryDoc.images && galleryDoc.images.length > 0) {
+        console.log(
+          `Attempting to delete ${galleryDoc.images.length} images from Cloudinary for gallery ${galleryToDelete}...`
+        );
+        const deletePromises = galleryDoc.images.map(
+          (image: { url: string; fileName: string }) => {
+            // Use inline type
+            const publicId = getPublicIdFromUrl(image.url);
+            if (publicId) {
+              // Call the (currently logging) delete function
+              return deleteFromCloudinary(publicId);
+            } else {
+              console.warn(`Could not extract publicId from URL: ${image.url}`);
+              return Promise.resolve(false); // Resolve promise even if extraction fails
+            }
+          }
+        );
+
+        await Promise.allSettled(deletePromises);
+        console.log(
+          `Cloudinary deletion calls completed for gallery ${galleryToDelete}.`
+        );
+      } else {
+        console.log(
+          `No images found in gallery ${galleryToDelete} to delete from Cloudinary.`
+        );
+      }
+
+      // 3. Delete the gallery document from Firestore
       await deleteDocument("galleries", galleryToDelete);
+
+      // 4. Update local state
       setGalleries((prevGalleries) =>
         prevGalleries.filter((gallery) => gallery.id !== galleryToDelete)
       );
-      setDeleteDialogOpen(false);
-      setGalleryToDelete(null);
     } catch (err) {
       console.error("Error deleting gallery:", err);
       setError("Nepodařilo se smazat galerii. Zkuste to prosím znovu.");
+    } finally {
+      setLoading(false);
+      setDeleteDialogOpen(false);
+      setGalleryToDelete(null);
     }
   };
 
@@ -152,7 +204,7 @@ const GalleriesList: React.FC = () => {
                     <Avatar
                       src={gallery.coverImageUrl}
                       alt={gallery.title}
-                      variant="rounded" // Or "square"
+                      variant="rounded"
                       sx={styles.thumbnailAvatar}
                     />
                   </TableCell>
@@ -166,15 +218,6 @@ const GalleriesList: React.FC = () => {
                     />
                   </TableCell>
                   <TableCell>
-                    {/* TODO: Re-enable when image management page exists */}
-                    {/* <IconButton
-                       color="info"
-                       onClick={() => handleManageImages(gallery.id)}
-                       size="small"
-                       title="Spravovat obrázky"
-                     >
-                       <PhotoLibraryIcon />
-                     </IconButton> */}
                     <IconButton
                       color="primary"
                       onClick={() => handleEditGallery(gallery.id)}
@@ -202,7 +245,7 @@ const GalleriesList: React.FC = () => {
       <ConfirmDialog
         open={deleteDialogOpen}
         title="Smazat galerii"
-        message="Opravdu chcete smazat tuto galerii? Budou smazány i všechny přiřazené obrázky (TODO: implementovat mazání obrázků)."
+        message="Opravdu chcete smazat tuto galerii? Tímto smažete i všechny přiřazené obrázky. Tato akce je nevratná." // Corrected message
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />

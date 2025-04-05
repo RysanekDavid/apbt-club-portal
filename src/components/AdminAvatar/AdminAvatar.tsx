@@ -11,8 +11,6 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import SettingsIcon from "@mui/icons-material/Settings";
 import * as styles from "./AdminAvatar.styles"; // Import styles
 
 // Subtle pastel colors that are feminine but professional
@@ -98,14 +96,8 @@ const AdminAvatar = ({ showName = true }: AdminAvatarProps) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>
-          <AccountCircleIcon fontSize="small" sx={styles.menuItemIcon} />
-          Profil
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <SettingsIcon fontSize="small" sx={styles.menuItemIcon} />
-          Nastavení
-        </MenuItem>
+        {/* Removed Profil MenuItem */}
+        {/* Removed Nastavení MenuItem */}
         <MenuItem onClick={handleLogout}>
           <LogoutIcon fontSize="small" sx={styles.menuItemIcon} />
           Odhlásit se

@@ -178,7 +178,8 @@ export default function HistoryPage() {
               <Typography variant="h5" component="h2" sx={styles.sectionTitle}>
                 Důležité milníky
               </Typography>
-              <Divider sx={styles.headingDivider} />
+              <Divider sx={{ my: 2 }} />{" "}
+              {/* Added full-width divider below title */}
             </Box>
             <Timeline position="alternate">
               {milestones.map((milestone, index) => (
@@ -192,7 +193,8 @@ export default function HistoryPage() {
                     )}
                   </TimelineSeparator>
                   <TimelineContent sx={{ py: "12px", px: 2 }}>
-                    <Paper elevation={3} sx={{ p: 2 }}>
+                    {/* Applied timelineItemPaper style */}
+                    <Paper elevation={3} sx={styles.timelineItemPaper}>
                       <Typography
                         variant="caption"
                         color="primary"
@@ -215,12 +217,15 @@ export default function HistoryPage() {
           </Box>
 
           {/* Activities Section */}
-          <Box>
+          <Box sx={{ mb: 6 }}>
+            {" "}
+            {/* Added margin-bottom */}
             <Box sx={styles.sectionHeader}>
               <Typography variant="h5" component="h2" sx={styles.sectionTitle}>
                 Naše aktivity
               </Typography>
-              <Divider sx={styles.headingDivider} />
+              <Divider sx={{ my: 2 }} />{" "}
+              {/* Added full-width divider below title */}
             </Box>
             <Grid container spacing={3}>
               {activities.map((activity, index) => (

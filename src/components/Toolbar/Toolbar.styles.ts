@@ -16,6 +16,8 @@ export const Root = styled(MuiToolbar)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   boxShadow: theme.shadows[2], // Add subtle elevation
+  zIndex: theme.zIndex.appBar, // Ensure toolbar is above standard content
+  position: "relative", // Needed for z-index to work reliably with MobileNav
   // Adjust justification for mobile within the Root itself
   [theme.breakpoints.down("md")]: {
     justifyContent: "space-between", // Space out Logo and RightSection

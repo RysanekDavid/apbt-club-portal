@@ -63,13 +63,17 @@ export const quoteContainer: SxProps<Theme> = {
   my: 6, // Margin top and bottom
 };
 
-export const quotePaper: SxProps<Theme> = {
+export const quotePaper: SxProps<Theme> = (theme) => ({
+  // Added theme parameter
   p: 4,
   textAlign: "center",
-  backgroundColor: "grey.50", // Light background
-  border: (theme) => `1px solid ${theme.palette.divider}`,
+  backgroundColor:
+    theme.palette.mode === "dark"
+      ? theme.palette.grey[900]
+      : theme.palette.grey[50], // Darker background in dark mode
+  border: `1px solid ${theme.palette.divider}`,
   boxShadow: "none", // Remove default shadow if desired
-};
+});
 
 export const quoteIcon: SxProps<Theme> = {
   color: "primary.main",
@@ -77,33 +81,42 @@ export const quoteIcon: SxProps<Theme> = {
   mb: 1,
 };
 
-export const quoteText: SxProps<Theme> = {
+export const quoteText: SxProps<Theme> = (theme) => ({
+  // Added theme parameter
   fontStyle: "italic",
-  color: "text.secondary",
-};
+  color:
+    theme.palette.mode === "dark"
+      ? theme.palette.text.primary
+      : theme.palette.text.secondary, // Ensure text is visible in dark mode
+});
 
-// Section Header (Title + Divider)
+// Timeline Item Paper
+export const timelineItemPaper: SxProps<Theme> = (theme) => ({
+  // Added theme parameter
+  p: 2, // Keep padding
+  border: `1px solid ${theme.palette.divider}`, // Add border similar to document cards
+  // elevation={3} is handled in the component, but we could override shadow here if needed
+});
+
+// Section Header (Title only) - Divider removed
 export const sectionHeader: SxProps<Theme> = {
-  display: "flex",
-  alignItems: "center",
+  // display: "flex", // Removed for divider
+  // alignItems: "center", // Removed for divider
   mb: 4, // Margin below header
 };
 
-export const headingDivider: SxProps<Theme> = {
-  flexGrow: 1,
-  ml: 2,
-  maxWidth: "100px", // Match template
-  bgcolor: "primary.main", // Use primary color
-  height: "2px",
-};
+// headingDivider style removed
 
 // Activity Section
-export const activityCard: SxProps<Theme> = {
+export const activityCard: SxProps<Theme> = (theme) => ({
+  // Added theme parameter
   height: "100%", // Make cards equal height in the row
   display: "flex",
   flexDirection: "column",
   textAlign: "center",
-};
+  border: `1px solid ${theme.palette.divider}`, // Add border similar to document cards
+  // elevation is implicitly handled by Card, can adjust shadow if needed
+});
 
 export const activityCardContent: SxProps<Theme> = {
   flexGrow: 1, // Allow content to expand
@@ -112,17 +125,25 @@ export const activityCardContent: SxProps<Theme> = {
   alignItems: "center",
 };
 
-export const activityAvatar: SxProps<Theme> = {
+export const activityAvatar: SxProps<Theme> = (theme) => ({
+  // Added theme parameter
   width: 64, // Match template size (h-16 w-16)
   height: 64,
-  bgcolor: "primary.light", // Lighter primary color for avatar background
+  bgcolor:
+    theme.palette.mode === "dark"
+      ? theme.palette.grey[100]
+      : theme.palette.primary.light, // Darker background in dark mode
   mb: 2, // Margin below avatar
-};
+});
 
-export const activityIcon: SxProps<Theme> = {
-  color: "primary.main", // Primary color for icon
+export const activityIcon: SxProps<Theme> = (theme) => ({
+  // Added theme parameter
+  color:
+    theme.palette.mode === "dark"
+      ? theme.palette.common.black
+      : theme.palette.common.white, // Black icon in dark mode, white in light
   fontSize: "2rem", // Adjust icon size
-};
+});
 
 // --- Deprecated Styles (kept for reference, can be removed later) ---
 export const paragraph: SxProps<Theme> = {

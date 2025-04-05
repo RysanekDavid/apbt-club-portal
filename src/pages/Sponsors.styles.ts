@@ -59,9 +59,9 @@ export const sponsorCard: SxProps<Theme> = {
 };
 
 export const cardMedia: SxProps<Theme> = {
-  height: 140,
-  objectFit: "contain",
-  p: 2,
+  height: 300, // Increased height to match Gallery request
+  objectFit: "contain", // Keep contain for logos
+  p: 2, // Keep padding around the logo
 };
 
 export const cardContent: SxProps<Theme> = {
