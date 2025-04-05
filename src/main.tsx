@@ -9,6 +9,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext"; // Import custom ThemeProvider
 import CustomInfoSnackbar from "./components/Snackbar/CustomInfoSnackbar"; // Import custom component
 import "./i18n";
+import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

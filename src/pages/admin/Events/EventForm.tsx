@@ -1,27 +1,27 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Box,
   Button,
-  TextField,
   Grid,
   Paper,
   Typography,
   CircularProgress,
   Alert,
-  Divider,
-  FormControlLabel,
-  Switch,
 } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { cs } from "date-fns/locale";
+// Remove DatePicker, LocalizationProvider, AdapterDateFns if only used in subcomponent
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+// import { cs } from "date-fns/locale";
+
+import { format, parse } from "date-fns"; // Restore format/parse
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SaveIcon from "@mui/icons-material/Save";
-import CloudinaryUpload from "../../../components/CloudinaryUpload/CloudinaryUpload";
-import RichTextEditor from "../../../components/Editor/RichTextEditor";
+// Remove CloudinaryUpload and RichTextEditor if only used in subcomponents
+// import CloudinaryUpload from "../../../components/CloudinaryUpload/CloudinaryUpload";
+// import RichTextEditor from "../../../components/Editor/RichTextEditor";
 import {
   getDocumentById,
   addDocument,
@@ -29,13 +29,23 @@ import {
 } from "../../../services/firestore";
 import { Event } from "../../../types/models";
 import { slugify, generateUniqueSlug } from "../../../utils/slugify";
-import * as styles from "./EventForm.styles"; // Import styles
+import * as styles from "./EventForm.styles";
+// Import the new subcomponents
+import EventBasicInfo from "./components/EventBasicInfo";
+import EventDateTimeLocation from "./components/EventDateTimeLocation";
+import EventDescription from "./components/EventDescription";
+import EventImageUpload from "./components/EventImageUpload";
+import EventPublishStatus from "./components/EventPublishStatus";
 
-interface EventFormData {
+// Export the interface
+export interface EventFormData {
   title: string;
   description: string;
   date: Date | null;
   location: string;
+  time: string; // Keep for storage
+  startTime: Date | null; // For TimePicker
+  endTime: Date | null; // For TimePicker
   imageUrl: string;
   imageName: string;
   published: boolean;
@@ -48,7 +58,7 @@ const EventForm = () => {
   const [loading, setLoading] = useState(isEditMode);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [existingSlugs] = useState<string[]>([]);
+  const [existingSlugs] = useState<string[]>([]); // Consider fetching existing slugs
 
   const {
     control,
@@ -63,6 +73,9 @@ const EventForm = () => {
       description: "",
       date: new Date(),
       location: "",
+      time: "",
+      startTime: null, // Add default
+      endTime: null, // Add default
       imageUrl: "",
       imageName: "",
       published: false,
@@ -79,17 +92,23 @@ const EventForm = () => {
     try {
       setLoading(true);
       const eventData = await getDocumentById<Event>("events", eventId);
-
       reset({
         title: eventData.title,
         description: eventData.description,
         date: eventData.date,
         location: eventData.location,
+        time: eventData.time || "",
+        // Add parsing logic back
+        startTime: eventData.time
+          ? parseTime(eventData.time, eventData.date).start
+          : null,
+        endTime: eventData.time
+          ? parseTime(eventData.time, eventData.date).end
+          : null,
         imageUrl: eventData.imageUrl || "",
         imageName: eventData.imageName || "",
         published: eventData.published,
       });
-
       setError("");
     } catch (err) {
       console.error("Error fetching event:", err);
@@ -111,32 +130,44 @@ const EventForm = () => {
       }
 
       if (isEditMode && id) {
-        // Update existing event
-        await updateDocument<Event>("events", id, {
+        // Prepare data for update
+        const updateData: Partial<
+          Omit<Event, "id" | "createdAt" | "updatedAt" | "slug" | "isPast">
+        > = {
           title: data.title,
           description: data.description,
           date: data.date,
           location: data.location,
+          time: data.time,
           imageUrl: data.imageUrl,
           imageName: data.imageName,
           published: data.published,
-        });
+        };
+        // Format time before saving
+        const formattedTime = formatTime(data.startTime, data.endTime);
+        updateData.time = formattedTime; // Update the time field in updateData
+        await updateDocument("events", id, updateData);
       } else {
-        // Create new event
+        // Prepare data for adding a new event
         const baseSlug = slugify(data.title);
         const uniqueSlug = generateUniqueSlug(baseSlug, existingSlugs);
-
-        await addDocument<Event>("events", {
+        // Format time before saving
+        const formattedTime = formatTime(data.startTime, data.endTime);
+        const addData: Omit<Event, "id" | "createdAt" | "updatedAt"> = {
           title: data.title,
           description: data.description,
           date: data.date,
           location: data.location,
+          time: formattedTime, // Use formatted time
           imageUrl: data.imageUrl,
           imageName: data.imageName,
           published: data.published,
           slug: uniqueSlug,
           isPast: data.date < new Date(),
-        });
+          // Ensure optional fields from the model are handled
+          endDate: undefined, // Set to undefined or null if optional
+        };
+        await addDocument("events", addData);
       }
 
       navigate("/admin/events");
@@ -188,128 +219,26 @@ const EventForm = () => {
       <Paper sx={styles.formPaper}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Controller
-                name="title"
-                control={control}
-                rules={{ required: "Název je povinný" }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Název"
-                    fullWidth
-                    error={!!errors.title}
-                    helperText={errors.title?.message}
-                    disabled={submitting}
-                  />
-                )}
-              />
-            </Grid>
+            {/* Use Subcomponents */}
+            <EventBasicInfo
+              control={control}
+              errors={errors}
+              submitting={submitting}
+            />
+            <EventDateTimeLocation
+              control={control}
+              errors={errors}
+              submitting={submitting}
+            />
+            <EventDescription control={control} errors={errors} />
+            <EventImageUpload
+              control={control}
+              watch={watch}
+              onUploadComplete={handleImageUpload}
+            />
+            <EventPublishStatus control={control} submitting={submitting} />
 
-            <Grid item xs={12} md={6}>
-              <LocalizationProvider
-                dateAdapter={AdapterDateFns}
-                adapterLocale={cs}
-              >
-                <Controller
-                  name="date"
-                  control={control}
-                  rules={{ required: "Datum je povinné" }}
-                  render={({ field }) => (
-                    <DatePicker
-                      label="Datum"
-                      value={field.value}
-                      onChange={(newValue: Date | null) =>
-                        field.onChange(newValue)
-                      }
-                      slotProps={{
-                        textField: {
-                          fullWidth: true,
-                          error: !!errors.date,
-                          helperText: errors.date?.message,
-                        },
-                      }}
-                      disabled={submitting}
-                    />
-                  )}
-                />
-              </LocalizationProvider>
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <Controller
-                name="location"
-                control={control}
-                rules={{ required: "Místo je povinné" }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="Místo"
-                    fullWidth
-                    error={!!errors.location}
-                    helperText={errors.location?.message}
-                    disabled={submitting}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Controller
-                name="description"
-                control={control}
-                rules={{ required: "Popis je povinný" }}
-                render={({ field }) => (
-                  <RichTextEditor
-                    label="Popis"
-                    value={field.value}
-                    onChange={field.onChange}
-                    error={errors.description?.message}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography variant="subtitle1" gutterBottom>
-                Obrázek
-              </Typography>
-              <Controller
-                name="imageUrl"
-                control={control}
-                render={({ field }) => (
-                  <CloudinaryUpload
-                    folder="events"
-                    onUploadComplete={handleImageUpload}
-                    acceptedFileTypes="image/*"
-                    label="Obrázek akce"
-                    existingUrl={field.value}
-                    existingFileName={watch("imageName")}
-                  />
-                )}
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Divider sx={styles.formDivider} />
-              <Controller
-                name="published"
-                control={control}
-                render={({ field }) => (
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={field.value}
-                        onChange={(e) => field.onChange(e.target.checked)}
-                        disabled={submitting}
-                      />
-                    }
-                    label="Publikovat"
-                  />
-                )}
-              />
-            </Grid>
-
+            {/* Action Buttons remain here */}
             <Grid item xs={12} sx={styles.actionsGrid}>
               <Button
                 variant="outlined"
@@ -335,6 +264,49 @@ const EventForm = () => {
       </Paper>
     </Box>
   );
+};
+
+// Add helper functions back
+// Helper function to format Date objects into "HH:mm - HH:mm" string
+const formatTime = (start: Date | null, end: Date | null): string => {
+  const startTime = start ? format(start, "HH:mm") : "";
+  const endTime = end ? format(end, "HH:mm") : "";
+
+  if (startTime && endTime) {
+    return `${startTime} - ${endTime}`;
+  } else if (startTime) {
+    return startTime;
+  } else if (endTime) {
+    return endTime; // Should ideally have a start time too
+  }
+  return "";
+};
+
+// Helper function to parse "HH:mm - HH:mm" string back into Date objects
+const parseTime = (
+  timeString: string,
+  eventDate: Date | null
+): { start: Date | null; end: Date | null } => {
+  let start: Date | null = null;
+  let end: Date | null = null;
+  const baseDate = eventDate instanceof Date ? eventDate : new Date(); // Use event date or today
+  const parts = timeString.split(" - ");
+
+  if (parts.length > 0 && parts[0]) {
+    try {
+      start = parse(parts[0], "HH:mm", baseDate);
+    } catch (e) {
+      console.error("Error parsing start time:", e);
+    }
+  }
+  if (parts.length > 1 && parts[1]) {
+    try {
+      end = parse(parts[1], "HH:mm", baseDate);
+    } catch (e) {
+      console.error("Error parsing end time:", e);
+    }
+  }
+  return { start, end };
 };
 
 export default EventForm;

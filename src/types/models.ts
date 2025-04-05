@@ -13,6 +13,7 @@ export interface Event extends BaseModel {
   description: string;
   date: Date;
   endDate?: Date;
+  time?: string; // Add optional time field
   location: string;
   imageUrl?: string;
   imageName?: string;

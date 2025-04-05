@@ -1,79 +1,116 @@
 import { SxProps, Theme } from "@mui/material/styles";
 
 export const pageContainer: SxProps<Theme> = {
-  py: 4,
+  pt: 4, // Keep padding top
+  pb: 8, // Increase padding bottom significantly for scroll room
 };
 
+// Updated eventCard for vertical layout
 export const eventCard: SxProps<Theme> = {
-  mb: 2,
+  // mb: 3, // Margin bottom is handled by Grid spacing, remove here
   display: "flex",
+  flexDirection: "column",
+  height: "100%", // Make cards in a row equal height
+  border: (theme) => `1px solid ${theme.palette.divider}`, // Keep subtle border
+  borderRadius: 2, // Keep slight rounding
+  overflow: "hidden",
+  // Use a slightly less intense shadow to reduce perceived thickness
+  boxShadow: "0 2px 4px rgba(0,0,0,0.08)",
+  transition: (theme) => theme.transitions.create("box-shadow"), // Keep transition for hover effect
+  "&:hover": {
+    boxShadow: "0 4px 12px rgba(0,0,0,0.12)", // Adjusted hover shadow
+  },
 };
 
+// Updated cardMedia for top position
 export const cardMedia: SxProps<Theme> = {
-  height: { xs: 100, sm: "100%" },
+  height: "50%", // Fixed height for the image
   width: "100%",
-  objectFit: "contain",
-  backgroundColor: "#fff",
+  objectFit: "cover", // Always cover
 };
 
 export const cardMediaPlaceholder: SxProps<Theme> = {
   ...cardMedia, // Inherit base styles
   filter: "grayscale(70%) opacity(70%)",
+  backgroundColor: "grey.200", // Add a background color
 };
 
+// Updated cardContent
 export const cardContent: SxProps<Theme> = {
   display: "flex",
   flexDirection: "column",
+  flexGrow: 1, // Allow content to fill remaining space
+  p: 2, // Standard padding
 };
 
 export const eventTitle: SxProps<Theme> = {
-  mt: 1,
+  fontWeight: "bold", // Make title bolder
+  mb: 1.5, // Add margin bottom
 };
 
-export const chipsContainer: SxProps<Theme> = {
-  mb: 1,
+// New styles for info section (replaces chips)
+export const infoContainer: SxProps<Theme> = {
+  display: "flex",
+  flexDirection: "column", // Stack info items vertically
+  gap: 0.5, // Space between info items
+  mb: 1.5, // Margin below the info section
+  color: "text.secondary", // Use secondary color for info text
+};
+
+export const infoItem: SxProps<Theme> = {
   display: "flex",
   alignItems: "center",
-  flexWrap: "wrap",
-  gap: 1,
+  gap: 0.8, // Space between icon and text
 };
 
-export const infoChip: SxProps<Theme> = {
-  backgroundColor: "#000",
-  color: "#fff",
-  px: 1.5, // Adjusted padding for consistency
-  py: 2,
-  "& .MuiChip-icon": {
-    color: "#fff",
-  },
+export const infoIcon: SxProps<Theme> = {
+  fontSize: "1.1rem", // Slightly smaller icon
+  color: "inherit", // Inherit color from infoContainer
 };
 
-export const descriptionText: SxProps<Theme> = {
-  mt: 1,
-};
-
-export const readMoreButtonContainer: SxProps<Theme> = {
-  mt: 1,
-  textAlign: "left",
-};
-
-export const readMoreButton: SxProps<Theme> = {
-  py: 0.5,
-  px: 1,
-  textTransform: "none",
-  border: 1,
-  borderColor: "divider",
-  borderRadius: 1,
+export const infoText: SxProps<Theme> = {
+  fontSize: "0.875rem", // Standard body2 size
   lineHeight: 1.4,
-  minWidth: "auto",
-  display: "inline-flex",
-  verticalAlign: "baseline",
-  mt: 1,
+  color: "inherit",
+};
+
+// Updated descriptionText
+export const descriptionText: SxProps<Theme> = {
+  mt: 0, // Remove top margin as infoContainer has margin-bottom
+  mb: 1.5, // Add margin below description
+  flexGrow: 1, // Allow description to take up space before the button
+  color: "text.secondary",
+  // Ensure long words break correctly
+  wordBreak: "break-word",
+  overflowWrap: "break-word",
+};
+
+// New style for "Learn More" button/link
+export const learnMoreButton: SxProps<Theme> = {
+  mt: "auto", // Push button to the bottom
+  alignSelf: "flex-start", // Align to the left
+  textTransform: "none",
+  fontWeight: "bold",
+  color: (theme) => theme.palette.primary.main, // Use primary color
+  p: 0, // Remove padding for link-like appearance
   "&:hover": {
-    backgroundColor: "action.hover",
-    borderColor: "text.primary",
+    backgroundColor: "transparent", // No background on hover
+    textDecoration: "underline",
   },
 };
+
+// Style for the static "Learn More" link when description is short
+export const learnMoreStatic: SxProps<Theme> = {
+  ...learnMoreButton, // Inherit base styles
+  cursor: "default", // Indicate it's not clickable (or style differently)
+  color: "text.disabled", // Dim the color
+  "&:hover": {
+    textDecoration: "none", // No underline on hover
+  },
+  // Or simply hide it if not needed: display: 'none'
+};
+
+// Removed chipsContainer, infoChip, readMoreButtonContainer, readMoreButton
 
 export const loadingBox: SxProps<Theme> = {
   display: "flex",

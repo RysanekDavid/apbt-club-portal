@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
   Typography,
   Container,
-  Grid,
+  Grid, // Use standard Grid import for v6
   Card,
   CardContent,
   CardMedia,
@@ -10,11 +10,12 @@ import {
   Divider,
   CircularProgress,
   Alert,
-  Chip,
-  Button, // Import Button for "Read More"
+  Button,
 } from "@mui/material";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth"; // Use CalendarMonthIcon instead
+// import Grid from "@mui/material/Unstable_Grid2"; // Remove incorrect v2 import path
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import AccessTimeIcon from "@mui/icons-material/AccessTime"; // Import AccessTime icon
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
 import { getUpcomingEvents, getPastEvents } from "../services/firestore";
@@ -61,77 +62,80 @@ const EventsPage = () => {
 
   const renderEventCard = (event: EventModel) => {
     const isExpanded = expandedEventId === event.id;
-    const descriptionNeedsTruncation = event.description.length >= 200;
+    const descriptionNeedsTruncation = event.description.length > 150; // Adjust truncation length if needed
 
     return (
-      <Card key={event.id} sx={styles.eventCard}>
-        <Grid container>
-          {/* Image Column */}
-          <Grid item xs={12} sm={4} md={3}>
-            <CardMedia
-              component="img"
-              sx={
-                event.imageUrl ? styles.cardMedia : styles.cardMediaPlaceholder
-              }
-              image={event.imageUrl || placeholderImage}
-              alt={event.imageUrl ? event.title : "Placeholder"}
-            />
-          </Grid>
-          {/* Text Content Column */}
-          <Grid item xs={12} sm={8} md={9}>
-            <CardContent sx={styles.cardContent}>
-              <Box>
-                <Typography
-                  variant="h4"
-                  component="div"
-                  gutterBottom
-                  sx={styles.eventTitle}
-                >
-                  {event.title}
+      // Wrap card in Grid item for multi-column layout
+      <Grid item xs={12} sm={6} md={4} key={event.id}>
+        <Card sx={styles.eventCard}>
+          <CardMedia
+            component="img"
+            sx={event.imageUrl ? styles.cardMedia : styles.cardMediaPlaceholder}
+            image={event.imageUrl || placeholderImage}
+            alt={event.imageUrl ? event.title : "Placeholder"}
+          />
+          <CardContent sx={styles.cardContent}>
+            <Typography
+              variant="h5" // Adjusted heading size
+              component="div"
+              gutterBottom
+              sx={styles.eventTitle}
+            >
+              {event.title}
+            </Typography>
+
+            {/* Info Section */}
+            <Box sx={styles.infoContainer}>
+              <Box sx={styles.infoItem}>
+                <CalendarMonthIcon sx={styles.infoIcon} />
+                <Typography variant="body2" sx={styles.infoText}>
+                  {formatDate(event.date)}
                 </Typography>
-                <Box sx={styles.chipsContainer}>
-                  <Chip
-                    icon={<CalendarMonthIcon />}
-                    label={formatDate(event.date)}
-                    size="medium"
-                    sx={styles.infoChip}
-                  />
-                  <Chip
-                    icon={<LocationOnIcon />}
-                    label={event.location}
-                    size="medium"
-                    sx={styles.infoChip}
-                  />
-                </Box>
-                <Typography
-                  variant="body2"
-                  color="text.primary"
-                  sx={styles.descriptionText}
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      isExpanded || !descriptionNeedsTruncation
-                        ? event.description
-                        : `${event.description.substring(0, 200)}...`,
-                  }}
-                />
               </Box>
-              {descriptionNeedsTruncation && ( // Show button only if text is long
-                <Box sx={styles.readMoreButtonContainer}>
-                  <Button
-                    size="small"
-                    onClick={() =>
-                      setExpandedEventId(isExpanded ? null : event.id)
-                    }
-                    sx={styles.readMoreButton}
-                  >
-                    {isExpanded ? "Skrýt" : "Zobrazit více"}
-                  </Button>
+              {/* Display Time if available */}
+              {event.time && (
+                <Box sx={styles.infoItem}>
+                  <AccessTimeIcon sx={styles.infoIcon} />
+                  <Typography variant="body2" sx={styles.infoText}>
+                    {event.time}
+                  </Typography>
                 </Box>
               )}
-            </CardContent>
-          </Grid>
-        </Grid>
-      </Card>
+              <Box sx={styles.infoItem}>
+                <LocationOnIcon sx={styles.infoIcon} />
+                <Typography variant="body2" sx={styles.infoText}>
+                  {event.location}
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* Description */}
+            <Typography
+              variant="body2"
+              color="text.secondary" // Use secondary color for description
+              sx={styles.descriptionText}
+              dangerouslySetInnerHTML={{
+                __html:
+                  isExpanded || !descriptionNeedsTruncation
+                    ? event.description
+                    : `${event.description.substring(0, 150)}...`, // Use adjusted length
+              }}
+            />
+
+            {/* Learn More / Toggle Button */}
+            {descriptionNeedsTruncation ? (
+              <Button
+                size="small"
+                onClick={() => setExpandedEventId(isExpanded ? null : event.id)}
+                sx={styles.learnMoreButton} // Use new style name
+              >
+                {isExpanded ? "Skrýt" : "Číst dále"}
+              </Button>
+            ) : null}
+            {/* Render nothing if description doesn't need truncation */}
+          </CardContent>
+        </Card>
+      </Grid>
     );
   };
 
@@ -166,10 +170,10 @@ const EventsPage = () => {
           <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
             Nadcházející akce
           </Typography>
+          <Divider sx={styles.sectionDivider} />
+          {/* Grid container for the cards */}
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              {upcomingEvents.map(renderEventCard)}
-            </Grid>
+            {upcomingEvents.map(renderEventCard)}
           </Grid>
         </>
       )}
@@ -180,10 +184,9 @@ const EventsPage = () => {
             Proběhlé akce
           </Typography>
           <Divider sx={styles.sectionDivider} />
+          {/* Grid container for the cards */}
           <Grid container spacing={3}>
-            <Grid item xs={12}>
-              {pastEvents.map(renderEventCard)}
-            </Grid>
+            {pastEvents.map(renderEventCard)}
           </Grid>
         </>
       )}
