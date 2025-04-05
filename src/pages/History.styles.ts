@@ -54,7 +54,7 @@ export const imagePlaceholder: SxProps<Theme> = {
 // Image Container (replaces placeholder style)
 export const imageContainer: SxProps<Theme> = {
   borderRadius: 2, // Use theme's border radius
-  maxHeight: 520, // Re-added max height constraint
+  maxHeight: 540, // Re-added max height constraint
   overflow: "hidden", // Ensure image respects border radius
 };
 

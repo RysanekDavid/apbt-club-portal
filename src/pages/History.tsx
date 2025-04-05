@@ -99,9 +99,6 @@ export default function HistoryPage() {
         <Box sx={{ maxWidth: "960px", mx: "auto" }}>
           {/* History Intro Section */}
           <Box mb={6}>
-            <Typography variant="h4" component="h2" sx={styles.sectionTitle}>
-              Historie klubu
-            </Typography>
             {/* Set alignItems back to flex-start */}
             <Grid container spacing={4} alignItems="flex-start">
               {/* Text Column */}
