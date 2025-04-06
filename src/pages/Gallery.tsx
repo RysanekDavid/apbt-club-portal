@@ -17,8 +17,10 @@ import { Gallery as GalleryModel } from "../types/models";
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
 import * as styles from "./Gallery.styles";
+import { useTranslation } from "react-i18next";
 
 const GalleryPage = () => {
+  const { t } = useTranslation();
   const [galleries, setGalleries] = useState<GalleryModel[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -33,7 +35,7 @@ const GalleryPage = () => {
         setError("");
       } catch (err) {
         console.error("Error fetching galleries:", err);
-        setError("Nepodařilo se načíst galerie. Zkuste to prosím později.");
+        setError(t("gallery.fetchError"));
       } finally {
         setLoading(false);
       }
@@ -49,28 +51,21 @@ const GalleryPage = () => {
 
   return (
     <>
-      {/* Hero section */}
       <Box sx={styles.heroSection}>
         <Box sx={styles.heroOverlay}>
           <Container maxWidth="md" sx={styles.heroContent}>
             <Typography variant="h2" component="h1" sx={styles.heroTitle}>
-              Galerie
+              {t("gallery.title")}
             </Typography>
             <Typography variant="body1" sx={styles.heroSubtitle}>
-              Prohlédněte si fotografie z našich akcí a aktivit
+              {t("gallery.subtitle")}
             </Typography>
           </Container>
         </Box>
       </Box>
 
-      {/* Main Content */}
       <Container maxWidth="lg" sx={styles.pageContainer}>
         <Box>
-          {" "}
-          {/* Removed sx={styles.pageContainer} from inner Box */}
-          {/* Removed original title and subtitle */}
-          {/* <Typography variant="h3" component="h1" gutterBottom> Galerie </Typography> */}
-          {/* <Typography variant="body1" color="text.secondary" sx={styles.pageSubtitle}> Fotogalerie z akcí a setkání klubu. </Typography> */}
           {loading && (
             <Box sx={styles.loadingBox}>
               <CircularProgress />
@@ -83,7 +78,7 @@ const GalleryPage = () => {
           )}
           {!loading && !error && galleries.length === 0 && (
             <Typography sx={styles.noGalleriesText}>
-              Aktuálně nejsou k dispozici žádné galerie.
+              {t("gallery.noGalleries")}
             </Typography>
           )}
           {!loading && !error && galleries.length > 0 && (
@@ -97,12 +92,11 @@ const GalleryPage = () => {
                     >
                       <CardMedia
                         component="img"
-                        // Removed height prop, using sx style now
                         image={
                           gallery.coverImageUrl || "/placeholder-image.jpg"
                         }
                         alt={gallery.title}
-                        sx={styles.cardMedia} // Use imported style with height: 220
+                        sx={styles.cardMedia}
                       />
                       <CardContent sx={styles.cardContent}>
                         <Typography gutterBottom variant="h6" component="div">

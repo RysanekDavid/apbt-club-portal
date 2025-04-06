@@ -1,18 +1,19 @@
-import { styled, alpha } from "@mui/material/styles";
+import { styled, alpha, SxProps, Theme } from "@mui/material/styles"; // Add SxProps and Theme
 import { Box, Container, Card, CardActionArea, Avatar } from "@mui/material";
 
 // --- Hero Section ---
 
 export const HeroWrapper = styled(Box)(({ theme }) => ({
-  position: "relative",
+  position: "relative", // Restore position relative
   // Increased height based on template (70vh, min 500px)
   minHeight: "500px",
   height: "70vh",
   color: theme.palette.common.white,
-  overflow: "hidden",
+  // overflow: "hidden", // Removed overflow: hidden
   display: "flex",
   alignItems: "center",
   justifyContent: "center", // Center content vertically and horizontally
+  zIndex: 0, // Keep zIndex low (0 or 1 should be below AppBar/Drawer)
 }));
 
 export const HeroImage = styled("img")({
@@ -23,7 +24,7 @@ export const HeroImage = styled("img")({
   height: "100%",
   objectFit: "cover",
   objectPosition: "center", // Centered image
-  zIndex: 0,
+  // zIndex: 0, // Removed zIndex
 });
 
 export const HeroOverlay = styled(Box)(({ theme }) => ({
@@ -35,12 +36,12 @@ export const HeroOverlay = styled(Box)(({ theme }) => ({
   bottom: 0,
   // Adjusted overlay opacity as requested
   backgroundColor: alpha(theme.palette.common.black, 0.3),
-  zIndex: 1,
+  // zIndex: 1, // Removed zIndex
 }));
 
 export const HeroContentContainer = styled(Container)(({ theme }) => ({
   position: "relative",
-  zIndex: 2,
+  // zIndex: 2, // Removed zIndex
   textAlign: "center", // Center text as requested
   paddingTop: theme.spacing(6),
   paddingBottom: theme.spacing(6),
@@ -54,13 +55,25 @@ export const HeroContentContainer = styled(Container)(({ theme }) => ({
   marginRight: "auto",
 }));
 
-// No specific styles needed for Title/Subtitle beyond Typography props now
-// export const HeroTitle = styled(Typography)(() => ({
-//   fontWeight: "bold",
-// }));
+// Style for Hero Subtitle Typography
+export const heroSubtitle: SxProps<Theme> = {
+  maxWidth: "800px", // Limit width like template max-w-3xl
+  mx: "auto", // Center the paragraph
+  mb: 4, // Margin bottom like template mb-6
+  lineHeight: 1.6, // Like template leading-relaxed
+  color: "common.white", // Ensure visibility
+};
 
-// export const HeroSubtitle = styled(Typography)(() => ({
-// }));
+// Style for the outlined Hero Button
+export const heroButtonOutlined: SxProps<Theme> = {
+  color: "white", // Ensure text is white
+  backgroundColor: "rgba(100, 100, 100, 0.4)", // Slightly darker background
+  borderColor: "rgba(255, 255, 255, 0.8)", // More opaque border
+  "&:hover": {
+    backgroundColor: "rgba(100, 100, 100, 0.8)", // Darken on hover
+    borderColor: "rgba(255, 255, 255, 1)",
+  },
+};
 
 // --- Explore Cards Section ---
 
@@ -68,6 +81,12 @@ export const ExploreSectionContainer = styled(Container)(({ theme }) => ({
   paddingTop: theme.spacing(6), // Increased padding like template py-16
   paddingBottom: theme.spacing(8),
 }));
+
+// Style for Explore Section Subtitle Typography
+export const exploreSubtitle: SxProps<Theme> = {
+  maxWidth: "600px",
+  mx: "auto",
+};
 
 // Replacing InfoPaper with StyledCard based on template
 export const StyledCard = styled(Card)(({ theme }) => ({
@@ -91,6 +110,18 @@ export const StyledCardActionArea = styled(CardActionArea)(() => ({
   textAlign: "left", // Align text to start
   // Padding removed, will be applied to inner Link component
 }));
+
+// Style for the Link inside the CardActionArea
+export const cardLink: SxProps<Theme> = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  width: "100%",
+  height: "100%",
+  p: 3, // Apply padding here
+  textDecoration: "none", // Remove link underline
+  color: "inherit", // Inherit text color
+};
 
 export const IconAvatar = styled(Avatar)(({ theme }) => ({
   marginBottom: theme.spacing(2), // Corresponds to mb-4 in template
@@ -119,6 +150,17 @@ export const CtaSection = styled(Box)(({ theme }) => ({
   paddingBottom: theme.spacing(8),
   textAlign: "center",
 }));
+
+// Style for CTA Title Typography
+export const ctaTitle: SxProps<Theme> = {
+  mb: 3, // Margin like template mb-6
+};
+
+// Style for CTA Subtitle Typography
+export const ctaSubtitle: SxProps<Theme> = {
+  mb: 4, // Margin like template mb-8
+  color: "rgba(255, 255, 255, 0.7)", // Lighter text like template text-gray-300
+};
 
 // --- Deprecated ---
 // Keeping old styles commented out for reference, can be removed later

@@ -24,6 +24,7 @@ import {
 } from "../../../services/firestore"; // Import Firestore functions
 import { Document as DocumentModel } from "../../../types/models"; // Import Document type
 import * as styles from "./DocumentForm.styles"; // Import styles
+import { useTranslation } from "react-i18next";
 
 interface DocumentFormData {
   title: string;
@@ -38,6 +39,7 @@ interface DocumentFormData {
 
 const DocumentForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
   const [loading, setLoading] = useState(isEditMode);
@@ -87,7 +89,7 @@ const DocumentForm: React.FC = () => {
       setError("");
     } catch (err) {
       console.error("Error fetching document:", err);
-      setError("Nepodařilo se načíst dokument. Zkuste to prosím znovu.");
+      setError(t("admin.documentForm.fetchError"));
     } finally {
       setLoading(false);
     }
@@ -95,7 +97,7 @@ const DocumentForm: React.FC = () => {
 
   const onSubmit = async (data: DocumentFormData) => {
     if (!data.fileUrl) {
-      setError("Prosím, nahrajte soubor dokumentu.");
+      setError(t("admin.documentForm.validation.fileRequiredError"));
       return;
     }
 
@@ -130,7 +132,7 @@ const DocumentForm: React.FC = () => {
       navigate("/admin/documents");
     } catch (err) {
       console.error("Error saving document:", err);
-      setError("Nepodařilo se uložit dokument. Zkuste to prosím znovu.");
+      setError(t("admin.documentForm.saveError"));
     } finally {
       setSubmitting(false);
     }
@@ -142,7 +144,7 @@ const DocumentForm: React.FC = () => {
     setValue("fileName", fileName);
     // setValue("fileType", fileDetails?.type || ""); // Removed
     // setValue("fileSize", fileDetails?.size || 0);   // Removed
-    if (error === "Prosím, nahrajte soubor dokumentu.") {
+    if (error === t("admin.documentForm.validation.fileRequiredError")) {
       setError("");
     }
   };
@@ -164,14 +166,16 @@ const DocumentForm: React.FC = () => {
     <Box>
       <Box sx={styles.headerBox}>
         <Typography variant="h4">
-          {isEditMode ? "Upravit dokument" : "Přidat nový dokument"}
+          {isEditMode
+            ? t("admin.documentForm.editTitle")
+            : t("admin.documentForm.addTitle")}
         </Typography>
         <Button
           variant="outlined"
           startIcon={<ArrowBackIcon />}
           onClick={handleCancel}
         >
-          Zpět na seznam
+          {t("admin.documentForm.backButton")}
         </Button>
       </Box>
 
@@ -188,11 +192,13 @@ const DocumentForm: React.FC = () => {
               <Controller
                 name="title"
                 control={control}
-                rules={{ required: "Název dokumentu je povinný" }}
+                rules={{
+                  required: t("admin.documentForm.validation.titleRequired"),
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Název dokumentu"
+                    label={t("admin.documentForm.titleLabel")}
                     variant="outlined"
                     fullWidth
                     error={!!errors.title}
@@ -210,7 +216,7 @@ const DocumentForm: React.FC = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Popis dokumentu"
+                    label={t("admin.documentForm.descriptionLabel")}
                     variant="outlined"
                     fullWidth
                     multiline
@@ -228,19 +234,21 @@ const DocumentForm: React.FC = () => {
 
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Soubor dokumentu
+                {t("admin.documentForm.fileLabel")}
               </Typography>
               <Controller
                 name="fileUrl"
                 control={control}
-                rules={{ required: "Soubor je povinný" }} // Add validation rule
+                rules={{
+                  required: t("admin.documentForm.validation.fileRequired"),
+                }} // Add validation rule
                 render={({ field }) => (
                   <CloudinaryUpload
                     folder="documents" // Specify the Cloudinary folder
                     onUploadComplete={handleFileUpload}
                     // Allow common document types + images for flexibility
                     acceptedFileTypes="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, image/*"
-                    label="Nahrát soubor"
+                    label={t("admin.documentForm.uploadButtonLabel")}
                     existingUrl={field.value}
                     existingFileName={watch("fileName")}
                   />
@@ -253,13 +261,15 @@ const DocumentForm: React.FC = () => {
                   variant="caption"
                   sx={styles.fileErrorText}
                 >
-                  {errors.fileUrl.message || "Prosím, nahrajte soubor."}
+                  {errors.fileUrl.message ||
+                    t("admin.documentForm.validation.fileRequiredError")}
                 </Typography>
               )}
               {/* Removed file type/size display */}
               {watch("fileName") && (
                 <Typography variant="body2" sx={styles.fileNameText}>
-                  Nahraný soubor: {watch("fileName")}
+                  {t("admin.documentForm.uploadedFileLabel")}:{" "}
+                  {watch("fileName")}
                 </Typography>
               )}
             </Grid>
@@ -277,7 +287,7 @@ const DocumentForm: React.FC = () => {
                         disabled={submitting}
                       />
                     }
-                    label="Publikováno (zobrazit na webu)"
+                    label={t("admin.documentForm.publishedLabel")}
                   />
                 )}
               />
@@ -294,7 +304,7 @@ const DocumentForm: React.FC = () => {
                 sx={styles.cancelButton}
                 disabled={submitting}
               >
-                Zrušit
+                {t("admin.documentForm.cancelButton")}
               </Button>
               <Button
                 type="submit"
@@ -306,10 +316,10 @@ const DocumentForm: React.FC = () => {
                 disabled={submitting}
               >
                 {submitting
-                  ? "Ukládání..."
+                  ? t("admin.documentForm.savingButton")
                   : isEditMode
-                  ? "Uložit změny"
-                  : "Vytvořit dokument"}
+                  ? t("admin.documentForm.saveChangesButton")
+                  : t("admin.documentForm.createButton")}
               </Button>
             </Grid>
           </Grid>

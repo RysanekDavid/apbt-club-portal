@@ -24,8 +24,10 @@ import { getAllDocuments, deleteDocument } from "../../../services/firestore";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import { Document as DocumentModel } from "../../../types/models"; // Rename imported type
 import * as styles from "./DocumentsList.styles"; // Import styles
+import { useTranslation } from "react-i18next";
 
 const DocumentsList: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [documents, setDocuments] = useState<DocumentModel[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +52,7 @@ const DocumentsList: React.FC = () => {
       setError("");
     } catch (err) {
       console.error("Error fetching documents:", err);
-      setError("Nepodařilo se načíst dokumenty. Zkuste to prosím znovu.");
+      setError(t("admin.documentsList.fetchError"));
     } finally {
       setLoading(false);
     }
@@ -82,7 +84,7 @@ const DocumentsList: React.FC = () => {
       setDocToDelete(null);
     } catch (err) {
       console.error("Error deleting document:", err);
-      setError("Nepodařilo se smazat dokument. Zkuste to prosím znovu.");
+      setError(t("admin.documentsList.deleteError"));
     }
   };
 
@@ -94,13 +96,13 @@ const DocumentsList: React.FC = () => {
   return (
     <Box>
       <Box sx={styles.headerBox}>
-        <Typography variant="h4">Správa dokumentů</Typography>
+        <Typography variant="h4">{t("admin.documentsList.title")}</Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleAddDocument}
         >
-          Přidat dokument
+          {t("admin.documentsList.addButton")}
         </Button>
       </Box>
 
@@ -117,7 +119,7 @@ const DocumentsList: React.FC = () => {
       ) : documents.length === 0 ? (
         <Paper sx={styles.noDataPaper}>
           <Typography variant="body1">
-            Zatím nejsou přidány žádné dokumenty.
+            {t("admin.documentsList.noData")}
           </Typography>
         </Paper>
       ) : (
@@ -125,11 +127,11 @@ const DocumentsList: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Název</TableCell>
+                <TableCell>{t("admin.documentsList.tableName")}</TableCell>
                 {/* Removed Category column */}
-                <TableCell>Název souboru</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Akce</TableCell>
+                <TableCell>{t("admin.documentsList.tableFileName")}</TableCell>
+                <TableCell>{t("admin.documentsList.tableStatus")}</TableCell>
+                <TableCell>{t("admin.documentsList.tableActions")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -140,7 +142,11 @@ const DocumentsList: React.FC = () => {
                   <TableCell>{doc.fileName || "N/A"}</TableCell>
                   <TableCell>
                     <Chip
-                      label={doc.published ? "Publikováno" : "Koncept"}
+                      label={
+                        doc.published
+                          ? t("admin.documentsList.statusPublished")
+                          : t("admin.documentsList.statusDraft")
+                      }
                       color={doc.published ? "success" : "default"}
                       size="small"
                     />
@@ -152,7 +158,7 @@ const DocumentsList: React.FC = () => {
                       rel="noopener noreferrer" // Security measure
                       color="info"
                       size="small"
-                      title="Zobrazit soubor"
+                      title={t("admin.documentsList.viewTooltip")}
                     >
                       <VisibilityIcon />
                     </IconButton>
@@ -160,7 +166,7 @@ const DocumentsList: React.FC = () => {
                       color="primary"
                       onClick={() => handleEditDocument(doc.id)}
                       size="small"
-                      title="Upravit"
+                      title={t("admin.documentsList.editTooltip")}
                     >
                       <EditIcon />
                     </IconButton>
@@ -168,7 +174,7 @@ const DocumentsList: React.FC = () => {
                       color="error"
                       onClick={() => handleDeleteClick(doc.id)}
                       size="small"
-                      title="Smazat"
+                      title={t("admin.documentsList.deleteTooltip")}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -182,8 +188,8 @@ const DocumentsList: React.FC = () => {
 
       <ConfirmDialog
         open={deleteDialogOpen}
-        title="Smazat dokument"
-        message="Opravdu chcete smazat tento dokument? Soubor zůstane v úložišti, ale záznam bude odstraněn."
+        title={t("admin.documentsList.deleteDialogTitle")}
+        message={t("admin.documentsList.deleteDialogMessage")}
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />

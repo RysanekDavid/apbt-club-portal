@@ -16,7 +16,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 import {
-  // News, // Removed News type import
   Event,
   Gallery,
   GalleryImage,
@@ -107,9 +106,6 @@ export const deleteDocument = async (
   const docRef = doc(db, collectionName, id);
   await deleteDoc(docRef);
 };
-
-// News specific functions - REMOVED
-// export const getPublishedNews = async ... { ... }
 
 // Events specific functions
 export const getUpcomingEvents = async (): Promise<Event[]> => {
@@ -280,4 +276,3 @@ export const getPublishedDocuments = async (): Promise<Document[]> => {
 };
 
 // Removed getDocumentsByCategory as category field is removed
-// export const getDocumentsByCategory = async ...

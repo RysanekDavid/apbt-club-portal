@@ -35,6 +35,7 @@ import {
 import { Gallery as GalleryModel } from "../../../types/models"; // Import Gallery type
 import { slugify } from "../../../utils/slugify"; // Import slugify
 import * as styles from "./GalleryForm.styles"; // Import styles
+import { useTranslation } from "react-i18next";
 
 // Removed unused GalleryImageData interface
 
@@ -56,6 +57,7 @@ interface GalleryImageData {
 
 const GalleryForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
   const [loading, setLoading] = useState(isEditMode);
@@ -112,7 +114,7 @@ const GalleryForm: React.FC = () => {
       setError("");
     } catch (err) {
       console.error("Error fetching gallery:", err);
-      setError("Nepodařilo se načíst galerii. Zkuste to prosím znovu.");
+      setError(t("admin.galleryForm.fetchError"));
     } finally {
       setLoading(false);
     }
@@ -120,7 +122,7 @@ const GalleryForm: React.FC = () => {
 
   const onSubmit = async (data: GalleryFormData) => {
     if (!data.coverImageUrl) {
-      setError("Prosím, nahrajte titulní obrázek galerie.");
+      setError(t("admin.galleryForm.validation.coverImageRequiredError"));
       return;
     }
 
@@ -145,7 +147,11 @@ const GalleryForm: React.FC = () => {
             .catch((uploadError) => {
               console.error(`Error uploading ${file.name}:`, uploadError);
               setError(
-                (prevError) => prevError + ` Chyba při nahrávání ${file.name}.`
+                (prevError) =>
+                  prevError +
+                  ` ${t("admin.galleryForm.uploadErrorFile", {
+                    fileName: file.name,
+                  })}`
               );
               // Removed progress update
               throw uploadError; // Re-throw to stop the process if needed
@@ -192,7 +198,7 @@ const GalleryForm: React.FC = () => {
       navigate("/admin/galleries"); // Navigate only after successful save
     } catch (err) {
       console.error("Error saving gallery:", err);
-      setError("Nepodařilo se uložit galerii. Zkuste to prosím znovu.");
+      setError(t("admin.galleryForm.saveError"));
     } finally {
       setSubmitting(false);
     }
@@ -201,7 +207,7 @@ const GalleryForm: React.FC = () => {
   const handleCoverImageUpload = (url: string, fileName: string) => {
     setValue("coverImageUrl", url, { shouldValidate: true });
     setValue("coverImageName", fileName);
-    if (error === "Prosím, nahrajte titulní obrázek galerie.") {
+    if (error === t("admin.galleryForm.validation.coverImageRequiredError")) {
       setError("");
     }
   };
@@ -215,9 +221,7 @@ const GalleryForm: React.FC = () => {
         file.type.startsWith("image/")
       );
       if (validFiles.length !== newFiles.length) {
-        setError(
-          "Byly vybrány neplatné typy souborů. Nahrávejte pouze obrázky."
-        );
+        setError(t("admin.galleryForm.validation.invalidFileType"));
       }
       setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
       // Clear the input value to allow selecting the same file again if removed
@@ -258,14 +262,16 @@ const GalleryForm: React.FC = () => {
     <Box>
       <Box sx={styles.headerBox}>
         <Typography variant="h4">
-          {isEditMode ? "Upravit galerii" : "Přidat novou galerii"}
+          {isEditMode
+            ? t("admin.galleryForm.editTitle")
+            : t("admin.galleryForm.addTitle")}
         </Typography>
         <Button
           variant="outlined"
           startIcon={<ArrowBackIcon />}
           onClick={handleCancel}
         >
-          Zpět na seznam
+          {t("admin.galleryForm.backButton")}
         </Button>
       </Box>
 
@@ -282,11 +288,13 @@ const GalleryForm: React.FC = () => {
               <Controller
                 name="title"
                 control={control}
-                rules={{ required: "Název galerie je povinný" }}
+                rules={{
+                  required: t("admin.galleryForm.validation.titleRequired"),
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Název galerie"
+                    label={t("admin.galleryForm.titleLabel")}
                     fullWidth
                     error={!!errors.title}
                     helperText={errors.title?.message}
@@ -299,11 +307,13 @@ const GalleryForm: React.FC = () => {
               <Controller
                 name="date"
                 control={control}
-                rules={{ required: "Datum je povinné" }}
+                rules={{
+                  required: t("admin.galleryForm.validation.dateRequired"),
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Datum galerie"
+                    label={t("admin.galleryForm.dateLabel")}
                     type="date"
                     fullWidth
                     InputLabelProps={{ shrink: true }}
@@ -318,18 +328,22 @@ const GalleryForm: React.FC = () => {
 
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Titulní obrázek
+                {t("admin.galleryForm.coverImageLabel")}
               </Typography>
               <Controller
                 name="coverImageUrl"
                 control={control}
-                rules={{ required: "Titulní obrázek je povinný" }}
+                rules={{
+                  required: t(
+                    "admin.galleryForm.validation.coverImageRequired"
+                  ),
+                }}
                 render={({ field }) => (
                   <CloudinaryUpload
                     folder="galleries/covers" // Specific folder for covers
                     onUploadComplete={handleCoverImageUpload}
                     acceptedFileTypes="image/*"
-                    label="Nahrát titulní obrázek"
+                    label={t("admin.galleryForm.coverImageUploadLabel")}
                     existingUrl={field.value}
                     existingFileName={watch("coverImageName")}
                   />
@@ -342,7 +356,7 @@ const GalleryForm: React.FC = () => {
                   sx={styles.coverImageErrorText}
                 >
                   {errors.coverImageUrl.message ||
-                    "Prosím, nahrajte titulní obrázek."}
+                    t("admin.galleryForm.validation.coverImageRequiredError")}
                 </Typography>
               )}
             </Grid>
@@ -350,7 +364,7 @@ const GalleryForm: React.FC = () => {
             {/* Multiple Image Upload Section */}
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Obrázky galerie
+                {t("admin.galleryForm.galleryImagesLabel")}
               </Typography>
               <Button
                 variant="outlined"
@@ -359,7 +373,7 @@ const GalleryForm: React.FC = () => {
                 disabled={submitting}
                 sx={styles.uploadButton}
               >
-                Vybrat obrázky
+                {t("admin.galleryForm.selectImagesButton")}
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -374,7 +388,7 @@ const GalleryForm: React.FC = () => {
               {selectedFiles.length > 0 && (
                 <Paper variant="outlined" sx={styles.selectedFilesPaper}>
                   <Typography variant="caption" display="block" gutterBottom>
-                    Soubory k nahrání:
+                    {t("admin.galleryForm.filesToUploadLabel")}:
                   </Typography>
                   <List dense>
                     {selectedFiles.map((file, index) => (
@@ -403,7 +417,7 @@ const GalleryForm: React.FC = () => {
               {galleryImages.length > 0 && (
                 <Paper variant="outlined" sx={styles.uploadedImagesPaper}>
                   <Typography variant="caption" display="block" gutterBottom>
-                    Nahrané obrázky:
+                    {t("admin.galleryForm.uploadedImagesLabel")}:
                   </Typography>
                   <List dense>
                     {galleryImages.map((image, index) => (
@@ -453,7 +467,7 @@ const GalleryForm: React.FC = () => {
                         disabled={submitting}
                       />
                     }
-                    label="Publikováno (zobrazit na webu)"
+                    label={t("admin.galleryForm.publishedLabel")}
                   />
                 )}
               />
@@ -470,7 +484,7 @@ const GalleryForm: React.FC = () => {
                 sx={styles.cancelButton}
                 disabled={submitting}
               >
-                Zrušit
+                {t("admin.galleryForm.cancelButton")}
               </Button>
               <Button
                 type="submit"
@@ -482,10 +496,10 @@ const GalleryForm: React.FC = () => {
                 disabled={submitting}
               >
                 {submitting
-                  ? "Ukládání..."
+                  ? t("admin.galleryForm.savingButton")
                   : isEditMode
-                  ? "Uložit změny"
-                  : "Vytvořit galerii"}
+                  ? t("admin.galleryForm.saveChangesButton")
+                  : t("admin.galleryForm.createButton")}
               </Button>
             </Grid>
           </Grid>

@@ -18,6 +18,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
+import DashboardIcon from "@mui/icons-material/Dashboard"; // Import DashboardIcon
 import EventIcon from "@mui/icons-material/Event";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import HandshakeIcon from "@mui/icons-material/Handshake";
@@ -49,6 +50,7 @@ const AdminLayout = () => {
   };
 
   const menuItems = [
+    { text: "Dashboard", icon: <DashboardIcon />, path: "/admin" }, // Add Dashboard link
     { text: "Akce", icon: <EventIcon />, path: "/admin/events" },
     { text: "Galerie", icon: <PhotoLibraryIcon />, path: "/admin/galleries" }, // Updated path
     { text: "Sponzoři", icon: <HandshakeIcon />, path: "/admin/sponsors" },

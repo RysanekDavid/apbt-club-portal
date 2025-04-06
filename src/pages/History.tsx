@@ -23,60 +23,54 @@ import PeopleIcon from "@mui/icons-material/People"; // Placeholder for Komunita
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import historyImage from "../../src/assets/history_image.png"; // Corrected path if needed
 import * as styles from "./History.styles"; // Import styles
+import { useTranslation } from "react-i18next";
 
 export default function HistoryPage() {
-  // Data from template
+  const { t } = useTranslation();
+  // Data from template - translate these
   const milestones = [
     {
       year: "1998",
-      title: "Založení klubu",
-      description:
-        "Klub Amerických Pit Bull Teriérů byl založen za účelem podpory a osvěty tohoto plemene.",
+      title: t("history.milestones.1998.title"),
+      description: t("history.milestones.1998.description"),
     },
     {
       year: "2005",
-      title: "Zavedení sportovních aktivit",
-      description:
-        "Začátek organizování sportovních aktivit jako weight pull a triatlon pro APBT.",
+      title: t("history.milestones.2005.title"),
+      description: t("history.milestones.2005.description"),
     },
     {
       year: "2010",
-      title: "Nové sportovní disciplíny",
-      description:
-        "Vytvoření nových sportovních disciplín jako wall climbing, high jump a long jump.",
+      title: t("history.milestones.2010.title"),
+      description: t("history.milestones.2010.description"),
     },
     {
       year: "2015",
-      title: "Osvětové kampaně",
-      description:
-        "Spuštění osvětových kampaní pro zlepšení povědomí o plemeni APBT.",
+      title: t("history.milestones.2015.title"),
+      description: t("history.milestones.2015.description"),
     },
     {
       year: "2020",
-      title: "Rozšíření aktivit",
-      description:
-        "Rozšíření aktivit klubu a navázání spolupráce s dalšími organizacemi.",
+      title: t("history.milestones.2020.title"),
+      description: t("history.milestones.2020.description"),
     },
   ];
 
   const activities = [
     {
       icon: <FitnessCenterIcon sx={styles.activityIcon} />,
-      title: "Sportovní aktivity",
-      description:
-        "Organizujeme sportovní aktivity pro APBT jako weight pull, triatlon a další disciplíny.",
+      title: t("history.activities.sports.title"),
+      description: t("history.activities.sports.description"),
     },
     {
       icon: <CampaignIcon sx={styles.activityIcon} />,
-      title: "Osvětová činnost",
-      description:
-        "Šíříme osvětu a správné informace o plemeni APBT a bojujeme proti předsudkům.",
+      title: t("history.activities.awareness.title"),
+      description: t("history.activities.awareness.description"),
     },
     {
       icon: <PeopleIcon sx={styles.activityIcon} />,
-      title: "Komunita",
-      description:
-        "Budujeme komunitu zodpovědných majitelů a chovatelů APBT a sdílíme zkušenosti.",
+      title: t("history.activities.community.title"),
+      description: t("history.activities.community.description"),
     },
   ];
 
@@ -86,19 +80,23 @@ export default function HistoryPage() {
       <Box sx={styles.heroBox}>
         <Container maxWidth="lg" sx={styles.heroContent}>
           <Typography variant="h3" component="h1" sx={styles.heroTitle}>
-            Historie
+            {t("history.title")}
           </Typography>
           <Typography variant="h6" component="p" sx={styles.heroSubtitle}>
-            Poznejte historii a poslání našeho klubu
+            {t("history.subtitle")}
           </Typography>
         </Container>
       </Box>
 
       {/* Main Content */}
       <Container maxWidth="lg" sx={styles.pageContainer}>
-        <Box sx={{ maxWidth: "960px", mx: "auto" }}>
+        <Box sx={styles.contentMaxWidthBox}>
+          {" "}
+          {/* Use dedicated style */}
           {/* History Intro Section */}
-          <Box mb={6}>
+          <Box sx={styles.sectionMarginBottom}>
+            {" "}
+            {/* Use dedicated style */}
             {/* Set alignItems back to flex-start */}
             <Grid container spacing={4} alignItems="flex-start">
               {/* Text Column */}
@@ -106,36 +104,14 @@ export default function HistoryPage() {
                 item
                 xs={12}
                 md={6}
-                sx={{ display: "flex", flexDirection: "column" }}
+                sx={styles.flexColumnGridItem} // Use dedicated style
               >
-                <Box sx={{ flexGrow: 1 }}>
+                <Box sx={styles.flexGrowBox}>
                   {" "}
-                  {/* Inner Box takes available space */}
-                  <Typography paragraph>
-                    Klub vznikl v roce 1998 za účelem podpory a osvěty
-                    pravděpodobně nejdiskutovanějšího plemene posledních dvou
-                    desetiletí.
-                  </Typography>
-                  <Typography paragraph>
-                    Nechceme popírat minulost, protože nebylo-li by psích
-                    zápasů, nevznikl by pitbulteriér se všemi svými vlastnostmi
-                    a schopnostmi, tak jak jej dnes známe, zároveň se však jako
-                    klub důrazně distancujeme od jakéhokoli nelegálního
-                    využívání / zneužívání tohoto plemene.
-                  </Typography>
-                  <Typography>
-                    Žijeme v 21. století a našim cílem je podporovat chov
-                    moderního plemene za současného respektování jeho minulosti.
-                    Proto Klub Amerických Pit Bull Teriérů patří k zásadním
-                    subjektům propagujícím sportovní využití APBT (weight pull,
-                    triatlon) a tvůrcům či zdokonalovatelům nových sportů
-                    uzpůsobených pro toto plemeno a další plemena typu bull
-                    (wall climbing, high jump, long jump, weight pull sprint,
-                    monkey track), aby každý majitel měl možnost dostatečného a
-                    smysluplného zaměstnání pro svého psa. Stejně tak jsme
-                    připraveni se podílet na diskusích, které budou mít za cíl
-                    kvalifikovanou legislativní úpravu chovu a držení psů.
-                  </Typography>
+                  {/* Use dedicated style */}
+                  <Typography paragraph>{t("history.paragraph1")}</Typography>
+                  <Typography paragraph>{t("history.paragraph2")}</Typography>
+                  <Typography>{t("history.paragraph3")}</Typography>
                 </Box>
               </Grid>
               {/* Image Column */}
@@ -144,7 +120,7 @@ export default function HistoryPage() {
                 <Box sx={styles.imageContainer}>
                   <img
                     src={historyImage}
-                    alt="American Pit Bull Terrier historie"
+                    alt={t("history.imageAlt")}
                     style={{
                       width: "100%",
                       // height: "100%", // Removed
@@ -157,7 +133,6 @@ export default function HistoryPage() {
               </Grid>
             </Grid>
           </Box>
-
           {/* Quote Section */}
           <Box sx={styles.quoteContainer}>
             <Paper sx={styles.quotePaper}>
@@ -167,19 +142,19 @@ export default function HistoryPage() {
                 component="blockquote"
                 sx={styles.quoteText}
               >
-                "Společně budujeme lepší povědomí o tomto výjimečném plemeni"
+                {t("homepage.quote")}
               </Typography>
             </Paper>
           </Box>
-
           {/* Timeline Section */}
-          <Box mb={6}>
+          <Box sx={styles.sectionMarginBottom}>
+            {" "}
+            {/* Use dedicated style */}
             <Box sx={styles.sectionHeader}>
               <Typography variant="h5" component="h2" sx={styles.sectionTitle}>
-                Důležité milníky
+                {t("history.milestonesTitle")}
               </Typography>
-              <Divider sx={{ my: 2 }} />{" "}
-              {/* Added full-width divider below title */}
+              <Divider sx={styles.sectionDivider} /> {/* Use dedicated style */}
             </Box>
             <Timeline position="alternate">
               {milestones.map((milestone, index) => (
@@ -189,11 +164,12 @@ export default function HistoryPage() {
                       {/* Optional: Add icon inside dot */}
                     </TimelineDot>
                     {index < milestones.length - 1 && (
-                      <TimelineConnector sx={{ bgcolor: "primary.main" }} />
+                      <TimelineConnector sx={styles.timelineConnector} /> // Use dedicated style
                     )}
                   </TimelineSeparator>
-                  <TimelineContent sx={{ py: "12px", px: 2 }}>
-                    {/* Applied timelineItemPaper style */}
+                  <TimelineContent sx={styles.timelineContent}>
+                    {" "}
+                    {/* Use dedicated style */}
                     <Paper elevation={3} sx={styles.timelineItemPaper}>
                       <Typography
                         variant="caption"
@@ -215,17 +191,15 @@ export default function HistoryPage() {
               ))}
             </Timeline>
           </Box>
-
           {/* Activities Section */}
-          <Box sx={{ mb: 6 }}>
+          <Box sx={styles.sectionMarginBottom}>
             {" "}
-            {/* Added margin-bottom */}
+            {/* Use dedicated style */}
             <Box sx={styles.sectionHeader}>
               <Typography variant="h5" component="h2" sx={styles.sectionTitle}>
-                Naše aktivity
+                {t("history.activitiesTitle")}
               </Typography>
-              <Divider sx={{ my: 2 }} />{" "}
-              {/* Added full-width divider below title */}
+              <Divider sx={styles.sectionDivider} /> {/* Use dedicated style */}
             </Box>
             <Grid container spacing={3}>
               {activities.map((activity, index) => (

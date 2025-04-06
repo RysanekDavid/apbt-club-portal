@@ -10,7 +10,7 @@ import { db } from "../../firebase/config";
 import {
   getPublishedGalleries,
   getGalleryImages,
-} from "../../services/firestore"; // Import only gallery functions
+} from "../../services/firestore";
 
 // --- Mock Firebase Firestore ---
 vi.mock("firebase/firestore", async (importOriginal) => {

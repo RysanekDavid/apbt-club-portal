@@ -16,25 +16,26 @@ import LanguageIcon from "@mui/icons-material/Language";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import MapDisplay from "../../src/components/MapDisplay/MapDisplay"; // Correct path
 import * as styles from "./Contact.styles";
+import { useTranslation } from "react-i18next";
 
 const ContactPage = () => {
+  const { t } = useTranslation();
   const clubInfo = {
-    name: "Klub Amerických pit bull teriérů",
-    addressLine1: "Hlinice 38",
-    addressLine2: "390 02 Tábor",
-    phone: "724 610 712",
-    email: "info@klubapbt.cz",
-    website: "http://klubapbt.cz",
-    ico: "68521481",
+    name: t("contact.clubName"), // Use translation
+    addressLine1: t("contact.addressLine1"), // Use translation
+    addressLine2: t("contact.addressLine2"), // Use translation
+    phone: "724 610 712", // Keep phone number as is
+    email: "info@klubapbt.cz", // Keep email as is
+    website: "http://klubapbt.cz", // Keep website as is
+    ico: "68521481", // Keep ICO as is
   };
 
   const bankInfo = {
-    accountNumber: "2845463399/0800",
-    bankName: "ČESKÁ SPOŘITELNA",
-    bic: "GIBACZPX",
-    iban: "CZ76 0800 0000 0028 4546 3399",
-    paymentNote:
-      "Při všech platbách na účet klubu členové zásadně uvádějí svůj variabilní symbol (=vaše členské číslo). Nečlenové neuvádějí nic.",
+    accountNumber: "2845463399/0800", // Keep account number as is
+    bankName: t("contact.bankName"), // Use translation
+    bic: "GIBACZPX", // Keep BIC as is
+    iban: "CZ76 0800 0000 0028 4546 3399", // Keep IBAN as is
+    paymentNote: t("contact.paymentNote"), // Use translation
   };
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -49,10 +50,10 @@ const ContactPage = () => {
       <Box sx={styles.headerBox}>
         <Container maxWidth="lg" sx={styles.headerContent}>
           <Typography variant="h3" component="h1" sx={styles.headerTitle}>
-            Kontakt
+            {t("contact.title")}
           </Typography>
           <Typography variant="h6" component="p" sx={styles.headerSubtitle}>
-            Máte dotaz nebo zájem o spolupráci? Neváhejte nás kontaktovat.
+            {t("contact.subtitle")}
           </Typography>
         </Container>
       </Box>
@@ -64,7 +65,7 @@ const ContactPage = () => {
           <Grid item xs={12} md={6}>
             <Paper sx={styles.infoPaper}>
               <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
-                Napište nám
+                {t("contact.formTitle")}
               </Typography>
               <Divider sx={styles.divider} />
               <Box
@@ -74,18 +75,27 @@ const ContactPage = () => {
                 sx={styles.formBox}
                 onSubmit={handleFormSubmit}
               >
-                <TextField fullWidth label="Jméno" margin="normal" required />
                 <TextField
                   fullWidth
-                  label="Email"
+                  label={t("contact.formNameLabel")}
+                  margin="normal"
+                  required
+                />
+                <TextField
+                  fullWidth
+                  label={t("contact.formEmailLabel")}
                   type="email"
                   margin="normal"
                   required
                 />
-                <TextField fullWidth label="Předmět" margin="normal" />
                 <TextField
                   fullWidth
-                  label="Zpráva"
+                  label={t("contact.formSubjectLabel")}
+                  margin="normal"
+                />
+                <TextField
+                  fullWidth
+                  label={t("contact.formMessageLabel")}
                   multiline
                   rows={4}
                   margin="normal"
@@ -97,7 +107,7 @@ const ContactPage = () => {
                   size="large"
                   sx={styles.submitButton}
                 >
-                  Odeslat zprávu
+                  {t("contact.formSubmitButton")}
                 </Button>
               </Box>
             </Paper>
@@ -106,7 +116,7 @@ const ContactPage = () => {
           <Grid item xs={12} md={6}>
             <Paper sx={styles.infoPaper}>
               <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
-                Kontaktní údaje
+                {t("contact.detailsTitle")}
               </Typography>
               <Divider sx={styles.divider} />
               {/* Address - MOVED TO MAP CARD */}
@@ -115,7 +125,7 @@ const ContactPage = () => {
                 <PhoneIcon sx={styles.infoIcon} />
                 <Box>
                   <Typography variant="h6" sx={styles.infoHeading}>
-                    Telefon
+                    {t("contact.phoneLabel")}
                   </Typography>
                   <Link href={`tel:${clubInfo.phone}`} sx={styles.infoLink}>
                     {clubInfo.phone}
@@ -128,7 +138,7 @@ const ContactPage = () => {
                 <EmailIcon sx={styles.infoIcon} />
                 <Box>
                   <Typography variant="h6" sx={styles.infoHeading}>
-                    Email
+                    {t("contact.emailLabel")}
                   </Typography>
                   <Link href={`mailto:${clubInfo.email}`} sx={styles.infoLink}>
                     {clubInfo.email}
@@ -141,9 +151,8 @@ const ContactPage = () => {
                 <LanguageIcon sx={styles.infoIcon} />
                 <Box>
                   <Typography variant="h6" sx={styles.infoHeading}>
-                    Web
-                  </Typography>{" "}
-                  {/* Ensure heading is present */}
+                    {t("contact.webLabel")}
+                  </Typography>
                   <Link
                     href={clubInfo.website}
                     target="_blank"
@@ -159,9 +168,9 @@ const ContactPage = () => {
               <Typography
                 variant="h5"
                 gutterBottom
-                sx={{ ...styles.sectionTitle, mt: 3 }}
+                sx={styles.bankSectionTitle} // Use dedicated style
               >
-                Banka a účet klubu
+                {t("contact.bankTitle")}
               </Typography>
               <Divider sx={styles.divider} />
               <Box sx={styles.infoSection}>
@@ -171,10 +180,14 @@ const ContactPage = () => {
                     {bankInfo.bankName}
                   </Typography>
                   <Typography variant="body1">
-                    Číslo účtu: {bankInfo.accountNumber}
+                    {t("contact.accountNumberLabel")}: {bankInfo.accountNumber}
                   </Typography>
-                  <Typography variant="body1">BIC: {bankInfo.bic}</Typography>
-                  <Typography variant="body1">IBAN: {bankInfo.iban}</Typography>
+                  <Typography variant="body1">
+                    {t("contact.bicLabel")}: {bankInfo.bic}
+                  </Typography>
+                  <Typography variant="body1">
+                    {t("contact.ibanLabel")}: {bankInfo.iban}
+                  </Typography>
                 </Box>
               </Box>
               <Divider sx={styles.divider} />
@@ -190,17 +203,17 @@ const ContactPage = () => {
           <Grid item xs={12}>
             <Paper sx={styles.infoPaper}>
               <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
-                Najdete nás zde
+                {t("contact.mapTitle")}
               </Typography>
               <Divider sx={styles.divider} />
               {/* Address (Moved Here) */}
-              <Box sx={{ ...styles.infoSection, mb: 2 }}>
+              <Box sx={styles.addressInfoSection}>
                 {" "}
-                {/* Added margin-bottom */}
+                {/* Use dedicated style */}
                 <LocationOnIcon sx={styles.infoIcon} />
                 <Box>
                   <Typography variant="h6" sx={styles.infoHeading}>
-                    Adresa Klubu
+                    {t("contact.addressLabel")}
                   </Typography>
                   <Typography variant="body1">{clubInfo.name}</Typography>
                   <Typography variant="body1">
@@ -209,8 +222,8 @@ const ContactPage = () => {
                   <Typography variant="body1">
                     {clubInfo.addressLine2}
                   </Typography>
-                  <Typography variant="body1" sx={{ mt: 1 }}>
-                    IČO: {clubInfo.ico}
+                  <Typography variant="body1" sx={styles.icoText}>
+                    {t("contact.icoLabel")}: {clubInfo.ico}
                   </Typography>
                 </Box>
               </Box>
@@ -218,7 +231,7 @@ const ContactPage = () => {
               <Box sx={styles.mapContainer}>
                 <MapDisplay
                   position={[49.413, 14.677]}
-                  popupText="Klub APBT, Hlinice 38"
+                  popupText={t("contact.mapPopupText")}
                 />
               </Box>
             </Paper>

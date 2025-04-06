@@ -8,7 +8,7 @@ import {
   QuerySnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
-import { getUpcomingEvents, getPastEvents } from "../../services/firestore"; // Import only event functions
+import { getUpcomingEvents, getPastEvents } from "../../services/firestore";
 
 // --- Mock Firebase Firestore ---
 vi.mock("firebase/firestore", async (importOriginal) => {

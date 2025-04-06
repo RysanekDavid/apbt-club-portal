@@ -36,6 +36,7 @@ import EventDateTimeLocation from "./components/EventDateTimeLocation";
 import EventDescription from "./components/EventDescription";
 import EventImageUpload from "./components/EventImageUpload";
 import EventPublishStatus from "./components/EventPublishStatus";
+import { useTranslation } from "react-i18next";
 
 // Export the interface
 export interface EventFormData {
@@ -53,6 +54,7 @@ export interface EventFormData {
 
 const EventForm = () => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
   const isEditMode = Boolean(id);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(isEditMode);
@@ -112,7 +114,7 @@ const EventForm = () => {
       setError("");
     } catch (err) {
       console.error("Error fetching event:", err);
-      setError("Nepodařilo se načíst akci. Zkuste to prosím znovu.");
+      setError(t("admin.eventForm.fetchError"));
     } finally {
       setLoading(false);
     }
@@ -124,7 +126,7 @@ const EventForm = () => {
       setError("");
 
       if (!data.date) {
-        setError("Datum je povinné");
+        setError(t("admin.eventForm.validation.dateRequiredError"));
         setSubmitting(false);
         return;
       }
@@ -173,7 +175,7 @@ const EventForm = () => {
       navigate("/admin/events");
     } catch (err) {
       console.error("Error saving event:", err);
-      setError("Nepodařilo se uložit akci. Zkuste to prosím znovu.");
+      setError(t("admin.eventForm.saveError"));
       setSubmitting(false);
     }
   };
@@ -199,14 +201,16 @@ const EventForm = () => {
     <Box>
       <Box sx={styles.headerBox}>
         <Typography variant="h4">
-          {isEditMode ? "Upravit akci" : "Přidat akci"}
+          {isEditMode
+            ? t("admin.eventForm.editTitle")
+            : t("admin.eventForm.addTitle")}
         </Typography>
         <Button
           variant="outlined"
           startIcon={<ArrowBackIcon />}
           onClick={handleCancel}
         >
-          Zpět na seznam
+          {t("admin.eventForm.backButton")}
         </Button>
       </Box>
 
@@ -246,7 +250,7 @@ const EventForm = () => {
                 sx={styles.cancelButton}
                 disabled={submitting}
               >
-                Zrušit
+                {t("admin.eventForm.cancelButton")}
               </Button>
               <Button
                 type="submit"
@@ -256,7 +260,11 @@ const EventForm = () => {
                 }
                 disabled={submitting}
               >
-                {submitting ? "Ukládání..." : "Uložit"}
+                {submitting
+                  ? t("admin.eventForm.savingButton")
+                  : isEditMode
+                  ? t("admin.eventForm.saveChangesButton")
+                  : t("admin.eventForm.createButton")}
               </Button>
             </Grid>
           </Grid>

@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Menu, MenuItem, Button, Typography, Box } from "@mui/material"; // Changed IconButton to Button, added Box
-// import TranslateIcon from "@mui/icons-material/Translate"; // Removed TranslateIcon
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"; // Added dropdown arrow
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { GbFlag, CzFlag } from "../../../components/flags";
-// Removed i18n import, context handles it
-import { useLanguage } from "../../../contexts/LanguageContext"; // Import the hook
+import { useLanguage } from "../../../contexts/LanguageContext";
 import {
   Container,
   LanguageItemContent,
   FlagContainer,
+  LanguageButton,
+  ButtonFlagBox,
+  ButtonTypography,
+  StyledMenu,
+  StyledMenuItem,
 } from "./LanguageSelector.styles";
 
-// Removed LanguageSelectorProps interface and props
 const LanguageSelector = () => {
   const { t } = useTranslation();
-  const { language, setLanguage } = useLanguage(); // Get state from context
+  const { language, setLanguage } = useLanguage();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -28,8 +29,7 @@ const LanguageSelector = () => {
   };
 
   const handleLanguageChange = (langCode: string) => {
-    setLanguage(langCode); // Use context's setLanguage
-    // i18n.changeLanguage is now handled within the context's setLanguage function
+    setLanguage(langCode);
     handleClose();
   };
 
@@ -50,37 +50,23 @@ const LanguageSelector = () => {
 
   return (
     <Container>
-      {/* Changed IconButton to Button for better text/icon combination */}
-      <Button
+      <LanguageButton
         aria-label="language selector"
         aria-controls={open ? "language-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        color="inherit" // Inherit color (white) from Toolbar
-        sx={{ textTransform: "none", ml: 1 }} // Prevent uppercase, add margin
-        endIcon={<KeyboardArrowDownIcon />} // Add dropdown arrow
+        color="inherit"
+        endIcon={<KeyboardArrowDownIcon />}
       >
-        {/* Display flag and language code */}
         {currentLanguage?.flag && (
-          <Box
-            component="span"
-            sx={{
-              width: 20,
-              height: 15,
-              mr: 1,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            {currentLanguage.flag}
-          </Box>
+          <ButtonFlagBox>{currentLanguage.flag}</ButtonFlagBox>
         )}
-        <Typography variant="button" sx={{ color: "inherit" }}>
+        <ButtonTypography variant="button">
           {currentLanguage?.code.toUpperCase()}
-        </Typography>
-      </Button>
-      <Menu
+        </ButtonTypography>
+      </LanguageButton>
+      <StyledMenu
         id="language-menu"
         anchorEl={anchorEl}
         anchorOrigin={{
@@ -96,41 +82,20 @@ const LanguageSelector = () => {
         MenuListProps={{
           "aria-labelledby": "language-button",
         }}
-        PaperProps={{
-          sx: {
-            // Use theme-aware colors
-            bgcolor: "background.paper",
-            color: "text.primary",
-            mt: 1, // Add margin top
-            boxShadow: 3, // Add shadow
-          },
-        }}
       >
         {languages.map((lng) => (
-          <MenuItem
+          <StyledMenuItem
             key={lng.code}
             onClick={() => handleLanguageChange(lng.code)}
             selected={language === lng.code}
-            sx={{
-              // Add hover effect consistent with theme
-              "&:hover": {
-                backgroundColor: "action.hover",
-              },
-              "&.Mui-selected": {
-                backgroundColor: "action.selected",
-                "&:hover": {
-                  backgroundColor: "action.selected", // Keep selected color on hover
-                },
-              },
-            }}
           >
             <LanguageItemContent>
               <FlagContainer>{lng.flag}</FlagContainer>
               {lng.label}
             </LanguageItemContent>
-          </MenuItem>
+          </StyledMenuItem>
         ))}
-      </Menu>
+      </StyledMenu>
     </Container>
   );
 };

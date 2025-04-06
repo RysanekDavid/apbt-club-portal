@@ -4,19 +4,18 @@ export const rootBox: SxProps<Theme> = {
   display: "flex",
   flexDirection: "column",
   minHeight: "100vh",
-  position: "relative",
-  zIndex: 0,
+  // Removed position: relative and zIndex: 0
   // Note: backgroundColor is theme-dependent and kept inline in the component
 };
 
 export const appBar: SxProps<Theme> = {
-  zIndex: 1, // Ensure AppBar is above background
+  // Removed zIndex, sticky position should handle layering
+  top: 0, // Added top position for sticky AppBar
 };
 
 export const mainContent: SxProps<Theme> = {
   flexGrow: 1,
-  position: "relative", // Ensure content is layered above background
-  zIndex: 1,
+  // Removed position: relative and zIndex: 1 again
 };
 
 export const footerBox: SxProps<Theme> = {

@@ -22,6 +22,7 @@ import {
 } from "../../../services/firestore";
 import { Sponsor } from "../../../types/models";
 import * as styles from "./SponsorForm.styles"; // Import styles
+import { useTranslation } from "react-i18next";
 
 interface SponsorFormData {
   name: string;
@@ -33,6 +34,7 @@ interface SponsorFormData {
 
 const SponsorForm = () => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
   const isEditMode = Boolean(id);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(isEditMode);
@@ -78,7 +80,7 @@ const SponsorForm = () => {
       setError("");
     } catch (err) {
       console.error("Error fetching sponsor:", err);
-      setError("Nepodařilo se načíst sponzora. Zkuste to prosím znovu.");
+      setError(t("admin.sponsorForm.fetchError"));
     } finally {
       setLoading(false);
     }
@@ -114,7 +116,7 @@ const SponsorForm = () => {
       navigate("/admin/sponsors");
     } catch (err) {
       console.error("Error saving sponsor:", err);
-      setError("Nepodařilo se uložit sponzora. Zkuste to prosím znovu.");
+      setError(t("admin.sponsorForm.saveError"));
       setSubmitting(false);
     }
   };
@@ -140,14 +142,16 @@ const SponsorForm = () => {
     <Box>
       <Box sx={styles.headerBox}>
         <Typography variant="h4">
-          {isEditMode ? "Upravit sponzora" : "Přidat sponzora"}
+          {isEditMode
+            ? t("admin.sponsorForm.editTitle")
+            : t("admin.sponsorForm.addTitle")}
         </Typography>
         <Button
           variant="outlined"
           startIcon={<ArrowBackIcon />}
           onClick={handleCancel}
         >
-          Zpět na seznam
+          {t("admin.sponsorForm.backButton")}
         </Button>
       </Box>
 
@@ -164,11 +168,13 @@ const SponsorForm = () => {
               <Controller
                 name="name"
                 control={control}
-                rules={{ required: "Název je povinný" }}
+                rules={{
+                  required: t("admin.sponsorForm.validation.nameRequired"),
+                }}
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Název"
+                    label={t("admin.sponsorForm.nameLabel")}
                     fullWidth
                     error={!!errors.name}
                     helperText={errors.name?.message}
@@ -185,7 +191,7 @@ const SponsorForm = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Odkaz na web"
+                    label={t("admin.sponsorForm.websiteUrlLabel")}
                     fullWidth
                     placeholder="https://www.example.com"
                     error={!!errors.websiteUrl}
@@ -203,7 +209,7 @@ const SponsorForm = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="Popis"
+                    label={t("admin.sponsorForm.descriptionLabel")}
                     fullWidth
                     multiline
                     rows={4}
@@ -217,7 +223,7 @@ const SponsorForm = () => {
 
             <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
-                Logo
+                {t("admin.sponsorForm.logoLabel")}
               </Typography>
               <Controller
                 name="logoUrl"
@@ -227,7 +233,7 @@ const SponsorForm = () => {
                     folder="sponsors"
                     onUploadComplete={handleLogoUpload}
                     acceptedFileTypes="image/*"
-                    label="Logo sponzora"
+                    label={t("admin.sponsorForm.logoUploadLabel")}
                     existingUrl={field.value}
                     existingFileName={watch("logoName")}
                   />
@@ -246,7 +252,7 @@ const SponsorForm = () => {
                 sx={styles.cancelButton}
                 disabled={submitting}
               >
-                Zrušit
+                {t("admin.sponsorForm.cancelButton")}
               </Button>
               <Button
                 type="submit"
@@ -256,7 +262,9 @@ const SponsorForm = () => {
                 }
                 disabled={submitting}
               >
-                {submitting ? "Ukládání..." : "Uložit"}
+                {submitting
+                  ? t("admin.sponsorForm.savingButton")
+                  : t("admin.sponsorForm.saveButton")}
               </Button>
             </Grid>
           </Grid>

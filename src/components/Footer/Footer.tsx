@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Link } from "@mui/material";
-import { StyledFooter } from "./Footer.styles";
+import { Typography, Link } from "@mui/material"; // Removed Box import
+import { StyledFooter, CopyrightBox } from "./Footer.styles"; // Import CopyrightBox
 import { useTranslation } from "react-i18next";
 
 const Footer: React.FC = () => {
@@ -28,7 +28,8 @@ const Footer: React.FC = () => {
 
   return (
     <StyledFooter isVisible={isVisible}>
-      <Box sx={{ textAlign: "center", py: 1 }}>
+      {/* Use CopyrightBox */}
+      <CopyrightBox>
         <Typography variant="body2" color="text.secondary">
           {t("footer.copyright", { year: new Date().getFullYear() })}
           {" made with ❤️ by "}
@@ -50,7 +51,7 @@ const Footer: React.FC = () => {
             t("footer.teamName").lastIndexOf(" ") + 1
           )}
         </Typography>
-      </Box>
+      </CopyrightBox>
     </StyledFooter>
   );
 };

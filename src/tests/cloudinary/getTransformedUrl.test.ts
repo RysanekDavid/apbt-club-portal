@@ -34,7 +34,6 @@ describe("getTransformedUrl", () => {
   it("should return original URL if URL is null or empty", () => {
     expect(getTransformedUrl("", { width: 100 })).toBe("");
     // Depending on TS config, null might not be assignable to string
-    // expect(getTransformedUrl(null as any, { width: 100 })).toBe(null);
   });
 
   it("should apply width transformation", () => {

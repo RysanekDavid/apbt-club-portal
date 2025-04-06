@@ -1,26 +1,34 @@
 import MenuIcon from "@mui/icons-material/Menu";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import Brightness4Icon from "@mui/icons-material/Brightness4"; // Dark mode icon
-import Brightness7Icon from "@mui/icons-material/Brightness7"; // Light mode icon
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link as RouterLink } from "react-router-dom"; // Import NavLink and Link
-import { IconButton } from "@mui/material"; // Import Switch
+import { Link as RouterLink } from "react-router-dom";
+import {
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 import logoSvg from "../../assets/logo.svg";
-import logoInvertedSvg from "../../assets/logo_inverted.svg"; // Import inverted logo
+import logoInvertedSvg from "../../assets/logo_inverted.svg";
 import { useAuth } from "../../contexts/AuthContext";
-import { useThemeContext } from "../../contexts/ThemeContext"; // Import theme context hook
+import { useThemeContext } from "../../contexts/ThemeContext";
 import {
   Root,
   LogoContainer,
-  LogoLink, // Keep LogoLink for the logo itself
-  // LogoText removed as it's no longer used
+  LogoLink,
   DesktopNav,
-  NavLinkStyled, // This will now be based on NavLink
+  NavLinkStyled,
   MobileMenuContainer,
   MenuButton,
-  MobileNav,
-  RightSection, // Import the new RightSection
+  RightSection,
+  ThemeToggleButton,
+  StyledDrawer,
+  DrawerContentBox,
 } from "./Toolbar.styles";
 import LanguageSelector from "./LanguageSelector/LanguageSelector";
 
@@ -28,12 +36,12 @@ export default function MainToolbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation();
   const { currentUser } = useAuth();
-  const { mode, toggleTheme } = useThemeContext(); // Get theme mode and toggle function
+  const { mode, toggleTheme } = useThemeContext();
 
   const handleMenuToggle = () => setMenuOpen(!menuOpen);
   const handleMenuClose = () => setMenuOpen(false);
 
-  const currentLogo = mode === "light" ? logoSvg : logoInvertedSvg; // Select logo based on theme
+  const currentLogo = mode === "light" ? logoSvg : logoInvertedSvg;
 
   const navItems = [
     { path: "/", label: t("toolbar.home") },
@@ -49,37 +57,36 @@ export default function MainToolbar() {
     <Root>
       <LogoContainer>
         <LogoLink to="/">
-          <img src={currentLogo} alt="Klub APBT Logo" />{" "}
-          {/* Use dynamic logo */}
+          <img src={currentLogo} alt="Klub APBT Logo" />
         </LogoLink>
       </LogoContainer>
 
       <DesktopNav>
         {navItems.map((item) => (
-          // Use RouterNavLink here, styled component will handle the styling
           <NavLinkStyled key={item.path} to={item.path}>
             {item.label}
           </NavLinkStyled>
         ))}
       </DesktopNav>
 
-      {/* Wrap LanguageSelector, Theme Switch, Admin Icon, and MobileMenuContainer in RightSection */}
       <RightSection>
         <LanguageSelector />
-        {/* Theme Toggle Switch */}
-        <IconButton
-          sx={{ ml: 1 }}
+        <ThemeToggleButton
           onClick={toggleTheme}
           color="inherit"
           aria-label={
-            mode === "dark" ? "Switch to light mode" : "Switch to dark mode"
+            mode === "dark"
+              ? t("toolbar.switchToLight")
+              : t("toolbar.switchToDark")
           }
           title={
-            mode === "dark" ? "Switch to light mode" : "Switch to dark mode"
+            mode === "dark"
+              ? t("toolbar.switchToLight")
+              : t("toolbar.switchToDark")
           }
         >
           {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-        </IconButton>
+        </ThemeToggleButton>
         {/* <Switch
           checked={mode === 'dark'}
           onChange={toggleTheme}
@@ -87,13 +94,13 @@ export default function MainToolbar() {
         /> */}
         {currentUser && (
           <RouterLink
-            to="/admin" // Corrected path to admin root
-            style={{ textDecoration: "none", color: "inherit" }} // Prevent default link styles
+            to="/admin"
+            style={{ textDecoration: "none", color: "inherit" }}
           >
             <IconButton
               color="inherit"
-              aria-label="Admin Dashboard"
-              title="Admin Dashboard" // Tooltip for accessibility
+              aria-label={t("toolbar.adminDashboardLabel")}
+              title={t("toolbar.adminDashboardLabel")}
             >
               <AdminPanelSettingsIcon />
             </IconButton>
@@ -101,27 +108,35 @@ export default function MainToolbar() {
         )}
         <MobileMenuContainer>
           <MenuButton
-            aria-label="menu"
+            aria-label={t("toolbar.menuLabel")}
             aria-controls="mobile-menu"
             aria-haspopup="true"
             onClick={handleMenuToggle}
           >
             <MenuIcon />
           </MenuButton>
-          {menuOpen && (
-            <MobileNav id="mobile-menu">
-              {navItems.map((item) => (
-                // Use RouterNavLink here as well
-                <NavLinkStyled
-                  key={item.path}
-                  to={item.path}
-                  onClick={handleMenuClose}
-                >
-                  {item.label}
-                </NavLinkStyled>
-              ))}
-            </MobileNav>
-          )}
+          <StyledDrawer
+            anchor="right"
+            open={menuOpen}
+            onClose={handleMenuClose}
+            ModalProps={{ keepMounted: true }}
+          >
+            <DrawerContentBox
+              role="presentation"
+              onClick={handleMenuClose}
+              onKeyDown={handleMenuClose}
+            >
+              <List>
+                {navItems.map((item) => (
+                  <ListItem key={item.path} disablePadding>
+                    <ListItemButton component={NavLinkStyled} to={item.path}>
+                      <ListItemText primary={item.label} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </List>
+            </DrawerContentBox>
+          </StyledDrawer>
         </MobileMenuContainer>
       </RightSection>
     </Root>

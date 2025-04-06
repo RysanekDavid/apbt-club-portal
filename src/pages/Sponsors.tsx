@@ -16,8 +16,10 @@ import {
 import { getActiveSponsors } from "../services/firestore"; // Use the specific function
 import { Sponsor } from "../types/models"; // Import the Sponsor type
 import * as styles from "./Sponsors.styles"; // Import styles
+import { useTranslation } from "react-i18next";
 
 const SponsorsPage = () => {
+  const { t } = useTranslation();
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -32,7 +34,7 @@ const SponsorsPage = () => {
         setSponsors(fetchedSponsors);
       } catch (err) {
         console.error("Error fetching sponsors:", err);
-        setError("Nepodařilo se načíst sponzory.");
+        setError(t("sponsors.fetchError"));
       } finally {
         setLoading(false);
       }
@@ -47,11 +49,10 @@ const SponsorsPage = () => {
       <Box sx={styles.headerBox}>
         <Container maxWidth="lg" sx={styles.headerContent}>
           <Typography variant="h3" component="h1" sx={styles.headerTitle}>
-            Sponzoři
+            {t("sponsors.title")}
           </Typography>
           <Typography variant="h6" component="p" sx={styles.headerSubtitle}>
-            Děkujeme našim podporovatelům a partnerům za jejich štědrost a
-            spolupráci.
+            {t("sponsors.subtitle")}
           </Typography>
         </Container>
       </Box>
@@ -78,7 +79,7 @@ const SponsorsPage = () => {
             {sponsors.length === 0 ? (
               <Grid item xs={12}>
                 <Typography variant="body1" align="center">
-                  Momentálně nejsou k dispozici žádní sponzoři.
+                  {t("sponsors.noSponsors")}
                 </Typography>
               </Grid>
             ) : (
@@ -90,7 +91,7 @@ const SponsorsPage = () => {
                         component="img"
                         sx={styles.cardMedia}
                         image={sponsor.logoUrl}
-                        alt={`${sponsor.name} logo`}
+                        alt={t("sponsors.logoAlt", { name: sponsor.name })}
                       />
                     )}
                     <CardContent sx={styles.cardContent}>
@@ -111,7 +112,7 @@ const SponsorsPage = () => {
                           target="_blank" // Open in new tab
                           rel="noopener noreferrer" // Security measure
                         >
-                          Navštívit web
+                          {t("sponsors.visitWebsiteButton")}
                         </Button>
                       </CardActions>
                     )}

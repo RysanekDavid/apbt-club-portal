@@ -21,7 +21,7 @@ import {
   addDocument,
   updateDocument,
   deleteDocument,
-} from "../../services/firestore"; // Import only generic functions
+} from "../../services/firestore";
 
 // --- Mock Firebase Firestore ---
 vi.mock("firebase/firestore", async (importOriginal) => {

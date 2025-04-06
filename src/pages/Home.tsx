@@ -11,16 +11,18 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import homepageImage from "../assets/homepage_image.png"; // Assuming this is the correct image
+// Import both namespace for sx props and named exports for styled components
+import * as styles from "./Home.styles";
 import {
   HeroWrapper,
   HeroImage,
   HeroOverlay,
   HeroContentContainer,
-  ExploreSectionContainer, // Renamed from NewsSectionContainer
-  StyledCard, // New Card component
-  StyledCardActionArea, // New CardActionArea
-  IconAvatar, // New Avatar for icons
-  CtaSection, // New CTA section
+  ExploreSectionContainer,
+  StyledCard,
+  StyledCardActionArea,
+  IconAvatar,
+  CtaSection,
 } from "./Home.styles";
 // Updated MUI Icons to match template (Calendar, Users, Mail, Award, Image)
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday"; // Replaces EventIcon
@@ -95,13 +97,7 @@ export default function HomePage() {
           <Typography
             variant="h6"
             component="p"
-            color="common.white" // Explicitly set to white for visibility in both modes
-            sx={{
-              maxWidth: "800px", // Limit width like template max-w-3xl
-              mx: "auto", // Center the paragraph
-              mb: 4, // Margin bottom like template mb-6
-              lineHeight: 1.6, // Like template leading-relaxed
-            }}
+            sx={styles.heroSubtitle} // Use dedicated style
           >
             {t("homepage.heroSubtitle")}
           </Typography>
@@ -123,20 +119,11 @@ export default function HomePage() {
             </Button>
             <Button
               variant="outlined" // White/transparent button
-              color="inherit" // Use white text color from parent
+              color="inherit"
               size="large"
               component={RouterLink}
               to="/historie"
-              sx={{
-                // Adjusted styles for better visibility
-                color: "white", // Ensure text is white
-                backgroundColor: "rgba(100, 100, 100, 0.4)", // Slightly darker background
-                borderColor: "rgba(255, 255, 255, 0.8)", // More opaque border
-                "&:hover": {
-                  backgroundColor: "rgba(100, 100, 100, 0.8)", // Darken on hover
-                  borderColor: "rgba(255, 255, 255, 1)",
-                },
-              }}
+              sx={styles.heroButtonOutlined} // Use dedicated style
             >
               {t("homepage.heroButtonAbout")}
             </Button>
@@ -160,7 +147,7 @@ export default function HomePage() {
           <Typography
             variant="body1"
             color="text.secondary"
-            sx={{ maxWidth: "600px", mx: "auto" }} // Limit width like template max-w-2xl
+            sx={styles.exploreSubtitle} // Use dedicated style
           >
             {t("homepage.exploreSubtitle")}
           </Typography>
@@ -183,16 +170,7 @@ export default function HomePage() {
                   <Link
                     component={RouterLink}
                     to={item.link}
-                    underline="none" // Remove link underline
-                    color="inherit" // Inherit text color
-                    sx={{
-                      display: "flex", // Use flexbox for layout
-                      flexDirection: "column",
-                      alignItems: "flex-start",
-                      width: "100%", // Ensure link fills the area
-                      height: "100%",
-                      p: 3, // Apply padding here (was removed from StyledCardActionArea)
-                    }}
+                    sx={styles.cardLink} // Use dedicated style
                   >
                     <IconAvatar>{item.icon}</IconAvatar>
                     <Typography
@@ -227,16 +205,14 @@ export default function HomePage() {
             component="h2"
             fontWeight="bold"
             gutterBottom
-            sx={{ mb: 3 }} // Margin like template mb-6
+            sx={styles.ctaTitle} // Use dedicated style
           >
             {t("homepage.ctaTitle")}
           </Typography>
           <Typography
             variant="body1"
-            // Lighter text like template text-gray-300
-            color="rgba(255, 255, 255, 0.7)"
             paragraph
-            sx={{ mb: 4 }} // Margin like template mb-8
+            sx={styles.ctaSubtitle} // Use dedicated style
           >
             {t("homepage.ctaSubtitle")}
           </Typography>

@@ -44,6 +44,12 @@ export const sectionTitle: SxProps<Theme> = {
   mb: 1.5,
 };
 
+// Specific style for the Bank section title combining sectionTitle and margin-top
+export const bankSectionTitle: SxProps<Theme> = {
+  ...sectionTitle, // Inherit base styles
+  mt: 3, // Add margin-top
+};
+
 // Divider style
 export const divider: SxProps<Theme> = {
   my: 2, // Margin top and bottom for dividers
@@ -54,6 +60,12 @@ export const infoSection: SxProps<Theme> = {
   display: "flex",
   alignItems: "flex-start", // Align items to the top
   gap: 2, // Space between icon and text content
+};
+
+// Specific style for the Address info section combining infoSection and margin-bottom
+export const addressInfoSection: SxProps<Theme> = {
+  ...infoSection, // Inherit base styles
+  mb: 2, // Add margin-bottom
 };
 
 // Icon style
@@ -82,6 +94,11 @@ export const paymentNote: SxProps<Theme> = {
   mt: 2, // Margin top for the note
   fontStyle: "italic",
   color: "text.secondary",
+};
+
+// Style for the IČO text
+export const icoText: SxProps<Theme> = {
+  mt: 1, // Add margin-top
 };
 
 // Restore original form styles

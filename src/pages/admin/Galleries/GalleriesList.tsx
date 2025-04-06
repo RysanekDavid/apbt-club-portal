@@ -31,6 +31,7 @@ import { Gallery as GalleryModel } from "../../../types/models"; // Removed Imag
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
 import * as styles from "./GalleriesList.styles";
+import { useTranslation } from "react-i18next";
 
 // Helper function to extract publicId from Cloudinary URL
 const getPublicIdFromUrl = (url: string): string | null => {
@@ -46,6 +47,7 @@ const getPublicIdFromUrl = (url: string): string | null => {
 };
 
 const GalleriesList: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [galleries, setGalleries] = useState<GalleryModel[]>([]);
   const [loading, setLoading] = useState(true);
@@ -69,7 +71,7 @@ const GalleriesList: React.FC = () => {
       setError("");
     } catch (err) {
       console.error("Error fetching galleries:", err);
-      setError("Nepodařilo se načíst galerie. Zkuste to prosím znovu.");
+      setError(t("admin.galleriesList.fetchError"));
     } finally {
       setLoading(false);
     }
@@ -139,7 +141,7 @@ const GalleriesList: React.FC = () => {
       );
     } catch (err) {
       console.error("Error deleting gallery:", err);
-      setError("Nepodařilo se smazat galerii. Zkuste to prosím znovu.");
+      setError(t("admin.galleriesList.deleteError"));
     } finally {
       setLoading(false);
       setDeleteDialogOpen(false);
@@ -159,13 +161,13 @@ const GalleriesList: React.FC = () => {
   return (
     <Box>
       <Box sx={styles.headerBox}>
-        <Typography variant="h4">Správa galerií</Typography>
+        <Typography variant="h4">{t("admin.galleriesList.title")}</Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleAddGallery}
         >
-          Přidat galerii
+          {t("admin.galleriesList.addButton")}
         </Button>
       </Box>
 
@@ -182,7 +184,7 @@ const GalleriesList: React.FC = () => {
       ) : galleries.length === 0 ? (
         <Paper sx={styles.noDataPaper}>
           <Typography variant="body1">
-            Zatím nejsou přidány žádné galerie.
+            {t("admin.galleriesList.noData")}
           </Typography>
         </Paper>
       ) : (
@@ -190,11 +192,13 @@ const GalleriesList: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell sx={styles.thumbnailCell}>Náhled</TableCell>
-                <TableCell>Název</TableCell>
-                <TableCell>Datum</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Akce</TableCell>
+                <TableCell sx={styles.thumbnailCell}>
+                  {t("admin.galleriesList.tableThumbnail")}
+                </TableCell>
+                <TableCell>{t("admin.galleriesList.tableName")}</TableCell>
+                <TableCell>{t("admin.galleriesList.tableDate")}</TableCell>
+                <TableCell>{t("admin.galleriesList.tableStatus")}</TableCell>
+                <TableCell>{t("admin.galleriesList.tableActions")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -212,7 +216,11 @@ const GalleriesList: React.FC = () => {
                   <TableCell>{formatDate(gallery.date)}</TableCell>
                   <TableCell>
                     <Chip
-                      label={gallery.published ? "Publikováno" : "Koncept"}
+                      label={
+                        gallery.published
+                          ? t("admin.galleriesList.statusPublished")
+                          : t("admin.galleriesList.statusDraft")
+                      }
                       color={gallery.published ? "success" : "default"}
                       size="small"
                     />
@@ -222,7 +230,7 @@ const GalleriesList: React.FC = () => {
                       color="primary"
                       onClick={() => handleEditGallery(gallery.id)}
                       size="small"
-                      title="Upravit"
+                      title={t("admin.galleriesList.editTooltip")}
                     >
                       <EditIcon />
                     </IconButton>
@@ -230,7 +238,7 @@ const GalleriesList: React.FC = () => {
                       color="error"
                       onClick={() => handleDeleteClick(gallery.id)}
                       size="small"
-                      title="Smazat"
+                      title={t("admin.galleriesList.deleteTooltip")}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -244,8 +252,8 @@ const GalleriesList: React.FC = () => {
 
       <ConfirmDialog
         open={deleteDialogOpen}
-        title="Smazat galerii"
-        message="Opravdu chcete smazat tuto galerii? Tímto smažete i všechny přiřazené obrázky. Tato akce je nevratná." // Corrected message
+        title={t("admin.galleriesList.deleteDialogTitle")}
+        message={t("admin.galleriesList.deleteDialogMessage")}
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />

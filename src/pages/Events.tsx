@@ -21,8 +21,10 @@ import { getUpcomingEvents, getPastEvents } from "../services/firestore";
 import { Event as EventModel } from "../types/models";
 import placeholderImage from "../assets/image_placeholder.jpg";
 import * as styles from "./Events.styles";
+import { useTranslation } from "react-i18next";
 
 const EventsPage = () => {
+  const { t } = useTranslation();
   const [upcomingEvents, setUpcomingEvents] = useState<EventModel[]>([]);
   const [pastEvents, setPastEvents] = useState<EventModel[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,9 +45,9 @@ const EventsPage = () => {
         console.error("Error fetching events:", err);
         if (err instanceof Error) {
           console.error("Error details:", err.message);
-          setError(`Nepodařilo se načíst akce: ${err.message}`);
+          setError(t("events.fetchErrorWithMessage", { message: err.message }));
         } else {
-          setError("Nepodařilo se načíst akce. Zkuste to prosím znovu.");
+          setError(t("events.fetchErrorGeneric"));
         }
       } finally {
         setLoading(false);
@@ -70,7 +72,7 @@ const EventsPage = () => {
             component="img"
             sx={event.imageUrl ? styles.cardMedia : styles.cardMediaPlaceholder}
             image={event.imageUrl || placeholderImage}
-            alt={event.imageUrl ? event.title : "Placeholder"}
+            alt={event.imageUrl ? event.title : t("events.placeholderAlt")}
           />
           <CardContent sx={styles.cardContent}>
             <Typography
@@ -120,7 +122,7 @@ const EventsPage = () => {
                 onClick={() => setExpandedEventId(isExpanded ? null : event.id)}
                 sx={styles.learnMoreButton}
               >
-                {isExpanded ? "Skrýt" : "Číst dále"}
+                {isExpanded ? t("events.showLess") : t("events.readMore")}
               </Button>
             ) : null}
           </CardContent>
@@ -158,11 +160,10 @@ const EventsPage = () => {
         <Box sx={styles.heroOverlay}>
           <Container maxWidth="md" sx={styles.heroContent}>
             <Typography variant="h2" component="h1" sx={styles.heroTitle}>
-              Akce
+              {t("events.title")}
             </Typography>
             <Typography variant="body1" sx={styles.heroSubtitle}>
-              Objevte naše nadcházející akce a ohlédněte se za minulými
-              setkáními
+              {t("events.subtitle")}
             </Typography>
           </Container>
         </Box>
@@ -175,13 +176,12 @@ const EventsPage = () => {
 
         {upcomingEvents.length > 0 && (
           <Box mb={4}>
-            {" "}
-            {/* Added Box wrapper with margin */}
             <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
-              Nadcházející akce
+              {t("events.upcomingTitle")}
             </Typography>
             <Divider sx={styles.sectionDivider} />
-            <Grid container spacing={3}>
+            {/* Add alignItems="flex-start" to prevent stretching */}
+            <Grid container spacing={3} alignItems="flex-start">
               {upcomingEvents.map(renderEventCard)}
             </Grid>
           </Box>
@@ -189,13 +189,12 @@ const EventsPage = () => {
 
         {pastEvents.length > 0 && (
           <Box mb={4}>
-            {" "}
-            {/* Added Box wrapper with margin */}
             <Typography variant="h5" gutterBottom sx={styles.sectionTitle}>
-              Proběhlé akce
+              {t("events.pastTitle")}
             </Typography>
             <Divider sx={styles.sectionDivider} />
-            <Grid container spacing={3}>
+            {/* Add alignItems="flex-start" to prevent stretching */}
+            <Grid container spacing={3} alignItems="flex-start">
               {pastEvents.map(renderEventCard)}
             </Grid>
           </Box>
@@ -203,7 +202,7 @@ const EventsPage = () => {
 
         {upcomingEvents.length === 0 && pastEvents.length === 0 && (
           <Alert severity="info" sx={styles.noEventsAlert}>
-            Momentálně nejsou naplánovány žádné akce.
+            {t("events.noEvents")}
           </Alert>
         )}
       </Container>

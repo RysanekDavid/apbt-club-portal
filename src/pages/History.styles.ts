@@ -32,6 +32,23 @@ export const heroSubtitle: SxProps<Theme> = {
   maxWidth: "md",
 };
 
+// Box to constrain content width
+export const contentMaxWidthBox: SxProps<Theme> = {
+  maxWidth: "960px",
+  mx: "auto",
+};
+
+// Grid item used for text column layout
+export const flexColumnGridItem: SxProps<Theme> = {
+  display: "flex",
+  flexDirection: "column",
+};
+
+// Box to make content grow within flex container
+export const flexGrowBox: SxProps<Theme> = {
+  flexGrow: 1,
+};
+
 // Section Title (used for multiple sections)
 export const sectionTitle: SxProps<Theme> = {
   fontWeight: "bold",
@@ -98,6 +115,17 @@ export const timelineItemPaper: SxProps<Theme> = (theme) => ({
   // elevation={3} is handled in the component, but we could override shadow here if needed
 });
 
+// Timeline Connector style
+export const timelineConnector: SxProps<Theme> = {
+  bgcolor: "primary.main",
+};
+
+// Timeline Content style
+export const timelineContent: SxProps<Theme> = {
+  py: "12px",
+  px: 2,
+};
+
 // Section Header (Title only) - Divider removed
 export const sectionHeader: SxProps<Theme> = {
   // display: "flex", // Removed for divider
@@ -105,7 +133,15 @@ export const sectionHeader: SxProps<Theme> = {
   mb: 4, // Margin below header
 };
 
-// headingDivider style removed
+// Divider used within sections
+export const sectionDivider: SxProps<Theme> = {
+  my: 2,
+};
+
+// Box with bottom margin for sections
+export const sectionMarginBottom: SxProps<Theme> = {
+  mb: 6,
+};
 
 // Activity Section
 export const activityCard: SxProps<Theme> = (theme) => ({

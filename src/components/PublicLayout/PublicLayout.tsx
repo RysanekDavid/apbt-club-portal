@@ -1,18 +1,16 @@
 import { ReactNode } from "react";
-// Removed duplicate import
-import { AppBar, Box, useTheme } from "@mui/material"; // Import Box and useTheme
+import { AppBar, Box, useTheme } from "@mui/material";
 import MainToolbar from "../Toolbar/Toolbar";
-import Footer from "../Footer/Footer"; // Import the Footer component
-import PawBackground from "../PawBackground/PawBackground"; // Import the new component
-import * as styles from "./PublicLayout.styles"; // Import styles
+import Footer from "../Footer/Footer";
+import PawBackground from "../PawBackground/PawBackground";
+import * as styles from "./PublicLayout.styles";
 
 interface PublicLayoutProps {
   children: ReactNode;
-  // Removed language and setLanguage props
 }
 
 const PublicLayout = ({ children }: PublicLayoutProps) => {
-  const theme = useTheme(); // Get the current theme
+  const theme = useTheme();
 
   return (
     <Box
@@ -26,7 +24,8 @@ const PublicLayout = ({ children }: PublicLayoutProps) => {
       }}
     >
       <PawBackground /> {/* Background component covers the whole Box */}
-      <AppBar position="static" color="primary" sx={styles.appBar}>
+      {/* Make AppBar sticky, move top style to sx */}
+      <AppBar position="sticky" color="primary" sx={styles.appBar}>
         {/* MainToolbar now gets language from context internally */}
         <MainToolbar />
       </AppBar>

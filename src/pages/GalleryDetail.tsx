@@ -1,40 +1,42 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Container,
   Typography,
-  Button, // Import Button
+  Button,
   Box,
   CircularProgress,
   Alert,
-  Grid, // Add Grid for image layout
+  Grid,
   Card,
   CardMedia,
-  CardActionArea, // Make card clickable
+  CardActionArea,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"; // Import back arrow icon
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useEffect, useState } from "react";
-import Lightbox from "yet-another-react-lightbox"; // Import Lightbox
-import "yet-another-react-lightbox/styles.css"; // Import default styles
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 import { getGalleryBySlug } from "../services/firestore";
 import { Gallery as GalleryModel } from "../types/models";
-import { format } from "date-fns"; // Import format for date display
-import { cs } from "date-fns/locale"; // Import Czech locale
-import * as styles from "./GalleryDetail.styles"; // Import styles
+import { format } from "date-fns";
+import { cs } from "date-fns/locale";
+import * as styles from "./GalleryDetail.styles";
+import { useTranslation } from "react-i18next";
 
 const GalleryDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate(); // Get navigate function
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [gallery, setGallery] = useState<GalleryModel | null>(null);
-  const [openLightbox, setOpenLightbox] = useState(false); // State for lightbox visibility
-  const [lightboxIndex, setLightboxIndex] = useState(0); // State for current image index in lightbox
+  const [openLightbox, setOpenLightbox] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   useEffect(() => {
     const fetchGallery = async () => {
       if (!slug) {
-        setError("Slug galerie chybí.");
+        setError(t("galleryDetail.slugMissing"));
         setLoading(false);
         return;
       }
@@ -45,18 +47,18 @@ const GalleryDetailPage: React.FC = () => {
         if (galleryData) {
           setGallery(galleryData);
         } else {
-          setError("Galerie nebyla nalezena.");
+          setError(t("galleryDetail.notFoundError"));
         }
       } catch (err) {
         console.error("Error fetching gallery details:", err);
-        setError("Nepodařilo se načíst detaily galerie.");
+        setError(t("galleryDetail.fetchError"));
       } finally {
         setLoading(false);
       }
     };
 
     fetchGallery();
-  }, [slug]); // Re-fetch if slug changes
+  }, [slug, t]);
 
   return (
     <Container maxWidth="lg">
@@ -75,7 +77,6 @@ const GalleryDetailPage: React.FC = () => {
 
         {!loading && !error && gallery && (
           <>
-            {/* Wrap Title and Button in a Flex Box */}
             <Box sx={styles.headerBox}>
               <Typography
                 variant="h3"
@@ -83,70 +84,65 @@ const GalleryDetailPage: React.FC = () => {
                 gutterBottom
                 sx={styles.headerTitle}
               >
-                {" "}
                 {gallery.title}
               </Typography>
-              {/* Back Button */}
               <Button
                 variant="outlined"
                 startIcon={<ArrowBackIcon />}
-                onClick={() => navigate(-1)} // Use navigate(-1) to go back in history
+                onClick={() => navigate(-1)}
               >
-                Zpět na galerie
+                {t("galleryDetail.backButton")}
               </Button>
             </Box>
 
             <Typography variant="subtitle1" color="text.secondary" gutterBottom>
               {format(gallery.date, "d. MMMM yyyy", { locale: cs })}
             </Typography>
-            {/* Removed gallery description display */}
 
-            {/* Display gallery images */}
             {gallery.images && gallery.images.length > 0 ? (
               <Grid container spacing={2}>
-                {gallery.images.map((image, index) => (
-                  <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-                    {/* Wrap CardMedia in CardActionArea to make it clickable */}
-                    <Card sx={styles.imageCard}>
-                      <CardActionArea
-                        onClick={() => {
-                          setLightboxIndex(index);
-                          setOpenLightbox(true);
-                        }}
-                        sx={styles.imageCardActionArea}
-                      >
-                        <CardMedia
-                          component="img"
-                          image={image.url}
-                          alt={image.fileName || `Obrázek ${index + 1}`}
-                          sx={styles.cardMedia}
-                        />
-                        {/* Optionally add a CardContent here if needed */}
-                      </CardActionArea>
-                    </Card>{" "}
-                    {/* Add missing closing tag */}
-                  </Grid>
-                ))}
+                {gallery.images.map((image, index) => {
+                  const altText = image.fileName
+                    ? image.fileName
+                    : `${t("galleryDetail.imageAlt")} ${index + 1}`;
+                  return (
+                    <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                      <Card sx={styles.imageCard}>
+                        <CardActionArea
+                          onClick={() => {
+                            setLightboxIndex(index);
+                            setOpenLightbox(true);
+                          }}
+                          sx={styles.imageCardActionArea}
+                        >
+                          <CardMedia
+                            component="img"
+                            image={image.url}
+                            alt={altText}
+                            sx={styles.cardMedia}
+                          />
+                        </CardActionArea>
+                      </Card>
+                    </Grid>
+                  );
+                })}
               </Grid>
             ) : (
               <Typography sx={styles.noImagesText}>
-                Tato galerie zatím neobsahuje žádné obrázky.
+                {t("galleryDetail.noImages")}
               </Typography>
             )}
           </>
         )}
-        {/* Keep the case for slug missing or gallery not found after loading */}
         {!loading && !gallery && !error && (
-          <Typography>Galerie nenalezena nebo nebyla publikována.</Typography>
+          <Typography>{t("galleryDetail.notFoundOrNotPublished")}</Typography>
         )}
 
-        {/* Render Lightbox component */}
         <Lightbox
           open={openLightbox}
           close={() => setOpenLightbox(false)}
           slides={gallery?.images?.map((img) => ({ src: img.url })) || []}
           index={lightboxIndex}
-          // Add plugins here if needed (e.g., Thumbnails, Zoom)
         />
       </Box>
     </Container>

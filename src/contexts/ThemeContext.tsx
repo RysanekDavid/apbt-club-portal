@@ -22,7 +22,6 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  // Add state persistence (e.g., localStorage) if needed
   const [mode, setMode] = useState<ThemeMode>("light");
 
   const toggleTheme = () => {
@@ -39,8 +38,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   return (
     <ThemeContext.Provider value={contextValue}>
       <MuiThemeProvider theme={theme}>
-        <CssBaseline />{" "}
-        {/* Ensures background color and baseline styles are applied */}
+        <CssBaseline />
         {children}
       </MuiThemeProvider>
     </ThemeContext.Provider>

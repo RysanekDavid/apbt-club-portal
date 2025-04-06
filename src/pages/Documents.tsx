@@ -32,6 +32,7 @@ import { getPublishedDocuments } from "../services/firestore";
 // Removed import for getTransformedUrl
 import { Document as DocumentModel } from "../types/models";
 import * as styles from "./Documents.styles";
+import { useTranslation } from "react-i18next";
 
 // Helper function to extract file extension
 const getFileExtension = (url: string): string => {
@@ -46,6 +47,7 @@ const getFileExtension = (url: string): string => {
 };
 
 export default function DocumentsPage() {
+  const { t } = useTranslation();
   const [documents, setDocuments] = useState<DocumentModel[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -59,7 +61,7 @@ export default function DocumentsPage() {
         setError("");
       } catch (err) {
         console.error("Error fetching documents:", err);
-        setError("Nepodařilo se načíst dokumenty. Zkuste to prosím později.");
+        setError(t("documents.fetchError"));
       } finally {
         setLoading(false);
       }
@@ -75,10 +77,10 @@ export default function DocumentsPage() {
         <Box sx={styles.heroOverlay}>
           <Container maxWidth="md" sx={styles.heroContent}>
             <Typography variant="h2" component="h1" sx={styles.heroTitle}>
-              Dokumenty
+              {t("documents.title")}
             </Typography>
             <Typography variant="body1" sx={styles.heroSubtitle}>
-              V této sekci naleznete důležité informace o klubu.
+              {t("documents.subtitle")}
             </Typography>
           </Container>
         </Box>
@@ -93,7 +95,7 @@ export default function DocumentsPage() {
 
           {/* Dynamic Documents Section */}
           <Typography variant="h4" component="h2" mb={2}>
-            Dokumenty ke stažení
+            {t("documents.downloadTitle")}
           </Typography>
 
           {loading && (
@@ -110,7 +112,7 @@ export default function DocumentsPage() {
 
           {!loading && !error && documents.length === 0 && (
             <Typography sx={styles.noDocumentsText}>
-              Aktuálně nejsou k dispozici žádné dokumenty ke stažení.
+              {t("documents.noDocuments")}
             </Typography>
           )}
 
@@ -120,7 +122,9 @@ export default function DocumentsPage() {
               {documents.map((doc) => (
                 <Grid item xs={12} key={doc.id}>
                   <Card sx={styles.card}>
-                    <CardContent sx={{ flexGrow: 1 }}>
+                    <CardContent sx={styles.documentCardContent}>
+                      {" "}
+                      {/* Use dedicated style */}
                       <Box sx={styles.cardHeader}>
                         <Avatar sx={styles.iconAvatar}>
                           <Description />
@@ -143,7 +147,7 @@ export default function DocumentsPage() {
                             display="block"
                             color="text.secondary"
                           >
-                            Přidáno:{" "}
+                            {t("documents.addedLabel")}:{" "}
                             {format(doc.createdAt, "d. MMMM yyyy", {
                               locale: cs,
                             })}
@@ -156,19 +160,14 @@ export default function DocumentsPage() {
                       href={doc.fileUrl} // Reverted to direct file URL
                       target="_blank"
                       rel="noopener noreferrer"
-                      download={`${doc.title}${getFileExtension(doc.fileUrl)}`} // Re-added download attribute
-                      underline="none" // Remove underline from link
-                      sx={{
-                        ...styles.downloadLink,
-                        p: 3,
-                        pt: 0,
-                        alignSelf: "flex-start",
-                      }} // Align link to start, adjust padding
+                      download={`${doc.title}${getFileExtension(doc.fileUrl)}`}
+                      underline="none"
+                      sx={styles.documentDownloadLink} // Use dedicated style
                       aria-disabled={!doc.fileUrl}
-                      onClick={(e) => !doc.fileUrl && e.preventDefault()} // Prevent click if no URL
+                      onClick={(e) => !doc.fileUrl && e.preventDefault()}
                     >
                       <Download sx={styles.downloadIcon} />
-                      Stáhnout dokument
+                      {t("documents.downloadButton")}
                     </MuiLink>
                   </Card>
                 </Grid>
@@ -194,34 +193,49 @@ export default function DocumentsPage() {
                         component="h3"
                         sx={styles.cardTitle}
                       >
-                        Banka a účet klubu
+                        {t("documents.bankAccount.title")}
                       </Typography>
                       <Typography component="div" sx={styles.cardText}>
                         <p>
-                          <strong>Účet:</strong> 2845463399/0800
+                          <strong>
+                            {t("documents.bankAccount.accountNumberLabel")}:
+                          </strong>{" "}
+                          2845463399/0800
                         </p>
                         <p>
-                          <strong>Název účtu:</strong> Klub amerických pit bull
-                          teriérů
+                          <strong>
+                            {t("documents.bankAccount.accountNameLabel")}:
+                          </strong>{" "}
+                          {t("documents.bankAccount.accountNameValue")}
                         </p>
                         <p>
-                          <strong>Název banky:</strong> Česká spořitelna
+                          <strong>
+                            {t("documents.bankAccount.bankNameLabel")}:
+                          </strong>{" "}
+                          {t("documents.bankAccount.bankNameValue")}
                         </p>
                         <p>
-                          <strong>BIC:</strong> GIBACZPX
+                          <strong>
+                            {t("documents.bankAccount.bicLabel")}:
+                          </strong>{" "}
+                          GIBACZPX
                         </p>
                         <p>
-                          <strong>IBAN:</strong> CZ76 0800 0000 0028 4546 3399
+                          <strong>
+                            {t("documents.bankAccount.ibanLabel")}:
+                          </strong>{" "}
+                          CZ76 0800 0000 0028 4546 3399
                         </p>
                       </Typography>
                       <Box sx={styles.bankDetailsBox}>
                         <Typography sx={styles.bankImportantText}>
-                          <strong>Důležité:</strong> Při všech platbách na účet
-                          klubu členové zásadně uvádějí svůj variabilní symbol
-                          (=vaše členské číslo). Nečlenové neuvádějí nic.
+                          <strong>
+                            {t("documents.bankAccount.importantLabel")}:
+                          </strong>{" "}
+                          {t("documents.bankAccount.importantText")}
                         </Typography>
                         <Typography sx={styles.bankPreferredText}>
-                          PREFERUJEME PLATBU NA ÚČET – Děkujeme
+                          {t("documents.bankAccount.preferredPaymentText")}
                         </Typography>
                       </Box>
                     </Box>
@@ -243,7 +257,7 @@ export default function DocumentsPage() {
                         component="h3"
                         sx={styles.cardTitle}
                       >
-                        Poštovní adresa klubu
+                        {t("documents.postalAddress.title")}
                       </Typography>
                       <Typography component="div" sx={styles.cardText}>
                         <p style={{ fontWeight: "bold" }}>KAPBT</p>
@@ -259,9 +273,9 @@ export default function DocumentsPage() {
           </Grid>
 
           {/* FAQ section */}
-          <Card sx={{ ...styles.card, p: 3 }}>
+          <Card sx={styles.faqCard}>
             {" "}
-            {/* Apply card styling */}
+            {/* Use dedicated style */}
             <CardContent>
               <Box sx={styles.cardHeader}>
                 <Avatar sx={styles.iconAvatar}>
@@ -269,11 +283,10 @@ export default function DocumentsPage() {
                 </Avatar>
                 <Box>
                   <Typography variant="h5" component="h3" sx={styles.cardTitle}>
-                    Často kladené dotazy
+                    {t("documents.faq.title")}
                   </Typography>
                   <Typography sx={styles.cardText}>
-                    Odpovědi na nejčastější otázky týkající se členství a
-                    dokumentů
+                    {t("documents.faq.subtitle")}
                   </Typography>
                 </Box>
               </Box>
@@ -287,15 +300,11 @@ export default function DocumentsPage() {
                     sx={styles.faqAccordionSummary}
                   >
                     <Typography variant="subtitle1" component="h4">
-                      Jak se stát členem klubu?
+                      {t("documents.faq.q1")}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails sx={styles.faqAccordionDetails}>
-                    <Typography>
-                      Pro členství v klubu je potřeba vyplnit přihlášku,
-                      zaplatit členský příspěvek a odeslat podepsanou přihlášku
-                      na adresu klubu.
-                    </Typography>
+                    <Typography>{t("documents.faq.a1")}</Typography>
                   </AccordionDetails>
                 </Accordion>
 
@@ -307,15 +316,11 @@ export default function DocumentsPage() {
                     sx={styles.faqAccordionSummary}
                   >
                     <Typography variant="subtitle1" component="h4">
-                      Jaké jsou výhody členství?
+                      {t("documents.faq.q2")}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails sx={styles.faqAccordionDetails}>
-                    <Typography>
-                      Členové klubu mají přístup k odborným informacím, mohou se
-                      účastnit klubových akcí za zvýhodněné ceny a získávají
-                      podporu při sportovních aktivitách se svými psy.
-                    </Typography>
+                    <Typography>{t("documents.faq.a2")}</Typography>
                   </AccordionDetails>
                 </Accordion>
 
@@ -327,15 +332,11 @@ export default function DocumentsPage() {
                     sx={styles.faqAccordionSummary}
                   >
                     <Typography variant="subtitle1" component="h4">
-                      Jak obnovit členství?
+                      {t("documents.faq.q3")}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails sx={styles.faqAccordionDetails}>
-                    <Typography>
-                      Pro obnovení členství stačí v prosinci zaplatit členský
-                      příspěvek a uvést své členské číslo jako variabilní
-                      symbol. Není potřeba znovu zasílat přihlášku.
-                    </Typography>
+                    <Typography>{t("documents.faq.a3")}</Typography>
                   </AccordionDetails>
                 </Accordion>
               </Box>

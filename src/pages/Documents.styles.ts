@@ -65,6 +65,11 @@ export const card: SxProps<Theme> = (theme) => ({
   flexDirection: "column",
 });
 
+// Style for the CardContent within the document card
+export const documentCardContent: SxProps<Theme> = {
+  flexGrow: 1,
+};
+
 export const cardHeader: SxProps<Theme> = {
   display: "flex",
   alignItems: "flex-start",
@@ -105,6 +110,14 @@ export const downloadLink: SxProps<Theme> = (theme) => ({
     color: theme.palette.primary.dark, // Corresponds to hover:text-purple-800
   },
   mt: "auto", // Push download link to bottom if card uses flex column
+});
+
+// Specific style for the document download link with padding adjustments
+export const documentDownloadLink: SxProps<Theme> = (theme) => ({
+  ...downloadLink(theme), // Inherit base styles
+  p: 3,
+  pt: 0,
+  alignSelf: "flex-start",
 });
 
 export const downloadIcon: SxProps<Theme> = {
@@ -164,6 +177,12 @@ export const faqAccordionDetails: SxProps<Theme> = (theme) => ({
 export const faqContainer: SxProps<Theme> = {
   // Removed ml-16, handle layout with Grid or Box padding
 };
+
+// Specific style for the FAQ card combining card and padding
+export const faqCard: SxProps<Theme> = (theme) => ({
+  ...card(theme), // Inherit base card styles
+  p: 3, // Apply specific padding
+});
 
 // Styles from original Documents.styles.ts, potentially reused or adapted
 export const loadingBox: SxProps<Theme> = {

@@ -21,6 +21,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { getAllDocuments, deleteDocument } from "../../../services/firestore";
 import ConfirmDialog from "../../../components/ConfirmDialog/ConfirmDialog";
 import * as styles from "./SponsorsList.styles"; // Import styles
+import { useTranslation } from "react-i18next";
 
 interface Sponsor {
   id: string;
@@ -31,6 +32,7 @@ interface Sponsor {
 }
 
 const SponsorsList = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,7 +52,7 @@ const SponsorsList = () => {
       setError("");
     } catch (err) {
       console.error("Error fetching sponsors:", err);
-      setError("Nepodařilo se načíst sponzory. Zkuste to prosím znovu.");
+      setError(t("admin.sponsorsList.fetchError"));
     } finally {
       setLoading(false);
     }
@@ -81,7 +83,7 @@ const SponsorsList = () => {
       setSponsorToDelete(null);
     } catch (err) {
       console.error("Error deleting sponsor:", err);
-      setError("Nepodařilo se smazat sponzora. Zkuste to prosím znovu.");
+      setError(t("admin.sponsorsList.deleteError"));
     }
   };
 
@@ -93,13 +95,13 @@ const SponsorsList = () => {
   return (
     <Box>
       <Box sx={styles.headerBox}>
-        <Typography variant="h4">Sponzoři</Typography>
+        <Typography variant="h4">{t("admin.sponsorsList.title")}</Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleAddSponsor}
         >
-          Přidat sponzora
+          {t("admin.sponsorsList.addButton")}
         </Button>
       </Box>
 
@@ -116,7 +118,7 @@ const SponsorsList = () => {
       ) : sponsors.length === 0 ? (
         <Paper sx={styles.noDataPaper}>
           <Typography variant="body1">
-            Zatím nejsou přidáni žádní sponzoři.
+            {t("admin.sponsorsList.noData")}
           </Typography>
         </Paper>
       ) : (
@@ -124,10 +126,10 @@ const SponsorsList = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Logo</TableCell>
-                <TableCell>Název</TableCell>
-                <TableCell>Odkaz</TableCell>
-                <TableCell>Akce</TableCell>
+                <TableCell>{t("admin.sponsorsList.tableLogo")}</TableCell>
+                <TableCell>{t("admin.sponsorsList.tableName")}</TableCell>
+                <TableCell>{t("admin.sponsorsList.tableLink")}</TableCell>
+                <TableCell>{t("admin.sponsorsList.tableActions")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -142,7 +144,7 @@ const SponsorsList = () => {
                         sx={styles.logoImage}
                       />
                     ) : (
-                      "Bez loga"
+                      t("admin.sponsorsList.noLogo")
                     )}
                   </TableCell>
                   <TableCell>{sponsor.name}</TableCell>
@@ -156,7 +158,7 @@ const SponsorsList = () => {
                         {sponsor.websiteUrl}
                       </a>
                     ) : (
-                      "Bez odkazu"
+                      t("admin.sponsorsList.noLink")
                     )}
                   </TableCell>
                   <TableCell>
@@ -184,8 +186,8 @@ const SponsorsList = () => {
 
       <ConfirmDialog
         open={deleteDialogOpen}
-        title="Smazat sponzora"
-        message="Opravdu chcete smazat tohoto sponzora? Tato akce je nevratná."
+        title={t("admin.sponsorsList.deleteDialogTitle")}
+        message={t("admin.sponsorsList.deleteDialogMessage")}
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />

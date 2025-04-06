@@ -25,8 +25,10 @@ import { Event } from "../../../types/models";
 import { format } from "date-fns";
 import { cs } from "date-fns/locale";
 import * as styles from "./EventsList.styles"; // Import styles
+import { useTranslation } from "react-i18next";
 
 const EventsList = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -46,7 +48,7 @@ const EventsList = () => {
       setError("");
     } catch (err) {
       console.error("Error fetching events:", err);
-      setError("Nepodařilo se načíst akce. Zkuste to prosím znovu.");
+      setError(t("admin.eventsList.fetchError"));
     } finally {
       setLoading(false);
     }
@@ -77,7 +79,7 @@ const EventsList = () => {
       setEventToDelete(null);
     } catch (err) {
       console.error("Error deleting event:", err);
-      setError("Nepodařilo se smazat akci. Zkuste to prosím znovu.");
+      setError(t("admin.eventsList.deleteError"));
     }
   };
 
@@ -93,13 +95,13 @@ const EventsList = () => {
   return (
     <Box>
       <Box sx={styles.headerBox}>
-        <Typography variant="h4">Akce / Závody</Typography>
+        <Typography variant="h4">{t("admin.eventsList.title")}</Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
           onClick={handleAddEvent}
         >
-          Přidat akci
+          {t("admin.eventsList.addButton")}
         </Button>
       </Box>
 
@@ -116,7 +118,7 @@ const EventsList = () => {
       ) : events.length === 0 ? (
         <Paper sx={styles.noDataPaper}>
           <Typography variant="body1">
-            Zatím nejsou přidány žádné akce.
+            {t("admin.eventsList.noData")}
           </Typography>
         </Paper>
       ) : (
@@ -124,11 +126,11 @@ const EventsList = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Název</TableCell>
-                <TableCell>Datum</TableCell>
-                <TableCell>Místo</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Akce</TableCell>
+                <TableCell>{t("admin.eventsList.tableName")}</TableCell>
+                <TableCell>{t("admin.eventsList.tableDate")}</TableCell>
+                <TableCell>{t("admin.eventsList.tableLocation")}</TableCell>
+                <TableCell>{t("admin.eventsList.tableStatus")}</TableCell>
+                <TableCell>{t("admin.eventsList.tableActions")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -139,13 +141,17 @@ const EventsList = () => {
                   <TableCell>{event.location}</TableCell>
                   <TableCell>
                     <Chip
-                      label={event.published ? "Publikováno" : "Koncept"}
+                      label={
+                        event.published
+                          ? t("admin.eventsList.statusPublished")
+                          : t("admin.eventsList.statusDraft")
+                      }
                       color={event.published ? "success" : "default"}
                       size="small"
                     />
                     {event.isPast && (
                       <Chip
-                        label="Proběhlé"
+                        label={t("admin.eventsList.statusPast")}
                         color="primary"
                         size="small"
                         sx={styles.pastEventChip}
@@ -177,8 +183,8 @@ const EventsList = () => {
 
       <ConfirmDialog
         open={deleteDialogOpen}
-        title="Smazat akci"
-        message="Opravdu chcete smazat tuto akci? Tato akce je nevratná."
+        title={t("admin.eventsList.deleteDialogTitle")}
+        message={t("admin.eventsList.deleteDialogMessage")}
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />

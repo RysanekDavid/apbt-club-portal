@@ -22,3 +22,10 @@ export const StyledFooter = styled(Box, {
   }),
   borderTop: `1px solid ${theme.palette.divider}`,
 }));
+
+// Style for the inner Box containing the copyright text
+export const CopyrightBox = styled(Box)(({ theme }) => ({
+  textAlign: "center",
+  paddingTop: theme.spacing(1),
+  paddingBottom: theme.spacing(1),
+}));

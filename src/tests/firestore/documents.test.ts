@@ -7,7 +7,7 @@ import {
   QuerySnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
-import { getPublishedDocuments } from "../../services/firestore"; // Import only document functions
+import { getPublishedDocuments } from "../../services/firestore";
 
 // --- Mock Firebase Firestore ---
 vi.mock("firebase/firestore", async (importOriginal) => {
@@ -153,5 +153,4 @@ describe("Firestore Documents Service", () => {
   });
 
   // Removed describe block for getDocumentsByCategory as the function was removed
-  // describe("getDocumentsByCategory", () => { ... });
 });
