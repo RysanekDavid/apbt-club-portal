@@ -23,7 +23,6 @@ import {
   Link as MuiLink,
   Avatar,
   useTheme,
-  Stack, // Keep Stack import if needed elsewhere, though not directly styled now
   alpha,
 } from "@mui/material";
 import EventIcon from "@mui/icons-material/Event";
