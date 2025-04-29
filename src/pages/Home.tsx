@@ -36,6 +36,7 @@ import { Helmet } from "react-helmet-async"; // Import Helmet
 export default function HomePage() {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
+  const isSmUp = useMediaQuery(theme.breakpoints.up("sm")); // Add check for sm and up
   const { t } = useTranslation();
 
   // Card data structure for easier mapping
@@ -93,8 +94,13 @@ export default function HomePage() {
       </Helmet>
       {/* Hero Section */}
       <HeroWrapper>
-        <HeroImage src={homepageImage} alt={t("homepage.heroTitle")} />
-        <HeroOverlay />
+        {/* Conditionally render image and overlay only on sm screens and up */}
+        {isSmUp && (
+          <>
+            <HeroImage src={homepageImage} alt={t("homepage.heroTitle")} />
+            <HeroOverlay />
+          </>
+        )}
         <HeroContentContainer>
           {/* Centered content */}
           <Typography

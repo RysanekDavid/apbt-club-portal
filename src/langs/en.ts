@@ -76,6 +76,9 @@ export default {
 
   "footer.copyright": "Copyright © {{year}}",
   "footer.teamName": "Klub amerických pit bull teriérů team",
+  "footer.storageNotice":
+    "This website uses necessary technical storage to ensure functionality and security.",
+  "footer.privacyPolicyLink": "More information",
 
   "galleryDetail.slugMissing": "Gallery slug is missing.",
   "galleryDetail.notFoundError": "Gallery not found.",

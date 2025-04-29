@@ -14,6 +14,10 @@ export const HeroWrapper = styled(Box)(({ theme }) => ({
   alignItems: "center",
   justifyContent: "center", // Center content vertically and horizontally
   zIndex: 0, // Keep zIndex low (0 or 1 should be below AppBar/Drawer)
+  // Add black background specifically for xs screens when image is hidden
+  [theme.breakpoints.down("sm")]: {
+    backgroundColor: theme.palette.common.black,
+  },
 }));
 
 export const HeroImage = styled("img")({

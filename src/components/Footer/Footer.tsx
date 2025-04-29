@@ -52,6 +52,21 @@ const Footer: React.FC = () => {
           )}
         </Typography>
       </CopyrightBox>
+      {/* Add storage notice */}
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        sx={{ mt: 1, display: "block", textAlign: "center" }}
+      >
+        {t(
+          "footer.storageNotice",
+          "Tento web používá nezbytné technické úložiště pro zajištění funkčnosti a bezpečnosti."
+        )}{" "}
+        <Link color="inherit" href="/zasady-ochrany-osobnich-udaju">
+          {t("footer.privacyPolicyLink", "Více informací")}
+        </Link>
+        .
+      </Typography>
     </StyledFooter>
   );
 };
