@@ -31,6 +31,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline"; // Replaces Conta
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents"; // Replaces HandshakeIcon (Award)
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary"; // Kept Gallery icon
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async"; // Import Helmet
 
 export default function HomePage() {
   const theme = useTheme();
@@ -80,6 +81,16 @@ export default function HomePage() {
 
   return (
     <>
+      <Helmet>
+        <title>{t("homepage.metaTitle", "Klub APBT - Domovská stránka")}</title>
+        <meta
+          name="description"
+          content={t(
+            "homepage.metaDescription",
+            "Vítejte na stránkách Klubu American Pit Bull Terrier. Najdete zde informace o akcích, historii plemene, dokumenty a další."
+          )}
+        />
+      </Helmet>
       {/* Hero Section */}
       <HeroWrapper>
         <HeroImage src={homepageImage} alt={t("homepage.heroTitle")} />

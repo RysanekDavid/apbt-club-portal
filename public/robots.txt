@@ -1,0 +1,8 @@
+# Allow all crawlers access to all content
+User-agent: *
+Allow: /
+
+# You might want to disallow crawling of admin areas later, e.g.:
+# Disallow: /admin
+
+Sitemap: https://www.klubapbt.cz/sitemap.xml
