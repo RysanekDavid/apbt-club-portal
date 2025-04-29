@@ -21,7 +21,7 @@ import FitnessCenterIcon from "@mui/icons-material/FitnessCenter"; // Placeholde
 import CampaignIcon from "@mui/icons-material/Campaign"; // Placeholder for Osvětová činnost
 import PeopleIcon from "@mui/icons-material/People"; // Placeholder for Komunita
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
-import historyImage from "../../src/assets/history_image.png"; // Corrected path if needed
+import historyImage from "../assets/history_image.webp"; // Corrected path and changed to webp
 import * as styles from "./History.styles"; // Import styles
 import { useTranslation } from "react-i18next";
 

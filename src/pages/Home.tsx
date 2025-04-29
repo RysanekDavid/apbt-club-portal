@@ -10,7 +10,7 @@ import {
   Link, // Added Link for card navigation
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import homepageImage from "../assets/homepage_image.png"; // Assuming this is the correct image
+import homepageImage from "../assets/homepage_image.webp"; // Assuming this is the correct image
 // Import both namespace for sx props and named exports for styled components
 import * as styles from "./Home.styles";
 import {
