@@ -79,6 +79,12 @@ export default {
   "footer.storageNotice":
     "This website uses necessary technical storage to ensure functionality and security.",
   "footer.privacyPolicyLink": "More information",
+  "footer.privacyPolicy": "Privacy Policy",
+
+  "consentBanner.notice":
+    "This website uses necessary technical storage to ensure functionality and security.",
+  "consentBanner.privacyPolicyLink": "More information",
+  "consentBanner.acceptButton": "Understand",
 
   "galleryDetail.slugMissing": "Gallery slug is missing.",
   "galleryDetail.notFoundError": "Gallery not found.",
@@ -327,4 +333,21 @@ export default {
   "gallery.title": "Gallery",
   "gallery.subtitle": "Browse photos from our events and activities",
   "gallery.noGalleries": "There are currently no galleries available.",
+
+  "privacyPolicy.metaTitle": "Privacy Policy - APBT Club",
+  "privacyPolicy.metaDescription":
+    "Information about data processing and the use of technical storage on the APBT Club website.",
+  "privacyPolicy.title": "Privacy Policy",
+  "privacyPolicy.storageTitle": "Use of Technical Storage",
+  "privacyPolicy.storageText1":
+    "This website uses necessary technical storage in the visitor's browser (e.g., localStorage, IndexedDB) to ensure basic functionality and security. Specifically, this involves:",
+  "privacyPolicy.storagePoint1":
+    "Maintaining the login status of the website administrator across sessions.",
+  "privacyPolicy.storagePoint2":
+    "Ensuring the correct functioning of the authentication system (Firebase Authentication).",
+  "privacyPolicy.storagePoint3":
+    "Storing a login timestamp for security purposes related to the administrator account.",
+  "privacyPolicy.storageText2":
+    "This storage is not used for tracking regular visitors, profiling, or marketing purposes. It serves exclusively for the technical security and functionality of the administrative interface.",
+  "privacyPolicy.lastUpdated": "Last updated: April 29, 2025",
 };

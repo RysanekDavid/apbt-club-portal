@@ -80,6 +80,7 @@ export default {
   "footer.storageNotice":
     "Tento web používá nezbytné technické úložiště pro zajištění funkčnosti a bezpečnosti.",
   "footer.privacyPolicyLink": "Více informací",
+  "footer.privacyPolicy": "Zásady ochrany osobních údajů",
 
   "galleryDetail.slugMissing": "Slug galerie chybí.",
   "galleryDetail.notFoundError": "Galerie nebyla nalezena.",
@@ -343,4 +344,26 @@ export default {
   "gallery.title": "Galerie",
   "gallery.subtitle": "Prohlédněte si fotografie z našich akcí a aktivit",
   "gallery.noGalleries": "Aktuálně nejsou k dispozici žádné galerie.",
+
+  "consentBanner.notice":
+    "Tento web používá nezbytné technické úložiště pro zajištění funkčnosti a bezpečnosti.",
+  "consentBanner.privacyPolicyLink": "Více informací",
+  "consentBanner.acceptButton": "Rozumím",
+
+  "privacyPolicy.metaTitle": "Zásady ochrany osobních údajů - Klub APBT",
+  "privacyPolicy.metaDescription":
+    "Informace o zpracování údajů a používání technického úložiště na webu Klubu APBT.",
+  "privacyPolicy.title": "Zásady ochrany osobních údajů",
+  "privacyPolicy.storageTitle": "Používání technického úložiště",
+  "privacyPolicy.storageText1":
+    "Tato webová stránka využívá nezbytné technické úložiště v prohlížeči návštěvníků (např. localStorage, IndexedDB) k zajištění základní funkčnosti a bezpečnosti. Konkrétně se jedná o:",
+  "privacyPolicy.storagePoint1":
+    "Udržování stavu přihlášení administrátora webu napříč relacemi.",
+  "privacyPolicy.storagePoint2":
+    "Zajištění správného fungování autentizačního systému (Firebase Authentication).",
+  "privacyPolicy.storagePoint3":
+    "Ukládání časového razítka přihlášení pro bezpečnostní účely administrátorského účtu.",
+  "privacyPolicy.storageText2":
+    "Toto úložiště není využíváno ke sledování běžných návštěvníků, profilování, ani k marketingovým účelům. Slouží výhradně k technickému zabezpečení a funkčnosti administrátorského rozhraní.",
+  "privacyPolicy.lastUpdated": "Poslední aktualizace: 29. dubna 2025",
 };

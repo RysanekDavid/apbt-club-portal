@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Link } from "@mui/material"; // Removed Box import
+// Removed RouterLink import
 import { StyledFooter, CopyrightBox } from "./Footer.styles"; // Import CopyrightBox
 import { useTranslation } from "react-i18next";
 
@@ -52,21 +53,6 @@ const Footer: React.FC = () => {
           )}
         </Typography>
       </CopyrightBox>
-      {/* Add storage notice */}
-      <Typography
-        variant="caption"
-        color="text.secondary"
-        sx={{ mt: 1, display: "block", textAlign: "center" }}
-      >
-        {t(
-          "footer.storageNotice",
-          "Tento web používá nezbytné technické úložiště pro zajištění funkčnosti a bezpečnosti."
-        )}{" "}
-        <Link color="inherit" href="/zasady-ochrany-osobnich-udaju">
-          {t("footer.privacyPolicyLink", "Více informací")}
-        </Link>
-        .
-      </Typography>
     </StyledFooter>
   );
 };

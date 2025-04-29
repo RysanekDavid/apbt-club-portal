@@ -12,6 +12,7 @@ const GalleryPage = lazy(() => import("../pages/Gallery"));
 const GalleryDetailPage = lazy(() => import("../pages/GalleryDetail.tsx"));
 const SponsorsPage = lazy(() => import("../pages/Sponsors"));
 const ContactPage = lazy(() => import("../pages/Contact"));
+const PrivacyPolicyPage = lazy(() => import("../pages/PrivacyPolicy")); // Import Privacy Policy page
 
 const ProtectedRoute = lazy(
   () => import("../components/ProtectedRoute/ProtectedRoute")
@@ -131,6 +132,15 @@ const AppRouter = () => {
           element={
             <PublicRoutesWrapper>
               <ContactPage />
+            </PublicRoutesWrapper>
+          }
+        />
+        {/* Add Privacy Policy Route */}
+        <Route
+          path="/zasady-ochrany-osobnich-udaju"
+          element={
+            <PublicRoutesWrapper>
+              <PrivacyPolicyPage />
             </PublicRoutesWrapper>
           }
         />
