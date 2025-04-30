@@ -155,20 +155,28 @@ const EventForm = () => {
         const uniqueSlug = generateUniqueSlug(baseSlug, existingSlugs);
         // Format time before saving
         const formattedTime = formatTime(data.startTime, data.endTime);
+
+        // Build addData dynamically to handle optional endDate
+        // Use the correct type Omit<Event, "id" | "createdAt" | "updatedAt">
         const addData: Omit<Event, "id" | "createdAt" | "updatedAt"> = {
           title: data.title,
           description: data.description,
-          date: data.date,
+          date: data.date, // Already checked for null earlier
           location: data.location,
           time: formattedTime, // Use formatted time
           imageUrl: data.imageUrl,
           imageName: data.imageName,
           published: data.published,
           slug: uniqueSlug,
-          isPast: data.date < new Date(),
-          // Ensure optional fields from the model are handled
-          endDate: undefined, // Set to undefined or null if optional
+          isPast: data.date < new Date(), // date is guaranteed non-null here
+          // Conditionally add endDate ONLY if data.endTime is a valid Date
+          // This ensures the field is omitted if endTime is null/undefined
+          ...(data.endTime instanceof Date && { endDate: data.endTime }),
         };
+
+        // Firestore handles missing optional fields correctly.
+        // If data.endTime is null or not a Date, endDate will not be included in addData.
+
         await addDocument("events", addData);
       }
 
