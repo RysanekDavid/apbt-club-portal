@@ -35,46 +35,28 @@ const RichTextEditor = ({
             const data = editor.getData();
             onChange(data);
           }}
-          config={
-            {
-              // Cast the whole config object to any
-              toolbar: [
-                "heading",
-                "|",
-                "bold",
-                "italic",
-                "link",
-                "bulletedList",
-                "numberedList",
-                "|",
-                "outdent",
-                "indent",
-                "|",
-                "blockQuote",
-                "insertTable",
-                "mediaEmbed",
-                "undo",
-                "redo",
-              ],
-              language: "cs",
-              // Cast only the link configuration part to 'any'
-              link: {
-                // Automatically add target="_blank" and rel="noopener noreferrer" to all links
-                decorators: {
-                  addTargetToExternalLinks: {
-                    mode: "automatic",
-                    // Add type annotation for url parameter
-                    callback: (url: string | undefined) =>
-                      /^(https?|ftp):\/\//.test(url || ""), // Apply to external links
-                    attributes: {
-                      target: "_blank",
-                      rel: "noopener noreferrer",
-                    },
-                  },
-                },
-              },
-            } as any
-          } // Close the cast here
+          config={{
+            toolbar: [
+              "heading",
+              "|",
+              "bold",
+              "italic",
+              "link",
+              "bulletedList",
+              "numberedList",
+              "|",
+              "outdent",
+              "indent",
+              "|",
+              "blockQuote",
+              "insertTable",
+              "mediaEmbed",
+              "undo",
+              "redo",
+            ],
+            language: "cs",
+            // Link configuration removed
+          }}
         />
       </Box>
       {error && (
