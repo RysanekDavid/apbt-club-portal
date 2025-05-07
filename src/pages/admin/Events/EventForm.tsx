@@ -43,6 +43,7 @@ export interface EventFormData {
   title: string;
   description: string;
   date: Date | null;
+  dateTo?: Date | null; // Add dateTo field
   location: string;
   time: string; // Keep for storage
   startTime: Date | null; // For TimePicker
@@ -74,6 +75,7 @@ const EventForm = () => {
       title: "",
       description: "",
       date: new Date(),
+      dateTo: null, // Add default for dateTo
       location: "",
       time: "",
       startTime: null, // Add default
@@ -99,6 +101,7 @@ const EventForm = () => {
         description: eventData.description,
         date: eventData.date,
         location: eventData.location,
+        dateTo: eventData.endDate || null, // Map endDate to dateTo
         time: eventData.time || "",
         // Add parsing logic back
         startTime: eventData.time
@@ -144,10 +147,17 @@ const EventForm = () => {
           imageUrl: data.imageUrl,
           imageName: data.imageName,
           published: data.published,
+          endDate: data.dateTo || undefined, // Add endDate from dateTo
         };
         // Format time before saving
         const formattedTime = formatTime(data.startTime, data.endTime);
         updateData.time = formattedTime; // Update the time field in updateData
+        // Conditionally add endDate to avoid sending null if not set
+        if (data.dateTo) {
+          updateData.endDate = data.dateTo;
+        } else {
+          updateData.endDate = undefined;
+        }
         await updateDocument("events", id, updateData);
       } else {
         // Prepare data for adding a new event
@@ -169,13 +179,13 @@ const EventForm = () => {
           published: data.published,
           slug: uniqueSlug,
           isPast: data.date < new Date(), // date is guaranteed non-null here
-          // Conditionally add endDate ONLY if data.endTime is a valid Date
-          // This ensures the field is omitted if endTime is null/undefined
-          ...(data.endTime instanceof Date && { endDate: data.endTime }),
+          // Conditionally add endDate ONLY if data.dateTo is a valid Date
+          // This ensures the field is omitted if dateTo is null/undefined
+          ...(data.dateTo instanceof Date && { endDate: data.dateTo }),
         };
 
         // Firestore handles missing optional fields correctly.
-        // If data.endTime is null or not a Date, endDate will not be included in addData.
+        // If data.dateTo is null or not a Date, endDate will not be included in addData.
 
         await addDocument("events", addData);
       }
@@ -293,7 +303,7 @@ const formatTime = (start: Date | null, end: Date | null): string => {
   } else if (startTime) {
     return startTime;
   } else if (endTime) {
-    return endTime; // Should ideally have a start time too
+    return endTime;
   }
   return "";
 };

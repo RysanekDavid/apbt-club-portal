@@ -88,8 +88,19 @@ const EventsList = () => {
     setEventToDelete(null);
   };
 
-  const formatDate = (date: Date) => {
-    return format(date, "d. MMMM yyyy", { locale: cs });
+  const formatDateRange = (startDate: Date, endDate?: Date) => {
+    const formattedStartDate = format(startDate, "d. MMMM yyyy", {
+      locale: cs,
+    });
+    if (endDate) {
+      const formattedEndDate = format(endDate, "d. MMMM yyyy", { locale: cs });
+      // Optional: Check if start and end dates are the same day
+      if (formattedStartDate === formattedEndDate) {
+        return formattedStartDate;
+      }
+      return `${formattedStartDate} - ${formattedEndDate}`;
+    }
+    return formattedStartDate;
   };
 
   return (
@@ -137,7 +148,9 @@ const EventsList = () => {
               {events.map((event) => (
                 <TableRow key={event.id}>
                   <TableCell>{event.title}</TableCell>
-                  <TableCell>{formatDate(event.date)}</TableCell>
+                  <TableCell>
+                    {formatDateRange(event.date, event.endDate)}
+                  </TableCell>
                   <TableCell>{event.location}</TableCell>
                   <TableCell>
                     <Chip

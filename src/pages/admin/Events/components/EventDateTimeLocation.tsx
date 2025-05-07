@@ -25,7 +25,7 @@ const EventDateTimeLocation: React.FC<EventDateTimeLocationProps> = ({
         {" "}
         {/* Explicit Fragment */}
         {/* Date */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={3}>
           <Controller
             name="date"
             control={control}
@@ -47,6 +47,28 @@ const EventDateTimeLocation: React.FC<EventDateTimeLocationProps> = ({
             )}
           />
           {/* Removed commented out provider */}
+        </Grid>
+        {/* Date To */}
+        <Grid item xs={12} md={3}>
+          <Controller
+            name="dateTo"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                label="Datum do"
+                value={field.value}
+                onChange={(newValue: Date | null) => field.onChange(newValue)}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    error: !!errors.dateTo,
+                    helperText: errors.dateTo?.message,
+                  },
+                }}
+                disabled={submitting}
+              />
+            )}
+          />
         </Grid>
         {/* Location */}
         <Grid item xs={12} md={6}>

@@ -57,8 +57,19 @@ const EventsPage = () => {
     fetchEvents();
   }, []);
 
-  const formatDate = (date: Date) => {
-    return format(date, "d. MMMM yyyy", { locale: cs });
+  const formatDateRange = (startDate: Date, endDate?: Date) => {
+    const formattedStartDate = format(startDate, "d. MMMM yyyy", {
+      locale: cs,
+    });
+    if (endDate) {
+      const formattedEndDate = format(endDate, "d. MMMM yyyy", { locale: cs });
+      // Optional: Check if start and end dates are the same day
+      if (formattedStartDate === formattedEndDate) {
+        return formattedStartDate;
+      }
+      return `${formattedStartDate} - ${formattedEndDate}`;
+    }
+    return formattedStartDate;
   };
 
   const renderEventCard = (event: EventModel) => {
@@ -87,7 +98,7 @@ const EventsPage = () => {
               <Box sx={styles.infoItem}>
                 <CalendarMonthIcon sx={styles.infoIcon} />
                 <Typography variant="body2" sx={styles.infoText}>
-                  {formatDate(event.date)}
+                  {formatDateRange(event.date, event.endDate)}
                 </Typography>
               </Box>
               {event.time && (

@@ -259,7 +259,7 @@ const AdminDashboard = () => {
                       color={stat.color}
                       startIcon={<AddCircleOutlineIcon />}
                       component={RouterLink}
-                      to={`/admin/${stat.collectionName}/new`}
+                      to={`/admin/${stat.collectionName}/add`}
                       fullWidth
                       sx={styles.combinedCardButton} // Apply style if defined
                     >
