@@ -60,6 +60,9 @@ export default {
   "history.milestones.2020.title": "Expansion of Activities",
   "history.milestones.2020.description":
     "Expanded club activities and established collaborations with other organizations.",
+  "history.milestones.2025.title": "Club joins the American ADBA association",
+  "history.milestones.2025.description":
+    "The club becomes a member of the American Dog Breeders Association, opening up new opportunities for international cooperation.",
   "history.activitiesTitle": "Our Activities",
   "history.activities.sports.title": "Sports Activities",
   "history.activities.sports.description":

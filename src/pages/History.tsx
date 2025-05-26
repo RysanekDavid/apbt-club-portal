@@ -54,6 +54,11 @@ export default function HistoryPage() {
       title: t("history.milestones.2020.title"),
       description: t("history.milestones.2020.description"),
     },
+    {
+      year: "2025",
+      title: t("history.milestones.2025.title"),
+      description: t("history.milestones.2025.description"),
+    },
   ];
 
   const activities = [

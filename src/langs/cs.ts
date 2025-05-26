@@ -61,6 +61,9 @@ export default {
   "history.milestones.2020.title": "Rozšíření aktivit",
   "history.milestones.2020.description":
     "Rozšíření aktivit klubu a navázání spolupráce s dalšími organizacemi.",
+  "history.milestones.2025.title": "Vstup klubu pod americkou asociaci ADBA",
+  "history.milestones.2025.description":
+    "Klub se stává členem American Dog Breeders Association, což otevírá nové možnosti pro mezinárodní spolupráci.",
   "history.activitiesTitle": "Naše aktivity",
   "history.activities.sports.title": "Sportovní aktivity",
   "history.activities.sports.description":
