@@ -30,6 +30,7 @@ import PeopleIcon from "@mui/icons-material/People"; // Replaces GroupIcon
 import MailOutlineIcon from "@mui/icons-material/MailOutline"; // Replaces ContactMailIcon
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents"; // Replaces HandshakeIcon (Award)
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary"; // Kept Gallery icon
+import ArticleIcon from "@mui/icons-material/Article";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async"; // Import Helmet
 
@@ -76,7 +77,14 @@ export default function HomePage() {
       descKey: "homepage.galleryDesc",
       link: "/galerie",
       // Spans 2 columns on md, 2 on lg as per template (md:col-span-2 lg:col-span-2)
-      gridSpan: { xs: 12, md: 6, lg: 8 },
+      gridSpan: { xs: 12, md: 6, lg: 4 },
+    },
+    {
+      icon: <ArticleIcon />,
+      titleKey: "homepage.blogTitle",
+      descKey: "homepage.blogDesc",
+      link: "/blog",
+      gridSpan: { xs: 12, md: 6, lg: 4 },
     },
   ];
 

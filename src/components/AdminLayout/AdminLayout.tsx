@@ -23,6 +23,7 @@ import EventIcon from "@mui/icons-material/Event";
 import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import DescriptionIcon from "@mui/icons-material/Description";
+import ArticleIcon from "@mui/icons-material/Article";
 import HomeIcon from "@mui/icons-material/Home";
 import AdminAvatar from "../AdminAvatar/AdminAvatar";
 import PawBackground from "../PawBackground/PawBackground"; // Import the new component
@@ -55,6 +56,7 @@ const AdminLayout = () => {
     { text: "Galerie", icon: <PhotoLibraryIcon />, path: "/admin/galleries" }, // Updated path
     { text: "Sponzoři", icon: <HandshakeIcon />, path: "/admin/sponsors" },
     { text: "Dokumenty", icon: <DescriptionIcon />, path: "/admin/documents" },
+    { text: "Blog", icon: <ArticleIcon />, path: "/admin/blog" },
   ];
 
   const drawer = (

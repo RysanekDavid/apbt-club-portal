@@ -13,6 +13,8 @@ const GalleryDetailPage = lazy(() => import("../pages/GalleryDetail.tsx"));
 const SponsorsPage = lazy(() => import("../pages/Sponsors"));
 const ContactPage = lazy(() => import("../pages/Contact"));
 const PrivacyPolicyPage = lazy(() => import("../pages/PrivacyPolicy")); // Import Privacy Policy page
+const BlogPage = lazy(() => import("../pages/Blog"));
+const BlogPostDetailPage = lazy(() => import("../pages/BlogPostDetail"));
 
 const ProtectedRoute = lazy(
   () => import("../components/ProtectedRoute/ProtectedRoute")
@@ -34,6 +36,8 @@ const GalleriesList = lazy(
   () => import("../pages/admin/Galleries/GalleriesList")
 );
 const GalleryForm = lazy(() => import("../pages/admin/Galleries/GalleryForm"));
+const BlogList = lazy(() => import("../pages/admin/Blog/BlogList"));
+const BlogPostForm = lazy(() => import("../pages/admin/Blog/BlogPostForm"));
 
 const LoadingFallback = () => (
   <Box sx={styles.loadingFallbackContainer}>
@@ -69,6 +73,10 @@ const AppRouter = () => {
             <Route path="documents" element={<DocumentsList />} />
             <Route path="documents/add" element={<DocumentForm />} />
             <Route path="documents/edit/:id" element={<DocumentForm />} />
+
+            <Route path="blog" element={<BlogList />} />
+            <Route path="blog/add" element={<BlogPostForm />} />
+            <Route path="blog/edit/:id" element={<BlogPostForm />} />
           </Route>
         </Route>
         <Route
@@ -132,6 +140,22 @@ const AppRouter = () => {
           element={
             <PublicRoutesWrapper>
               <ContactPage />
+            </PublicRoutesWrapper>
+          }
+        />
+        <Route
+          path="/blog"
+          element={
+            <PublicRoutesWrapper>
+              <BlogPage />
+            </PublicRoutesWrapper>
+          }
+        />
+        <Route
+          path="/blog/:slug"
+          element={
+            <PublicRoutesWrapper>
+              <BlogPostDetailPage />
             </PublicRoutesWrapper>
           }
         />

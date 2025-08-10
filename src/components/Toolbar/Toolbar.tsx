@@ -22,6 +22,7 @@ import {
   LogoLink,
   DesktopNav,
   NavLinkStyled,
+  ExternalNavLinkStyled,
   MobileMenuContainer,
   MenuButton,
   RightSection,
@@ -49,6 +50,7 @@ export default function MainToolbar() {
     { path: "/akce", label: t("toolbar.events") },
     { path: "/galerie", label: t("toolbar.gallery") },
     { path: "/sponzori", label: t("toolbar.sponsors") },
+    { path: "/blog", label: t("toolbar.blog") },
     { path: "/kontakt", label: t("toolbar.contact") },
   ];
 
@@ -69,6 +71,13 @@ export default function MainToolbar() {
       </DesktopNav>
 
       <RightSection>
+        <ExternalNavLinkStyled
+          href="https://www.eshop.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t("toolbar.eshop")}
+        </ExternalNavLinkStyled>
         <LanguageSelector />
         <ThemeToggleButton
           onClick={toggleTheme}
@@ -133,6 +142,26 @@ export default function MainToolbar() {
                     </ListItemButton>
                   </ListItem>
                 ))}
+                <ListItem disablePadding>
+                  <ListItemButton
+                    component="a"
+                    href="https://www.eshop.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ListItemText primary={t("toolbar.eshop")} />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton
+                    component="a"
+                    href="https://www.eshop.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ListItemText primary={t("toolbar.eshop")} />
+                  </ListItemButton>
+                </ListItem>
               </List>
             </DrawerContentBox>
           </StyledDrawer>

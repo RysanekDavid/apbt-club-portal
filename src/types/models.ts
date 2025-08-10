@@ -67,6 +67,16 @@ export interface Document extends BaseModel {
   published: boolean;
 }
 
+// Blog Post model
+export interface BlogPost extends BaseModel {
+  title: string;
+  content: string;
+  published: boolean;
+  slug: string;
+  coverImageUrl?: string;
+  coverImageName?: string;
+}
+
 // Document category model
 export interface DocumentCategory {
   id: string;

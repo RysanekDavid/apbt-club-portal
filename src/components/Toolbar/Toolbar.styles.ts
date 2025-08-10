@@ -87,6 +87,23 @@ export const NavLinkStyled = styled(NavLink)(({ theme }) => ({
   },
 }));
 
+export const ExternalNavLinkStyled = styled("a")(({ theme }) => ({
+  color: theme.palette.text.primary,
+  textDecoration: "none",
+  padding: theme.spacing(1, 1.5),
+  borderRadius: theme.shape.borderRadius,
+  border: `1px solid ${theme.palette.primary.main}`,
+  transition:
+    "background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease",
+  position: "relative",
+  "&:hover": {
+    backgroundColor:
+      theme.palette.mode === "dark"
+        ? theme.palette.action.hover
+        : theme.palette.action.hover,
+  },
+}));
+
 export const MobileMenuContainer = styled(Box)(({ theme }) => ({
   display: "none",
   [theme.breakpoints.down("md")]: {

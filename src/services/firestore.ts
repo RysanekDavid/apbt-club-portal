@@ -21,6 +21,7 @@ import {
   GalleryImage,
   Sponsor,
   Document,
+  BlogPost,
 } from "../types/models";
 
 // Helper function to convert Firestore timestamp to Date
@@ -243,6 +244,28 @@ export const getGalleryBySlug = async (
   const doc = querySnapshot.docs[0];
   const data = convertTimestampToDate(doc.data());
   return { id: doc.id, ...data } as Gallery;
+};
+
+// Blog specific functions
+export const getBlogPostBySlug = async (
+  slug: string
+): Promise<BlogPost | null> => {
+  const q = query(
+    collection(db, "blogPosts"),
+    where("slug", "==", slug),
+    limit(1)
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    console.warn(`Blog post with slug "${slug}" not found.`);
+    return null;
+  }
+
+  const doc = querySnapshot.docs[0];
+  const data = convertTimestampToDate(doc.data());
+  return { id: doc.id, ...data } as BlogPost;
 };
 
 // Sponsors specific functions - Restore this function

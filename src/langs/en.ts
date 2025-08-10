@@ -6,6 +6,8 @@ export default {
   "toolbar.documents": "Documents",
   "toolbar.sponsors": "Sponsors",
   "toolbar.contact": "Contact",
+  "toolbar.eshop": "E-shop",
+  "toolbar.blog": "Blog",
 
   "homepage.quote":
     "Together we build better awareness of this exceptional breed",
@@ -30,6 +32,8 @@ export default {
   "homepage.sponsorsDesc": "See who supports our club and its activities.",
   "homepage.galleryTitle": "Gallery",
   "homepage.galleryDesc": "Browse photos from our events and shows.",
+  "homepage.blogTitle": "Blog",
+  "homepage.blogDesc": "Read our latest articles and news.",
   "homepage.ctaTitle": "Become a Member of Our Club",
   "homepage.ctaSubtitle":
     "Join our community of enthusiasts and gain access to exclusive events, information, and support for you and your dog.",
@@ -353,4 +357,45 @@ export default {
   "privacyPolicy.storageText2":
     "This storage is not used for tracking regular visitors, profiling, or marketing purposes. It serves exclusively for the technical security and functionality of the administrative interface.",
   "privacyPolicy.lastUpdated": "Last updated: April 29, 2025",
+
+  "admin.blogList.fetchError": "Failed to load posts. Please try again.",
+  "admin.blogList.deleteError": "Failed to delete post. Please try again.",
+  "admin.blogList.title": "Manage Blog",
+  "admin.blogList.addButton": "Add Post",
+  "admin.blogList.noData": "No posts added yet.",
+  "admin.blogList.tableTitle": "Title",
+  "admin.blogList.tableDate": "Creation Date",
+  "admin.blogList.tableStatus": "Status",
+  "admin.blogList.tableActions": "Actions",
+  "admin.blogList.statusPublished": "Published",
+  "admin.blogList.statusDraft": "Draft",
+  "admin.blogList.deleteDialogTitle": "Delete Post",
+  "admin.blogList.deleteDialogMessage":
+    "Are you sure you want to delete this post? This action is irreversible.",
+  "admin.blogPostForm.fetchError": "Failed to load post. Please try again.",
+  "admin.blogPostForm.saveError": "Failed to save post. Please try again.",
+  "admin.blogPostForm.editTitle": "Edit Post",
+  "admin.blogPostForm.addTitle": "Add Post",
+  "admin.blogPostForm.backButton": "Back to list",
+  "admin.blogPostForm.validation.titleRequired": "Title is required",
+  "admin.blogPostForm.titleLabel": "Title",
+  "admin.blogPostForm.validation.contentRequired": "Content is required",
+  "admin.blogPostForm.publishedLabel": "Published",
+  "admin.blogPostForm.cancelButton": "Cancel",
+  "admin.blogPostForm.savingButton": "Saving...",
+  "admin.blogPostForm.saveChangesButton": "Save Changes",
+  "admin.blogPostForm.createButton": "Create",
+
+  "blog.fetchErrorWithMessage": "Failed to load posts: {{message}}",
+  "blog.fetchErrorGeneric": "Failed to load posts. Please try again.",
+  "blog.title": "Blog",
+  "blog.subtitle": "Read our latest articles and news.",
+  "blog.noPosts": "There are currently no posts.",
+  "blog.readMore": "Read more",
+
+  "blogPostDetail.slugMissing": "Post slug is missing.",
+  "blogPostDetail.notFoundError": "Post not found.",
+  "blogPostDetail.fetchError": "Failed to load post details.",
+  "blogPostDetail.backButton": "Back to blog",
+  "blogPostDetail.notFoundOrNotPublished": "Post not found or not published.",
 };

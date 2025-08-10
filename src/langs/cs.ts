@@ -6,6 +6,8 @@ export default {
   "toolbar.documents": "Dokumenty",
   "toolbar.sponsors": "Sponzoři",
   "toolbar.contact": "Kontakt",
+  "toolbar.eshop": "E-shop",
+  "toolbar.blog": "Blog",
 
   "homepage.quote":
     "Společně budujeme lepší povědomí o tomto výjimečném plemeni",
@@ -31,6 +33,8 @@ export default {
     "Podívejte se, kdo podporuje náš klub a jeho aktivity.",
   "homepage.galleryTitle": "Galerie",
   "homepage.galleryDesc": "Prohlédněte si fotografie z našich akcí a výstav.",
+  "homepage.blogTitle": "Blog",
+  "homepage.blogDesc": "Přečtěte si naše nejnovější články a novinky.",
   "homepage.ctaTitle": "Staňte se členem našeho klubu",
   "homepage.ctaSubtitle":
     "Připojte se k naší komunitě nadšenců a získejte přístup k exkluzivním akcím, informacím a podpoře pro vás a vašeho psa.",
@@ -369,4 +373,51 @@ export default {
   "privacyPolicy.storageText2":
     "Toto úložiště není využíváno ke sledování běžných návštěvníků, profilování, ani k marketingovým účelům. Slouží výhradně k technickému zabezpečení a funkčnosti administrátorského rozhraní.",
   "privacyPolicy.lastUpdated": "Poslední aktualizace: 29. dubna 2025",
+
+  "admin.blogList.fetchError":
+    "Nepodařilo se načíst příspěvky. Zkuste to prosím znovu.",
+  "admin.blogList.deleteError":
+    "Nepodařilo se smazat příspěvek. Zkuste to prosím znovu.",
+  "admin.blogList.title": "Správa blogu",
+  "admin.blogList.addButton": "Přidat příspěvek",
+  "admin.blogList.noData": "Zatím nejsou přidány žádné příspěvky.",
+  "admin.blogList.tableTitle": "Název",
+  "admin.blogList.tableDate": "Datum vytvoření",
+  "admin.blogList.tableStatus": "Status",
+  "admin.blogList.tableActions": "Akce",
+  "admin.blogList.statusPublished": "Publikováno",
+  "admin.blogList.statusDraft": "Koncept",
+  "admin.blogList.deleteDialogTitle": "Smazat příspěvek",
+  "admin.blogList.deleteDialogMessage":
+    "Opravdu chcete smazat tento příspěvek? Tato akce je nevratná.",
+  "admin.blogPostForm.fetchError":
+    "Nepodařilo se načíst příspěvek. Zkuste to prosím znovu.",
+  "admin.blogPostForm.saveError":
+    "Nepodařilo se uložit příspěvek. Zkuste to prosím znovu.",
+  "admin.blogPostForm.editTitle": "Upravit příspěvek",
+  "admin.blogPostForm.addTitle": "Přidat příspěvek",
+  "admin.blogPostForm.backButton": "Zpět na seznam",
+  "admin.blogPostForm.validation.titleRequired": "Název je povinný",
+  "admin.blogPostForm.titleLabel": "Název",
+  "admin.blogPostForm.validation.contentRequired": "Obsah je povinný",
+  "admin.blogPostForm.publishedLabel": "Publikováno",
+  "admin.blogPostForm.cancelButton": "Zrušit",
+  "admin.blogPostForm.savingButton": "Ukládání...",
+  "admin.blogPostForm.saveChangesButton": "Uložit změny",
+  "admin.blogPostForm.createButton": "Vytvořit",
+
+  "blog.fetchErrorWithMessage": "Nepodařilo se načíst příspěvky: {{message}}",
+  "blog.fetchErrorGeneric":
+    "Nepodařilo se načíst příspěvky. Zkuste to prosím znovu.",
+  "blog.title": "Blog",
+  "blog.subtitle": "Přečtěte si naše nejnovější články a novinky.",
+  "blog.noPosts": "Momentálně zde nejsou žádné příspěvky.",
+  "blog.readMore": "Přečíst celý článek",
+
+  "blogPostDetail.slugMissing": "Slug příspěvku chybí.",
+  "blogPostDetail.notFoundError": "Příspěvek nebyl nalezen.",
+  "blogPostDetail.fetchError": "Nepodařilo se načíst detail příspěvku.",
+  "blogPostDetail.backButton": "Zpět na blog",
+  "blogPostDetail.notFoundOrNotPublished":
+    "Příspěvek nenalezen nebo nebyl publikován.",
 };
