@@ -58,12 +58,20 @@ export const getDocumentById = async <T>(
 export const getAllDocuments = async <T>(
   collectionName: string,
   orderByField: string = "createdAt",
-  orderDirection: "asc" | "desc" = "desc"
+  orderDirection: "asc" | "desc" = "desc",
+  whereClause?: { field: string; operator: any; value: any }
 ): Promise<T[]> => {
-  const q = query(
+  let q = query(
     collection(db, collectionName),
     orderBy(orderByField, orderDirection)
   );
+
+  if (whereClause) {
+    q = query(
+      q,
+      where(whereClause.field, whereClause.operator, whereClause.value)
+    );
+  }
 
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.map((doc) => {
@@ -253,6 +261,7 @@ export const getBlogPostBySlug = async (
   const q = query(
     collection(db, "blogPosts"),
     where("slug", "==", slug),
+    where("published", "==", true),
     limit(1)
   );
 

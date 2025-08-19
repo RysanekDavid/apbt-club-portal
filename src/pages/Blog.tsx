@@ -48,10 +48,10 @@ const BlogPage = () => {
         const postsData = await getAllDocuments<BlogPost>(
           "blogPosts",
           "createdAt",
-          "desc"
+          "desc",
+          { field: "published", operator: "==", value: true }
         );
-        const publishedPosts = postsData.filter((post) => post.published);
-        setPosts(publishedPosts);
+        setPosts(postsData);
         setError("");
       } catch (err) {
         console.error("Error fetching posts:", err);
