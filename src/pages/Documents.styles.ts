@@ -38,6 +38,7 @@ export const heroSubtitle: SxProps<Theme> = (theme) => ({
 
 export const mainContentSection: SxProps<Theme> = {
   py: 6, // Corresponds to py-12
+  pb: 10,
 };
 
 export const contentContainer: SxProps<Theme> = {

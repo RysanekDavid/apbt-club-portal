@@ -3,6 +3,7 @@ import { SxProps, Theme } from "@mui/material/styles";
 // --- Existing Styles ---
 export const pageContainer: SxProps<Theme> = {
   my: 4, // Keep existing margin
+  pb: 10,
 };
 
 // --- New Styles ---

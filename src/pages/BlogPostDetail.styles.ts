@@ -2,6 +2,7 @@ import { SxProps, Theme } from "@mui/material/styles";
 
 export const pageContainer: SxProps<Theme> = {
   my: 4,
+  pb: 8,
 };
 
 export const loadingBox: SxProps<Theme> = {

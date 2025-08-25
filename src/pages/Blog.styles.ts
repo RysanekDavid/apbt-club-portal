@@ -39,7 +39,7 @@ export const heroSubtitle: SxProps<Theme> = (theme) => ({
 
 // --- Page Styles ---
 export const pageContainer: SxProps<Theme> = {
-  pb: 8,
+  pb: 16000,
 };
 
 export const postCard: SxProps<Theme> = {
@@ -91,7 +91,7 @@ export const learnMoreButton: SxProps<Theme> = {
   p: 1,
   "&:hover": {
     backgroundColor: "rgba(140, 189, 222, 0.4)",
-    
+
     textDecoration: "underline",
   },
 };
