@@ -25,7 +25,7 @@ const ContactPage = () => {
     addressLine1: t("contact.addressLine1"), // Use translation
     addressLine2: t("contact.addressLine2"), // Use translation
     phone: "724 610 712", // Keep phone number as is
-    email: "info@klubapbt.cz", // Keep email as is
+    email: "klubapbt@seznam.cz", // Keep email as is
     website: "http://klubapbt.cz", // Keep website as is
     ico: "68521481", // Keep ICO as is
   };

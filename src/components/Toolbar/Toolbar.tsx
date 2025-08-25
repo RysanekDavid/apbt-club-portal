@@ -72,7 +72,7 @@ export default function MainToolbar() {
 
       <RightSection>
         <ExternalNavLinkStyled
-          href="https://www.eshop.com"
+          href="https://eshop.tymoveobleceni.cz/klub-americkych-pit-bull-terieru/"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -145,7 +145,7 @@ export default function MainToolbar() {
                 <ListItem disablePadding>
                   <ListItemButton
                     component="a"
-                    href="https://www.eshop.com"
+                    href="https://eshop.tymoveobleceni.cz/klub-americkych-pit-bull-terieru/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -155,7 +155,7 @@ export default function MainToolbar() {
                 <ListItem disablePadding>
                   <ListItemButton
                     component="a"
-                    href="https://www.eshop.com"
+                    href="https://eshop.tymoveobleceni.cz/klub-americkych-pit-bull-terieru/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
